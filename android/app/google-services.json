@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "644990016495",
+    "project_id": "kiraay-58fa0",
+    "storage_bucket": "kiraay-58fa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644990016495:android:966d6954444d899c12b41a",
+        "android_client_info": {
+          "package_name": "com.example.kiraay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644990016495-simtpoj1710st0s9cncmphe44qq5nk15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBadpuPt2NXFQ9qJuazDSVYzbz0KNGunxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644990016495-simtpoj1710st0s9cncmphe44qq5nk15.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644990016495-hp33qk8hm5t1mau6uf6vtq7sfg5ot051.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kiraay"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

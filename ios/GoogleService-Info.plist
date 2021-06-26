@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>644990016495-hp33qk8hm5t1mau6uf6vtq7sfg5ot051.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.644990016495-hp33qk8hm5t1mau6uf6vtq7sfg5ot051</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAsj7kN4_2DRbtMJS2bInE1aWYHaIO2yzc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>644990016495</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.kiraay</string>
+	<key>PROJECT_ID</key>
+	<string>kiraay-58fa0</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kiraay-58fa0.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:644990016495:ios:2a3568b225db130e12b41a</string>
+</dict>
+</plist>

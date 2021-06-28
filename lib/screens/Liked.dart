@@ -38,7 +38,7 @@ class _LikedState extends State<Liked> {
             "Kiraay",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 24, foreground: Paint()..shader = linearGradient),
+                fontSize: 28, foreground: Paint()..shader = linearGradient),
           ),
           actions: <Widget>[
             IconButton(

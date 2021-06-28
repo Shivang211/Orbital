@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/DescriptionRent.dart';
+import 'package:kiraay/screens/Liked.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
@@ -65,8 +66,7 @@ class Results2 extends StatelessWidget {
   Widget body() {
     var stream = FirebaseFirestore.instance
         .collection('posts')
-        .where("owner id", isNotEqualTo: getId())
-        //.where("LendOrRent", isEqualTo: "Rent")
+        .where("owner id", isEqualTo: getId())
         .snapshots();
     return StreamBuilder(
       stream: stream,
@@ -79,8 +79,8 @@ class Results2 extends StatelessWidget {
             if (snapshot.hasData) {
               if (snapshot.data!.docs.length == 0) {
                 return Text(
-                  "No data found : kindly input valid String",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
+                  "No data found",
+                  style: TextStyle(color: Colors.white, fontSize: 40),
                 );
               } else {
                 return ListView.builder(
@@ -91,28 +91,43 @@ class Results2 extends StatelessWidget {
                       String id = snapshot.data!.docs[index].id;
                       return Center(
                           child: Padding(
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              padding: EdgeInsets.fromLTRB(120, 10, 0, 0),
                               child: Row(children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(120, 10, 10, 0),
-                                  child: Text(
-                                    "$id",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
+                                Text(
+                                  "$id",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      FirebaseFirestore.instance
-                                          .collection('posts')
-                                          .doc(
-                                              '$id') // <-- Doc ID where data should be updated.
-                                          .update({
-                                        "User Id":
-                                            FieldValue.arrayUnion(["$getId()"])
-                                      });
-                                    },
-                                    child: Text("Like"))
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.lightBlueAccent),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ))),
+                                        onPressed: () {
+                                          var addToArray = getId();
+                                          FirebaseFirestore.instance
+                                              .collection('posts')
+                                              .doc(
+                                                  '$id') // <-- Doc ID where data should be updated.
+                                              .update({
+                                            "User Id": FieldValue.arrayUnion(
+                                                ["$addToArray"])
+                                          });
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Liked()),
+                                          );
+                                        },
+                                        child: Text("Like")))
                               ])));
                     });
               }

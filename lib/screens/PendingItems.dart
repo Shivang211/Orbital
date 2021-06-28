@@ -46,7 +46,7 @@ class _PendingItemsState extends State<PendingItems> {
               "Kiraay",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24, foreground: Paint()..shader = linearGradient),
+                  fontSize: 28, foreground: Paint()..shader = linearGradient),
             ),
             actions: <Widget>[
               IconButton(
@@ -82,7 +82,7 @@ class _PendingItemsState extends State<PendingItems> {
     var stream = FirebaseFirestore.instance
         .collection('posts')
         .where("owner id", isEqualTo: getId())
-        .snapshots();
+        .where("User Id", isEqualTo: []).snapshots();
     return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -113,16 +113,29 @@ class _PendingItemsState extends State<PendingItems> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      deleteUser(id);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Deleted()),
-                                      );
-                                    },
-                                    child: Text("Delete"))
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.red),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ))),
+                                        onPressed: () {
+                                          deleteUser(id);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Deleted()),
+                                          );
+                                        },
+                                        child: Text("Delete")))
                               ])));
                     });
               }

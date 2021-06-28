@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:confetti/confetti.dart';
 
 import 'ImagesRentPost.dart';
+import 'Liked.dart';
 import 'SignUpPage.dart';
 import 'mainpage.dart';
 
@@ -48,10 +49,10 @@ class _ResultsState extends State<Results> {
             backgroundColor: Colors.black,
             centerTitle: true,
             title: Text(
-              "KIRAAY",
+              "Kiraay",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24, foreground: Paint()..shader = linearGradient),
+                  fontSize: 28, foreground: Paint()..shader = linearGradient),
             ),
             actions: <Widget>[
               IconButton(
@@ -110,8 +111,36 @@ class _ResultsState extends State<Results> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {}, child: Text("Like"))
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.lightBlueAccent),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ))),
+                                        onPressed: () {
+                                          var addToArray = getId();
+                                          FirebaseFirestore.instance
+                                              .collection('posts')
+                                              .doc(
+                                                  '$id') // <-- Doc ID where data should be updated.
+                                              .update({
+                                            "User Id": FieldValue.arrayUnion(
+                                                ["$addToArray"])
+                                          });
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Liked()),
+                                          );
+                                        },
+                                        child: Text("Like")))
                               ])));
                     });
               }

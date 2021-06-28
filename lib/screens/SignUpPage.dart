@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUp> {
             backgroundColor: Colors.black,
             centerTitle: true,
             title: Text(
-              "KIRAAY",
+              "Kiraay",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 25, foreground: Paint()..shader = linearGradient),
@@ -130,7 +130,7 @@ class _SignUpState extends State<SignUp> {
                     Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 40),
                         child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 // TODO submit
                                 _createUser();

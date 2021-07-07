@@ -47,6 +47,7 @@ class _LoginpageState extends State<Loginpage> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return Scaffold(
         backgroundColor: Colors.white10,
         appBar: PreferredSize(
@@ -66,6 +67,8 @@ class _LoginpageState extends State<Loginpage> {
           ),
         ),
         body: Center(
+            child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -73,31 +76,38 @@ class _LoginpageState extends State<Loginpage> {
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 10),
                 child: Container(
                   height: 50,
-                  child: TextField(
-                      onChanged: (value) {
-                        _email = value;
-                      },
-                      decoration: InputDecoration(
-                          hintText: "Enter Email Id",
-                          hintStyle: TextStyle(fontSize: 15),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      _email = value;
+                    },
+                    decoration: InputDecoration(
+                        hintText: "Enter Email Id",
+                        hintStyle: TextStyle(fontSize: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
                           ),
-                          fillColor: Colors.white,
-                          filled: true)),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true),
+                  ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 5, 16, 0),
                 child: Container(
                   height: 50,
-                  child: TextField(
+                  child: TextFormField(
                       obscureText: true,
                       onChanged: (value) {
                         _password = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
                       },
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -171,6 +181,6 @@ class _LoginpageState extends State<Loginpage> {
                   ))
             ],
           ),
-        ));
+        )));
   }
 }

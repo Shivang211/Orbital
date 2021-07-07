@@ -53,7 +53,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white54,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(70.0), // here the desired height
           child: AppBar(
@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
               "Kiraay",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 25, foreground: Paint()..shader = linearGradient),
+                  fontSize: 28, foreground: Paint()..shader = linearGradient),
             ),
           ),
         ),
@@ -76,7 +76,9 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     SizedBox(height: 30),
                     TextFormField(
-                        decoration: InputDecoration(labelText: 'Email Id'),
+                        decoration: InputDecoration(
+                            labelText: 'Email Id',
+                            labelStyle: TextStyle(color: Colors.white)),
                         onChanged: (value) {
                           _email = value;
                         },
@@ -90,8 +92,8 @@ class _SignUpState extends State<SignUp> {
                     TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
-                          labelText: 'Password',
-                        ),
+                            labelText: 'Password',
+                            labelStyle: TextStyle(color: Colors.white)),
                         onChanged: (value) {
                           _password = value;
                         },
@@ -104,8 +106,9 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 20),
                     TextFormField(
                         obscureText: true,
-                        decoration:
-                            InputDecoration(labelText: 'Confirm password'),
+                        decoration: InputDecoration(
+                            labelText: 'Confirm password',
+                            labelStyle: TextStyle(color: Colors.white)),
                         onChanged: (value) {
                           _passwordRepeat = value;
                         },
@@ -117,7 +120,9 @@ class _SignUpState extends State<SignUp> {
                         }),
                     SizedBox(height: 30),
                     TextFormField(
-                        decoration: InputDecoration(labelText: 'Telegram id'),
+                        decoration: InputDecoration(
+                            labelText: 'Telegram id',
+                            labelStyle: TextStyle(color: Colors.white)),
                         onChanged: (value) {
                           _telegramId = value;
                         },
@@ -130,16 +135,21 @@ class _SignUpState extends State<SignUp> {
                     Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 40),
                         child: ElevatedButton(
-                            onPressed: () async {
+                            onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 // TODO submit
                                 _createUser();
                                 addUser();
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Mainpage()),
                                 );
+                                // showDialog(
+                                //   context: context,
+                                //   builder: (BuildContext context) =>
+                                //       _buildPopupDialog(context),
+                                // );
                               }
                             },
                             child: Text("Register"),
@@ -151,5 +161,29 @@ class _SignUpState extends State<SignUp> {
                             )))))
                   ],
                 ))));
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Account Created!'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Login Now"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Loginpage()),
+            );
+          },
+          child: const Text('Login'),
+        ),
+      ],
+    );
   }
 }

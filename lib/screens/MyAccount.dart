@@ -169,7 +169,7 @@ class _HomepageState extends State<Homepage> {
                     ))),
                 onPressed: () {
                   _pendingPosts();
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => PendingItems()),
                   );

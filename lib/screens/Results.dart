@@ -69,12 +69,13 @@ class _ResultsState extends State<Results> {
         ),
         body: body());
   }
+
   //],
   //),
   //),
   // );
   //}
-
+  static late String id;
   Widget body() {
     var stream = FirebaseFirestore.instance
         .collection('posts')
@@ -101,47 +102,39 @@ class _ResultsState extends State<Results> {
                     physics: ScrollPhysics(),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      String id = snapshot.data!.docs[index].id;
-                      return Center(
-                          child: Padding(
-                              padding: EdgeInsets.fromLTRB(120, 10, 0, 0),
-                              child: Row(children: [
-                                Text(
-                                  "$id",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.lightBlueAccent),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ))),
-                                        onPressed: () {
-                                          var addToArray = getId();
-                                          FirebaseFirestore.instance
-                                              .collection('posts')
-                                              .doc(
-                                                  '$id') // <-- Doc ID where data should be updated.
-                                              .update({
-                                            "User Id": FieldValue.arrayUnion(
-                                                ["$addToArray"])
-                                          });
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Liked()),
-                                          );
-                                        },
-                                        child: Text("Like")))
-                              ])));
+                      id = snapshot.data!.docs[index].id;
+                      return Column(children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 15, 296, 10),
+                          child: Text("Showing Results:",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white)),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 250, 10),
+                          child: Text("tap on the item for more info",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white)),
+                        ),
+                        Center(
+                          child:
+                              //Row(children: [
+                              MaterialButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    _buildPopupDialog(context),
+                              );
+                            },
+                            child: Text(
+                              "$id",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 30),
+                            ),
+                          ),
+                        )
+                      ]);
                     });
               }
             } else {
@@ -150,6 +143,54 @@ class _ResultsState extends State<Results> {
             }
         }
       },
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Item Name'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Description"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              var addToArray = getId();
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({
+                "User Id": FieldValue.arrayUnion(["$addToArray"])
+              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Liked()),
+              );
+            },
+            child: Text("Like")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
     );
   }
 }

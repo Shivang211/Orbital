@@ -25,7 +25,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
   Future<void> addPost() {
     //Call the user's CollectionReference to add a new user
     if (SignUp.userUid != null) {
-      return posts.doc("$item_name").set({
+      return posts.add({
         'owner id': SignUp.userUid,
         'item_name': item_name,
         'description': description,
@@ -34,7 +34,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
         "LendOrRent": LendorRent.lentOrRent,
       });
     } else {
-      return posts.doc("$item_name").set({
+      return posts.add({
         'owner id': Loginpage.userUid,
         'item_name': item_name,
         'description': description,

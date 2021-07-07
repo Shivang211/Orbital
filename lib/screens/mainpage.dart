@@ -142,7 +142,7 @@ class _MainpageState extends State<Mainpage> {
                   IconButton(
                     icon: Icon(Icons.person_pin, size: 65, color: Colors.white),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Homepage()),
                       );

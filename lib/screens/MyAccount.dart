@@ -45,7 +45,7 @@ class _HomepageState extends State<Homepage> {
               IconButton(
                 icon: Icon(Icons.home, size: 33),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Mainpage()),
                   );
@@ -198,10 +198,10 @@ class _HomepageState extends State<Homepage> {
                       size: 33, color: Colors.white24),
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Loginpage()),
-                    // );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Loginpage()),
+                    );
                   },
                 ),
               ),

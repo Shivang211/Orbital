@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -43,7 +44,7 @@ class LandingPage extends StatelessWidget {
                   Object user = snapshot.data;
 
                   if (user == null) {
-                    return Loginpage();
+                    return Login();
                   } else {
                     return Mainpage();
                   }

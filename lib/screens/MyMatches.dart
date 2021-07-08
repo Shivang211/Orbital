@@ -81,8 +81,7 @@ class _MyMatchesState extends State<MyMatches> {
     var stream = FirebaseFirestore.instance
         .collection('posts')
         .where("owner id", isEqualTo: getId())
-        //.where("User Id", isNotEqualTo: ["Empty"])
-        .snapshots();
+        .where("User Id", isNotEqualTo: ["Empty"]).snapshots();
     return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -128,11 +127,10 @@ class _MyMatchesState extends State<MyMatches> {
                                             ))),
                                         onPressed: () {
                                           deleteUser(id);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Deleted()),
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                _buildPopupDialog(context),
                                           );
                                         },
                                         child: Text("Delete")))
@@ -145,6 +143,33 @@ class _MyMatchesState extends State<MyMatches> {
             }
         }
       },
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Deleted'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Post Deleted!"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
     );
   }
 }

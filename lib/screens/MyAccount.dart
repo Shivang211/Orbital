@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/MyLikes.dart';
 import 'package:kiraay/screens/MyMatches.dart';
 import 'package:kiraay/screens/loginpage.dart';
@@ -198,10 +199,12 @@ class _HomepageState extends State<Homepage> {
                       size: 33, color: Colors.white24),
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => Loginpage()),
-                    );
+                    Navigator.pushReplacement(context,
+                        new MaterialPageRoute(builder: (context) => Login()));
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => Loginpage()),
+                    // );
                   },
                 ),
               ),

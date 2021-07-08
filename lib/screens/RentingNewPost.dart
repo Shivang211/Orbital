@@ -23,78 +23,86 @@ class _CreateNewRentState extends State<CreateNewRent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0), // here the desired height
-        child: AppBar(
-          //leadingWidth: 15, // <-- Use this
+        backgroundColor: Colors.black,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60.0), // here the desired height
+          child: AppBar(
+            //leadingWidth: 15, // <-- Use this
 
-          backgroundColor: Colors.white10,
-          centerTitle: true,
-          title: Text(
-            "Creating Post",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 24, foreground: Paint()..shader = linearGradient),
+            backgroundColor: Colors.black,
+            centerTitle: true,
+            title: Text(
+              "Creating Post",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24, foreground: Paint()..shader = linearGradient),
+            ),
           ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 200, 250, 0),
-                child: Text(
-                  " Enter Item name:",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                )),
-            Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Max 50 characters',
-                      hintStyle: TextStyle(fontSize: 15),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      fillColor: Colors.white,
-                      filled: true),
-                  maxLength: 50,
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'Text is empty';
-                    }
-                    CreateNewRent.item_name = text;
-                    return null;
-                  },
-                )),
-            ElevatedButton.icon(
-                icon: Icon(Icons.arrow_right_alt),
-                label: Text("Next"),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // TODO submit
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DescriptionRent()),
-                    );
-                  }
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))))
-          ],
-        ),
-      ),
-    );
+        body: Form(
+          key: _formKey,
+          child: Stack(children: [
+            Positioned.fill(
+              child: Image(
+                image: AssetImage("assets/bg.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Column(
+              children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 200, 250, 0),
+                    child: Text(
+                      " Enter Item name:",
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    )),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: 'Max 50 characters',
+                          hintStyle: TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true),
+                      maxLength: 50,
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Text is empty';
+                        }
+                        CreateNewRent.item_name = text;
+                        return null;
+                      },
+                    )),
+                ElevatedButton.icon(
+                    icon: Icon(Icons.arrow_right_alt),
+                    label: Text("Next"),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // TODO submit
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DescriptionRent()),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))))
+              ],
+            ),
+          ]),
+        ));
   }
 }
 //         Center(

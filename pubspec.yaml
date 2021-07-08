@@ -42,6 +42,7 @@ dependencies:
   animated_background: ^2.0.0
   google_fonts: ^2.1.0
   confetti: ^0.5.5
+  simple_animations: ^3.1.1
 
 
   firebase_core: ^1.2.0
@@ -79,6 +80,7 @@ flutter:
     - assets/Asset_1.png
     - assets/add.png
     - assets/icons/blank.png
+    - assets/bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,8 @@ import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'RentingNewPost.dart';
 import 'Results.dart';
+import 'package:animated_background/animated_background.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class LendorRent extends StatefulWidget {
   @override
@@ -34,7 +38,7 @@ class _LendorRentState extends State<LendorRent> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0), // here the desired height
         child: AppBar(
@@ -50,19 +54,27 @@ class _LendorRentState extends State<LendorRent> {
           ),
         ),
       ),
-      body: Form(
-          key: _formKey,
-          child: Column(children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 200, 0, 20),
-              child: Text(
-                "Are you looking to lend or rent in?",
-                style: TextStyle(color: Colors.white),
-              ),
+      body: Stack(key: _formKey, children: [
+        Positioned.fill(
+          child: Image(
+            image: AssetImage("assets/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        Column(children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 200, 0, 20),
+            child: Text(
+              "Are you looking to lend or rent in?",
+              style: TextStyle(fontSize: 22, color: Colors.white),
             ),
-            Row(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(120, 0, 20, 0),
+          ),
+          Row(children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(90, 20, 20, 0),
+              child: SizedBox(
+                height: 40,
+                width: 100,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
@@ -81,28 +93,34 @@ class _LendorRentState extends State<LendorRent> {
                     },
                     child: Text("Lend")),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))),
-                    onPressed: () {
-                      LendorRent.lentOrRent = "Rent";
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreateNewRent()),
-                      );
-                    },
-                    child: Text("Rent In")),
-              )
-            ])
-          ])),
+            ),
+            Padding(
+                padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
+                child: SizedBox(
+                  height: 40,
+                  width: 100,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ))),
+                      onPressed: () {
+                        LendorRent.lentOrRent = "Rent";
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreateNewRent()),
+                        );
+                      },
+                      child: Text("Rent In")),
+                ))
+          ])
+        ])
+      ]),
     );
   }
 }

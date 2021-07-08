@@ -66,7 +66,7 @@ class Results2 extends StatelessWidget {
   Widget body() {
     var stream = FirebaseFirestore.instance
         .collection('posts')
-        .where("owner id", isEqualTo: getId())
+        .where("owner id", isNotEqualTo: getId())
         .snapshots();
     return StreamBuilder(
       stream: stream,

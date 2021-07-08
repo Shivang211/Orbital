@@ -9,6 +9,7 @@ import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/Posted.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
 import 'package:kiraay/screens/loginpage.dart';
+import 'package:kiraay/screens/mainpage.dart';
 
 import 'ImagesRentPost.dart';
 import 'SignUpPage.dart';
@@ -59,13 +60,13 @@ class _ConfirmPostState extends State<ConfirmPost> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0), // here the desired height
         child: AppBar(
           //leadingWidth: 15, // <-- Use this
 
-          backgroundColor: Colors.white10,
+          backgroundColor: Colors.black,
           centerTitle: true,
           title: Text(
             "Post Summary",
@@ -75,60 +76,74 @@ class _ConfirmPostState extends State<ConfirmPost> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Row(children: [
-              Padding(
-                  padding: EdgeInsets.fromLTRB(100, 100, 10, 10),
-                  child: Text(
-                    "Item name:",
-                    style: TextStyle(
-                        color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20),
-                  )),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
-                child: Text("$item_name",
-                    style: TextStyle(
-                        color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20)),
-              ),
-            ]),
-            Row(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(90, 40, 10, 10),
-                child: Text("Description:",
-                    style: TextStyle(
-                        color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20)),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                child: Text("$description",
-                    style: TextStyle(
-                        color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20)),
-              ),
-            ]),
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 10, 0),
-                child: ElevatedButton.icon(
-                    icon: Icon(Icons.arrow_right_alt),
-                    label: Text("Next"),
-                    onPressed: () {
-                      addPost();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Posted()),
-                      );
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        )))))
-          ],
+      body: Stack(children: [
+        Positioned.fill(
+          child: Image(
+            image: AssetImage("assets/bg.png"),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
+        Center(
+          child: Column(
+            children: <Widget>[
+              Row(children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 100, 10, 10),
+                    child: Text(
+                      "Item name:",
+                      style: TextStyle(
+                          color: Color.fromRGBO(239, 132, 125, 1),
+                          fontSize: 20),
+                    )),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
+                  child: Text("$item_name",
+                      style: TextStyle(
+                          color: Color.fromRGBO(239, 132, 125, 1),
+                          fontSize: 20)),
+                ),
+              ]),
+              Row(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 40, 10, 10),
+                  child: Text("Description:",
+                      style: TextStyle(
+                          color: Color.fromRGBO(239, 132, 125, 1),
+                          fontSize: 20)),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: Text("$description",
+                      style: TextStyle(
+                          color: Color.fromRGBO(239, 132, 125, 1),
+                          fontSize: 20)),
+                ),
+              ]),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: ElevatedButton(
+                      //icon: Icon(Icons.arrow_right_alt),
+                      child: Text("Create Post"),
+                      onPressed: () {
+                        addPost();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _buildPopupDialog(context),
+                        );
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          )))))
+            ],
+          ),
+        )
+      ]),
     );
   }
 
@@ -138,5 +153,35 @@ class _ConfirmPostState extends State<ConfirmPost> {
         SetOptions(merge: true)).then((_) {
       print("success!");
     });
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Congratulations'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Post Created!"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Mainpage()),
+              );
+            },
+            child: Text("Home"))
+      ],
+    );
   }
 }

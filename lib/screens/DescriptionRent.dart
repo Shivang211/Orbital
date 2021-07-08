@@ -24,81 +24,90 @@ class _DescriptionRentState extends State<DescriptionRent> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.teal,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0), // here the desired height
-        child: AppBar(
-          //leadingWidth: 15, // <-- Use this
+        backgroundColor: Colors.black,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60.0), // here the desired height
+          child: AppBar(
+            //leadingWidth: 15, // <-- Use this
 
-          backgroundColor: Colors.white10,
-          centerTitle: true,
-          title: Text(
-            "Creating Post",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 24, foreground: Paint()..shader = linearGradient),
+            backgroundColor: Colors.black,
+            centerTitle: true,
+            title: Text(
+              "Creating Post",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24, foreground: Paint()..shader = linearGradient),
+            ),
           ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(0, 200, 250, 10),
-                child: Text(
-                  " Enter Description:",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                )),
-            Container(
-              width: double.infinity,
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextFormField(
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                        hintText:
-                            'Kindly mention if you are looking for the item or if you are looking to rent it out',
-                        hintStyle: TextStyle(fontSize: 15),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true),
-                    maxLength: 200,
-                    validator: (text) {
-                      if (text == null || text.isEmpty) {
-                        return 'Text is empty';
-                      }
-                      DescriptionRent.description = text;
-                      return null;
-                    },
-                  )),
+        body: Form(
+          key: _formKey,
+          child: Stack(children: [
+            Positioned.fill(
+              child: Image(
+                image: AssetImage("assets/bg.png"),
+                fit: BoxFit.cover,
+              ),
             ),
-            ElevatedButton.icon(
-                icon: Icon(Icons.arrow_right_alt),
-                label: Text("Next"),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // TODO submit
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ConfirmPost()),
-                    );
-                  }
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))))
-          ],
-        ),
-      ),
-    );
+            Column(
+              children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 200, 250, 0),
+                    child: Text(
+                      " Enter Description:",
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    )),
+                Container(
+                  width: double.infinity,
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: TextFormField(
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                            hintText:
+                                'Kindly write a detailed description about the item',
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true),
+                        maxLength: 200,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Text is empty';
+                          }
+                          DescriptionRent.description = text;
+                          return null;
+                        },
+                      )),
+                ),
+                ElevatedButton.icon(
+                    icon: Icon(Icons.arrow_right_alt),
+                    label: Text("Next"),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // TODO submit
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ConfirmPost()),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))))
+              ],
+            ),
+          ]),
+        ));
   }
 }

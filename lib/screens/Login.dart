@@ -18,6 +18,7 @@ import 'Widgets/custom.dart';
 class Login extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
+  static var useruid;
 }
 
 class _LoginViewState extends State<Login> {
@@ -215,6 +216,9 @@ class _LoginViewState extends State<Login> {
             email: _emailController.text,
             password: _passwordController.text,
           );
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          final User currentUser = auth.currentUser;
+          Login.useruid = currentUser.uid;
           // SharedPreferences prefs = await SharedPreferences.getInstance();
           // prefs.setString('displayName', user.user.displayName);
           // Navigator.of(context).pushNamed(AppRoutes.home);

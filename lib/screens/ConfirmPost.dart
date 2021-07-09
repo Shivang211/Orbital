@@ -12,6 +12,7 @@ import 'package:kiraay/screens/loginpage.dart';
 import 'package:kiraay/screens/mainpage.dart';
 
 import 'ImagesRentPost.dart';
+import 'Login.dart';
 import 'SignUpPage.dart';
 
 class ConfirmPost extends StatefulWidget {
@@ -36,7 +37,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
       });
     } else {
       return posts.add({
-        'owner id': Loginpage.userUid,
+        'owner id': Login.useruid,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,

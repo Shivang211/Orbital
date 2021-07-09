@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/loginpage.dart';
 
@@ -25,7 +26,7 @@ class _MyMatchesState extends State<MyMatches> {
       userId = SignUp.userUid;
       return userId;
     } else {
-      userId = Loginpage.userUid;
+      userId = Login.useruid;
       return userId;
     }
   }

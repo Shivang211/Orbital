@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_firebase_login/theme/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kiraay/screens/Login.dart';
+import 'package:kiraay/screens/verify.dart';
 
 import 'mainpage.dart';
 
@@ -220,8 +221,10 @@ class _RegisterViewState extends State<Register> {
                   password: _passwordController.text,
                 );
                 User updateUser = FirebaseAuth.instance.currentUser;
-                Navigator.pushReplacement(context,
-                    new MaterialPageRoute(builder: (context) => Mainpage()));
+                Navigator.pushReplacement(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => VerifyScreen()));
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
                   print('The password provided is too weak.');

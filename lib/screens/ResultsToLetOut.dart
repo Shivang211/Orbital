@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/DescriptionRent.dart';
 import 'package:kiraay/screens/Liked.dart';
+import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
@@ -35,7 +36,7 @@ class Results2 extends StatelessWidget {
       userId = SignUp.userUid;
       return userId;
     } else {
-      userId = Loginpage.userUid;
+      userId = Login.useruid;
       return userId;
     }
   }

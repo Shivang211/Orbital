@@ -18,28 +18,29 @@ class Register extends StatefulWidget {
   @override
   _RegisterViewState createState() => _RegisterViewState();
   static var userUid;
+  static var telegramId;
 }
 
 class _RegisterViewState extends State<Register> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  void addUser() {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User currentUser = auth.currentUser;
-    var userUid = currentUser.uid;
-    Register.userUid = userUid;
+  // void addUser() {
+  //   final FirebaseAuth auth = FirebaseAuth.instance;
+  //   final User currentUser = auth.currentUser;
+  //   var userUid = currentUser.uid;
+  //   Register.userUid = userUid;
 
-    var collection = FirebaseFirestore.instance.collection('users');
-    collection
-        .doc('$userUid') // <-- Document ID
-        .set({'email Id': _email, 'telegram id': _telegramId}) // <-- Your data
-        .then((_) => print('Added: $userUid'))
-        .catchError((error) => print('Add failed: $error'));
-  }
+  //   var collection = FirebaseFirestore.instance.collection('users');
+  //   collection
+  //       .doc('$userUid') // <-- Document ID
+  //       .set({'email Id': _email, 'telegram id': _telegramId}) // <-- Your data
+  //       .then((_) => print('Added: $userUid'))
+  //       .catchError((error) => print('Add failed: $error'));
+  // }
 
   static String _email;
   static String _password;
-  static String _telegramId;
+
   var _passwordRepeat;
 
   final Shader linearGradient = LinearGradient(
@@ -68,7 +69,7 @@ class _RegisterViewState extends State<Register> {
               color: Colors.white,
             ),
           ),
-          hintText: "something@example.com",
+          hintText: "Please use legitimate email id for verification email",
           labelText: "Email",
           labelStyle: TextStyle(
             color: Colors.white,
@@ -171,7 +172,7 @@ class _RegisterViewState extends State<Register> {
           ),
         ),
         onChanged: (value) {
-          _telegramId = value;
+          Register.telegramId = value;
         },
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -212,7 +213,7 @@ class _RegisterViewState extends State<Register> {
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               // TODO submit
-              //addUser();
+
               try {
                 await Firebase.initializeApp();
                 UserCredential user =

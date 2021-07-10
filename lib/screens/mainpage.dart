@@ -80,7 +80,7 @@ class _MainpageState extends State<Mainpage> {
                       borderSide: BorderSide(
                         color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     fillColor: Colors.white,
                     filled: true),

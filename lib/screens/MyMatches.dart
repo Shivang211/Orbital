@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/loginpage.dart';
+import 'package:kiraay/screens/register.dart';
 
 import 'Deleted.dart';
 import 'SignUpPage.dart';
@@ -22,8 +23,8 @@ class _MyMatchesState extends State<MyMatches> {
 
   var userId;
   String getId() {
-    if (SignUp.userUid != null) {
-      userId = SignUp.userUid;
+    if (Register.userUid != null) {
+      userId = Register.userUid;
       return userId;
     } else {
       userId = Login.useruid;
@@ -82,7 +83,7 @@ class _MyMatchesState extends State<MyMatches> {
     var stream = FirebaseFirestore.instance
         .collection('posts')
         .where("owner id", isEqualTo: getId())
-        .where("User Id", isNotEqualTo: ["Empty"]).snapshots();
+        .snapshots();
     return StreamBuilder(
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

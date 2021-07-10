@@ -44,35 +44,49 @@ class _VerifyScreenState extends State<VerifyScreen> {
           child: ElevatedButton(
               child: Text("Verified"),
               onPressed: () {
-                if (user.emailVerified) {
-                  timer.cancel();
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Mainpage()));
-                  final FirebaseAuth auth = FirebaseAuth.instance;
-                  final User? currentUser = auth.currentUser;
-                  var userUid = currentUser!.uid;
-                  Register.userUid = userUid;
-                  var telegramId = Register.telegramId;
+                // if (user.emailVerified) {
+                timer.cancel();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Mainpage()));
+                final FirebaseAuth auth = FirebaseAuth.instance;
+                final User? currentUser = auth.currentUser;
+                var userUid = currentUser!.uid;
+                Register.userUid = userUid;
+                var telegramId = Register.telegramId;
 
-                  var collection =
-                      FirebaseFirestore.instance.collection('users');
-                  collection
-                      .doc('$userUid') // <-- Document ID
-                      .set({
-                        'email Id': user.email,
-                        'telegram id': telegramId
-                      }) // <-- Your data
-                      .then((_) => print('Added: $userUid'))
-                      .catchError((error) => print('Add failed: $error'));
-                }
+                var collection = FirebaseFirestore.instance.collection('users');
+                collection
+                    .doc('$userUid') // <-- Document ID
+                    .set({
+                      'email Id': user.email,
+                      'telegram id': telegramId
+                    }) // <-- Your data
+                    .then((_) => print('Added: $userUid'))
+                    .catchError((error) => print('Add failed: $error'));
+                //}
               }))
     ])));
   }
 
   Future<void> checkEmailVerified() async {
     user = auth.currentUser!;
-    //await user.reload();
+    await user.reload();
     if (user.emailVerified) {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? currentUser = auth.currentUser;
+      var userUid = currentUser!.uid;
+      Register.userUid = userUid;
+      var telegramId = Register.telegramId;
+
+      var collection = FirebaseFirestore.instance.collection('users');
+      collection
+          .doc('$userUid') // <-- Document ID
+          .set({
+            'email Id': user.email,
+            'telegram id': telegramId
+          }) // <-- Your data
+          .then((_) => print('Added: $userUid'))
+          .catchError((error) => print('Add failed: $error'));
       timer.cancel();
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Mainpage()));

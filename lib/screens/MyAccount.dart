@@ -81,14 +81,14 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
                 width: 200.0,
                 height: 40.0,
                 child: ElevatedButton(
-                  child: new Text("My Matches"),
+                  child: new Text("My Items"),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.lightBlueAccent),
@@ -108,7 +108,7 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: SizedBox(
               width: 200.0,
               height: 40.0,
@@ -131,7 +131,7 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
             child: SizedBox(
               width: 200.0,
               height: 40.0,
@@ -149,30 +149,6 @@ class _HomepageState extends State<Homepage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ItemsLended()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-            child: SizedBox(
-              width: 200.0,
-              height: 40.0,
-              child: ElevatedButton(
-                child: new Text("Pending posts"),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.lightBlueAccent),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  _pendingPosts();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => PendingItems()),
                   );
                 },
               ),

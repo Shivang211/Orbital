@@ -6,6 +6,7 @@ import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ImagesRentNew extends StatefulWidget {
   @override

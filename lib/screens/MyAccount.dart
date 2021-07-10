@@ -7,6 +7,7 @@ import 'package:kiraay/screens/MyLikes.dart';
 import 'package:kiraay/screens/MyMatches.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:kiraay/screens/mainpage.dart';
+import 'package:kiraay/screens/searchPage.dart';
 
 import 'Itemslended.dart';
 import 'PendingItems.dart';
@@ -48,7 +49,8 @@ class _HomepageState extends State<Homepage> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => Mainpage()),
+                    MaterialPageRoute(
+                        builder: (context) => CloudFirestoreSearch()),
                   );
                 },
               ),

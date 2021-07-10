@@ -25,6 +25,16 @@ class _ConfirmPostState extends State<ConfirmPost> {
   CollectionReference posts = FirebaseFirestore.instance.collection('posts');
   static late String docRef;
 
+  setSearchParam(String caseNumber) {
+    List<String> caseSearchList = [];
+    String temp = "";
+    for (int i = 0; i < caseNumber.length; i++) {
+      temp = temp + caseNumber[i];
+      caseSearchList.add(temp);
+    }
+    return caseSearchList;
+  }
+
   Future<void> addPost() {
     //Call the user's CollectionReference to add a new user
     if (Register.userUid != null) {
@@ -35,6 +45,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
         'rental status': RentalStatus,
         "User Id": FieldValue.arrayUnion([]),
         "LendOrRent": LendorRent.lentOrRent,
+        "caseSearch": setSearchParam(item_name),
       });
     } else {
       return posts.add({
@@ -44,6 +55,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
         'rental status': RentalStatus,
         "User Id": FieldValue.arrayUnion([]),
         "LendOrRent": LendorRent.lentOrRent,
+        "caseSearch": setSearchParam(item_name),
       });
     }
   }

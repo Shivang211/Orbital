@@ -259,7 +259,7 @@ class _RegisterViewState extends State<Register> {
             MaterialButton(
               onPressed: () {
                 // Navigator.of(context).pushNamed(AppRoutes.authLogin);
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     new MaterialPageRoute(builder: (context) => Login()));
               },
               child: Text(
@@ -276,38 +276,45 @@ class _RegisterViewState extends State<Register> {
     );
 
     return Scaffold(
-      // backgroundColor: Color(0xff8c52ff),
-      backgroundColor: Colors.white10,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
-        child: AppBar(
-          backgroundColor: Colors.black,
-          centerTitle: true,
-          title: Text(
-            "Kiraay",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                //fontWeight: FontWeight.bold,
-                fontSize: 30,
-                foreground: Paint()..shader = linearGradient,
-                fontFamily: 'Helvetica'),
+        // backgroundColor: Color(0xff8c52ff),
+        backgroundColor: Colors.white10,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.0), // here the desired height
+          child: AppBar(
+            backgroundColor: Colors.black,
+            centerTitle: true,
+            title: Text(
+              "Kiraay",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  //fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                  foreground: Paint()..shader = linearGradient,
+                  fontFamily: 'Helvetica'),
+            ),
           ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            fields,
-            const SizedBox(height: 8.0),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
-              child: bottom,
+        body: Form(
+          key: _formKey,
+          child: Stack(children: [
+            Positioned.fill(
+              child: Image(
+                image: AssetImage("assets/bg.png"),
+                fit: BoxFit.cover,
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                fields,
+                const SizedBox(height: 8.0),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                  child: bottom,
+                ),
+              ],
+            ),
+          ]),
+        ));
   }
 }

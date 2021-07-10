@@ -10,6 +10,7 @@ import 'package:kiraay/screens/ResultsToLetOut.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kiraay/screens/searchPage.dart';
 import 'RentingNewPost.dart';
 import 'Results.dart';
 
@@ -18,6 +19,8 @@ class Mainpage extends StatefulWidget {
   _MainpageState createState() => _MainpageState();
   static var searchString;
 }
+
+late final bool shrinkWrap;
 
 class _MainpageState extends State<Mainpage> {
   final TextEditingController _filter = new TextEditingController();
@@ -31,167 +34,272 @@ class _MainpageState extends State<Mainpage> {
     colors: <Color>[Color.fromRGBO(239, 132, 125, 1), Colors.greenAccent],
   ).createShader(Rect.fromLTWH(165.0, 200.0, 125.0, 200.0));
 
+  String name = "";
   @override
   Widget build(BuildContext context) {
+    int _index = 0;
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.white10,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0), // here the desired height
-        child: AppBar(
-          //leadingWidth: 15, // <-- Use this
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60.0), // here the desired height
+          child: AppBar(
+            //leadingWidth: 15, // <-- Use this
 
-          backgroundColor: Colors.black,
-          centerTitle: true,
-          title: Text(
-            "Kiraay",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 28, foreground: Paint()..shader = linearGradient),
+            backgroundColor: Colors.black,
+            centerTitle: true,
+            title: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Text(
+                "Kiraay",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 28, foreground: Paint()..shader = linearGradient),
+              ),
+            ),
+            actions: [
+              Column(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Container(
+                      height: 34,
+                      width: 34,
+                      child: RawMaterialButton(
+                        elevation: 5.0,
+                        shape: CircleBorder(),
+                        fillColor: Colors.black,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Homepage()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.person_pin,
+                          color: Colors.white,
+                          size: 34.0,
+                        ),
+                        constraints: BoxConstraints.tightFor(
+                          width: 56.0,
+                          height: 56.0,
+                        ),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
+                  child: Text(
+                    "Profile",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                )
+              ]),
+              Column(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 2, 20, 5),
+                  child: Container(
+                      height: 27,
+                      width: 28,
+                      child: RawMaterialButton(
+                        elevation: 0.0,
+                        shape: CircleBorder(),
+                        fillColor: Colors.white,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LendorRent()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.black,
+                          size: 30.0,
+                        ),
+                        constraints: BoxConstraints.tightFor(
+                          width: 30.0,
+                          height: 30.0,
+                        ),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
+                  child: Text(
+                    "Add post",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                )
+              ])
+            ],
           ),
         ),
-      ),
-      body: Form(
-          key: _formKey,
-          child: Column(children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 70, 0, 40),
-              child: Text(
-                "So What are you looking for today?",
-                style: TextStyle(color: Colors.white),
+        body: Form(
+            key: _formKey,
+            child: Column(children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                child: Text(
+                  "Looking for something to rent?",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
-              child: TextFormField(
-                // onChanged: (val) {
-                //   initiateSearch(val);
-                // },
-                decoration: InputDecoration(
-                    labelText: "Item name",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    prefixIcon: IconButton(
-                      color: Colors.grey,
-                      icon: Icon(Icons.search),
-                      iconSize: 20,
-                      onPressed: () {},
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true),
-                validator: (text) {
-                  if (text == null || text.isEmpty) {
-                    return 'Search is empty';
-                  }
-                  Mainpage.searchString = text;
-                  return null;
-                },
-              ),
-            ),
-            ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _onSearch();
-                    // TODO submit
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Results()),
-                    );
-                  }
-                },
-                child: Text("Search")),
-            Padding(
-                padding: EdgeInsets.fromLTRB(130, 200, 0, 0),
-                child: Row(
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 20),
-                        child: Text("Looking to Lend Items?",
-                            style: TextStyle(color: Colors.white)))
-                  ],
-                )),
-            ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  _showAllRent();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Results2()),
-                  );
-                },
-                child: Text("See What Others are Looking for")),
-            Padding(
-                padding: EdgeInsets.fromLTRB(5, 80, 0, 0),
-                child: Row(children: [
-                  IconButton(
-                    icon: Icon(Icons.person_pin, size: 65, color: Colors.white),
+              SizedBox(
+                width: 170,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))),
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
+                        MaterialPageRoute(
+                            builder: (context) => CloudFirestoreSearch()),
                       );
                     },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(270, 30, 0, 0),
-                    child: FloatingActionButton(
-                      child: Icon(Icons.add),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LendorRent()),
-                        );
-                      },
-                    ),
-                  )
-                ]))
-          ])),
+                    child: Text("Search Now")),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 30, 0, 20),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("What other people are looking for:",
+                        style: (TextStyle(color: Colors.black)))),
+              ),
+              Expanded(
+                // wrap in Expanded
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: (name != "" && name != null)
+                      ? FirebaseFirestore.instance
+                          .collection('posts')
+                          .where("caseSearch", arrayContains: name)
+                          .where("rental status", isEqualTo: false)
+                          .where("LendorRent", isNotEqualTo: "Lend")
+                          //.where("owner id", isNotEqualTo: getId())
+                          .snapshots()
+                      : FirebaseFirestore.instance
+                          .collection("posts")
+                          .where("rental status", isEqualTo: false)
+                          .where("LendOrRent", isEqualTo: "Rent")
+                          .snapshots(),
+                  builder: (context, snapshot) {
+                    return (snapshot.connectionState == ConnectionState.waiting)
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot data =
+                                  snapshot.data!.docs[index];
+                              return Column(children: [
+                                MaterialButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _buildPopupDialog(context, data),
+                                    );
+                                  },
+                                  child: Text(data['item_name'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 40)),
+                                )
+                                // Card(
+                                //   child: Row(
+                                //     children: <Widget>[
+                                //       MaterialButton(
+                                //         child: Text(
+                                //           data['item_name'],
+                                //           style: TextStyle(
+                                //             fontWeight: FontWeight.w700,
+                                //             fontSize: 20,
+                                //           ),
+                                //         ),
+                                //         onPressed: () {
+                                //     showDialog(
+                                //       context: context,
+                                //       builder: (BuildContext context) =>
+                                //           _buildPopupDialog(context, data),
+                                //     );
+                                //   },
+                                // ),
+                                //       SizedBox(width: 25, height: 100),
+                                //       Text(
+                                //         data['description'],
+                                //         style: TextStyle(
+                                //           fontWeight: FontWeight.w700,
+                                //           fontSize: 20,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // )
+                              ]);
+                            },
+                          );
+                  },
+                ),
+              )
+            ])));
+  }
+
+  Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(data['description']),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
     );
   }
+}
 
-  void _onSearch() {
-    FirebaseFirestore.instance
-        .collection("posts")
-        .where(
-          "item_name",
-          isEqualTo: Mainpage.searchString,
-        )
-        .where("rental status", isEqualTo: false)
-        .where("LendOrRent", isEqualTo: "Lend")
-        .get()
-        .then((value) {
-      value.docs.forEach((result) {
-        print(result.data());
-      });
+void _onSearch() {
+  FirebaseFirestore.instance
+      .collection("posts")
+      .where(
+        "item_name",
+        isEqualTo: Mainpage.searchString,
+      )
+      .where("rental status", isEqualTo: false)
+      .where("LendOrRent", isEqualTo: "Lend")
+      .get()
+      .then((value) {
+    value.docs.forEach((result) {
+      print(result.data());
     });
-  }
+  });
+}
 
-  void _showAllRent() {
-    FirebaseFirestore.instance
-        .collection("posts")
-        .where("rental status", isEqualTo: false)
-        .where("LendOrRent", isEqualTo: "Rent")
-        .get()
-        .then((value) {
-      value.docs.forEach((result) {
-        print(result.data());
-      });
+void _showAllRent() {
+  FirebaseFirestore.instance
+      .collection("posts")
+      .where("rental status", isEqualTo: false)
+      .where("LendOrRent", isEqualTo: "Rent")
+      .get()
+      .then((value) {
+    value.docs.forEach((result) {
+      print(result.data());
     });
-  }
+  });
 }

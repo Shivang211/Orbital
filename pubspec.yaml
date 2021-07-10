@@ -84,6 +84,11 @@ flutter:
     - assets/add.png
     - assets/icons/blank.png
     - assets/bg.png
+    - assets/icons/whitewallpaper.png
+    - assets/icons/white2.png
+    - assets/icons/white3.png
+    - assets/icons/white4.png
+    - assets/icons/white5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

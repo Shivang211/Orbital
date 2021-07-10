@@ -11,6 +11,7 @@ import 'package:kiraay/screens/ResultsToLetOut.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kiraay/screens/mainpage.dart';
 import 'RentingNewPost.dart';
 import 'Results.dart';
 import 'package:animated_background/animated_background.dart';
@@ -26,8 +27,6 @@ class _LendorRentState extends State<LendorRent> {
   final TextEditingController _filter = new TextEditingController();
   final dio = new Dio();
   String _searchText = "";
-  // ignore: deprecated_member_use
-  // List names = new List();
   Icon _searchIcon = Icon(Icons.search);
 
   final Shader linearGradient = LinearGradient(
@@ -52,73 +51,86 @@ class _LendorRentState extends State<LendorRent> {
             style: TextStyle(
                 fontSize: 24, foreground: Paint()..shader = linearGradient),
           ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+              child: IconButton(
+                icon: Icon(Icons.home, size: 33),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Mainpage()),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
       body: Stack(key: _formKey, children: [
         Positioned.fill(
           child: Image(
-            image: AssetImage("assets/bg.png"),
-            fit: BoxFit.cover,
+            image: AssetImage("assets/icons/white2.png"),
+            fit: BoxFit.scaleDown,
           ),
         ),
         Column(children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 200, 0, 20),
+            padding: EdgeInsets.fromLTRB(50, 130, 0, 20),
             child: Text(
-              "Are you looking to lend or rent in?",
-              style: TextStyle(fontSize: 22, color: Colors.white),
+              "Are you looking to Lend or Rent In?",
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontStyle: FontStyle.italic),
             ),
           ),
-          Row(children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(90, 20, 20, 0),
+          Padding(
+            padding: EdgeInsets.fromLTRB(50, 20, 20, 0),
+            child: SizedBox(
+              height: 40,
+              width: 100,
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
+                  onPressed: () {
+                    LendorRent.lentOrRent = "Lend";
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateNewRent()),
+                    );
+                  },
+                  child: Text("Lend")),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.fromLTRB(50, 20, 20, 0),
               child: SizedBox(
                 height: 40,
                 width: 100,
                 child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ))),
                     onPressed: () {
-                      LendorRent.lentOrRent = "Lend";
+                      LendorRent.lentOrRent = "Rent";
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateNewRent()),
                       );
                     },
-                    child: Text("Lend")),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
-                child: SizedBox(
-                  height: 40,
-                  width: 100,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
-                      onPressed: () {
-                        LendorRent.lentOrRent = "Rent";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreateNewRent()),
-                        );
-                      },
-                      child: Text("Rent In")),
-                ))
-          ])
+                    child: Text("Rent In")),
+              ))
         ])
       ]),
     );

@@ -44,18 +44,24 @@ class _CreateNewRentState extends State<CreateNewRent> {
           child: Stack(children: [
             Positioned.fill(
               child: Image(
-                image: AssetImage("assets/bg.png"),
-                fit: BoxFit.cover,
+                image: AssetImage("assets/icons/white2.png"),
+                fit: BoxFit.fill,
               ),
             ),
             Column(
               children: [
                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 200, 250, 0),
-                    child: Text(
-                      " Enter Item name:",
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    )),
+                  padding: const EdgeInsets.fromLTRB(10, 200, 0, 10),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        " Enter Item name:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic),
+                      )),
+                ),
                 Padding(
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: TextFormField(
@@ -64,7 +70,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
                           hintStyle: TextStyle(fontSize: 15),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             borderRadius: BorderRadius.circular(30.0),
                           ),
@@ -93,7 +99,8 @@ class _CreateNewRentState extends State<CreateNewRent> {
                       }
                     },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(

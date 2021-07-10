@@ -49,6 +49,7 @@ class _LoginViewState extends State<Login> {
                   children: <Widget>[
                     Text("Insert Reset Email:"),
                     TextField(
+                      style: TextStyle(color: Colors.black),
                       controller: _emailControllerField,
                       decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
@@ -157,22 +158,22 @@ class _LoginViewState extends State<Login> {
         Padding(
           padding: EdgeInsets.all(2.0),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            MaterialButton(
-                child: Text(
-                  "Forgot Password",
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                      ),
-                ),
-                onPressed: () {
-                  showAlertDialog(context);
-                }),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget>[
+        //     MaterialButton(
+        //         child: Text(
+        //           "Forgot Password",
+        //           style: Theme.of(context).textTheme.subtitle1.copyWith(
+        //                 color: Colors.white,
+        //                 decoration: TextDecoration.underline,
+        //               ),
+        //         ),
+        //         onPressed: () {
+        //           showAlertDialog(context);
+        //         }),
+        //   ],
+        // ),
       ],
     );
 
@@ -190,51 +191,53 @@ class _LoginViewState extends State<Login> {
       ),
     );
 
-    final loginButton = ElevatedButton(
-      style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18.0),
-      ))),
-      child: SizedBox(
-        width: 70,
-        child: Text(
-          "Login",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.0,
-            color: Colors.white,
-            //fontWeight: FontWeight.bold,
+    final loginButton = Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ))),
+          child: SizedBox(
+            width: 70,
+            child: Text(
+              "Login",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white,
+                //fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
-      ),
-      onPressed: () async {
-        try {
-          await Firebase.initializeApp();
-          UserCredential user =
-              await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-          final FirebaseAuth auth = FirebaseAuth.instance;
-          final User currentUser = auth.currentUser;
-          Login.useruid = currentUser.uid;
-          // SharedPreferences prefs = await SharedPreferences.getInstance();
-          // prefs.setString('displayName', user.user.displayName);
-          // Navigator.of(context).pushNamed(AppRoutes.home);
-          Navigator.pushReplacement(
-              context, new MaterialPageRoute(builder: (context) => Mainpage()));
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            print('The password provided is too weak.');
-          } else if (e.code == 'email-already-in-use') {
-            print('The account already exists for that email.');
-          }
-        } catch (e) {
-          print(e.toString());
-        }
-      },
-    );
+          onPressed: () async {
+            try {
+              await Firebase.initializeApp();
+              UserCredential user =
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text,
+              );
+              final FirebaseAuth auth = FirebaseAuth.instance;
+              final User currentUser = auth.currentUser;
+              Login.useruid = currentUser.uid;
+              // SharedPreferences prefs = await SharedPreferences.getInstance();
+              // prefs.setString('displayName', user.user.displayName);
+              // Navigator.of(context).pushNamed(AppRoutes.home);
+              Navigator.pushReplacement(context,
+                  new MaterialPageRoute(builder: (context) => Mainpage()));
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print('The password provided is too weak.');
+              } else if (e.code == 'email-already-in-use') {
+                print('The account already exists for that email.');
+              }
+            } catch (e) {
+              print(e.toString());
+            }
+          },
+        ));
 
     final bottom = Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -276,55 +279,62 @@ class _LoginViewState extends State<Login> {
         // backgroundColor: Color(0xff8c52ff),
         backgroundColor: Colors.black,
         body: Form(
-          key: _formKey,
-          child: Center(
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 100, 150, 2),
-                //   child: Text("Renting Items",
-                //       style: TextStyle(
-                //         fontSize: 15,
-                //         //fontWeight: FontWeight.bold,
-                //         foreground: Paint()..shader = linearGradient,
-                //       )),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 0, 80, 2),
-                //   child: Text("Connecting People",
-                //       style: TextStyle(
-                //         fontSize: 20,
-                //         //fontWeight: FontWeight.bold,
-                //         foreground: Paint()..shader = linearGradient,
-                //       )),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-                //   child: Text("Creating Communities",
-                //       style: TextStyle(
-                //         fontSize: 25,
-                //         //fontWeight: FontWeight.bold,
-                //         foreground: Paint()..shader = linearGradient,
-                //       )),
-                // ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 100, 0, 150),
-                  child: Text("Kiraay",
-                      style: TextStyle(
-                          fontSize: 35,
-                          //fontWeight: FontWeight.bold,
-                          foreground: Paint()..shader = linearGradient,
-                          fontFamily: 'Helvetica')),
+            key: _formKey,
+            child: Center(
+              child: Stack(children: [
+                Positioned.fill(
+                  child: Image(
+                    image: AssetImage("assets/bg.png"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                fields,
-                Padding(
-                  padding: EdgeInsets.only(bottom: 30),
-                  child: bottom,
+                Column(
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(0, 100, 150, 2),
+                    //   child: Text("Renting Items",
+                    //       style: TextStyle(
+                    //         fontSize: 15,
+                    //         //fontWeight: FontWeight.bold,
+                    //         foreground: Paint()..shader = linearGradient,
+                    //       )),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(0, 0, 80, 2),
+                    //   child: Text("Connecting People",
+                    //       style: TextStyle(
+                    //         fontSize: 20,
+                    //         //fontWeight: FontWeight.bold,
+                    //         foreground: Paint()..shader = linearGradient,
+                    //       )),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                    //   child: Text("Creating Communities",
+                    //       style: TextStyle(
+                    //         fontSize: 25,
+                    //         //fontWeight: FontWeight.bold,
+                    //         foreground: Paint()..shader = linearGradient,
+                    //       )),
+                    // ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 100, 0, 150),
+                      child: Text("Kiraay",
+                          style: TextStyle(
+                              fontSize: 38,
+                              fontWeight: FontWeight.w500,
+                              foreground: Paint()..shader = linearGradient,
+                              fontFamily: 'Helvetica')),
+                    ),
+                    fields,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 30),
+                      child: bottom,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ));
+              ]),
+            )));
   }
 }

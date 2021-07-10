@@ -28,7 +28,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white10,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(65.0), // here the desired height
           child: AppBar(
@@ -44,15 +44,17 @@ class _HomepageState extends State<Homepage> {
                   fontSize: 25, foreground: Paint()..shader = linearGradient),
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.home, size: 33),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CloudFirestoreSearch()),
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                child: IconButton(
+                  icon: Icon(Icons.home, size: 33),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Mainpage()),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -67,8 +69,7 @@ class _HomepageState extends State<Homepage> {
               child: ElevatedButton(
                 child: new Text("My Likes"),
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.lightBlueAccent),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
@@ -92,8 +93,7 @@ class _HomepageState extends State<Homepage> {
                 child: ElevatedButton(
                   child: new Text("My Items"),
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.lightBlueAccent),
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -117,8 +117,7 @@ class _HomepageState extends State<Homepage> {
               child: ElevatedButton(
                 child: new Text("Items I have rented"),
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.lightBlueAccent),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
@@ -140,8 +139,7 @@ class _HomepageState extends State<Homepage> {
               child: ElevatedButton(
                 child: new Text("Items I have lent"),
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.lightBlueAccent),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
@@ -161,7 +159,7 @@ class _HomepageState extends State<Homepage> {
               Padding(
                 padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
                 child: IconButton(
-                  icon: Icon(Icons.settings, size: 33, color: Colors.white24),
+                  icon: Icon(Icons.settings, size: 33, color: Colors.grey),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -173,8 +171,11 @@ class _HomepageState extends State<Homepage> {
               Padding(
                 padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
                 child: IconButton(
-                  icon: Icon(Icons.exit_to_app_sharp,
-                      size: 33, color: Colors.white24),
+                  icon: Icon(
+                    Icons.exit_to_app_sharp,
+                    size: 33,
+                    color: Colors.grey,
+                  ),
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
                     Navigator.pushReplacement(context,

@@ -93,7 +93,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
       body: Stack(children: [
         Positioned.fill(
           child: Image(
-            image: AssetImage("assets/bg.png"),
+            image: AssetImage("assets/icons/white2.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -106,8 +106,9 @@ class _ConfirmPostState extends State<ConfirmPost> {
                     child: Text(
                       "Item name:",
                       style: TextStyle(
-                          color: Color.fromRGBO(239, 132, 125, 1),
-                          fontSize: 20),
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic),
                     )),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
@@ -122,8 +123,9 @@ class _ConfirmPostState extends State<ConfirmPost> {
                   padding: EdgeInsets.fromLTRB(0, 40, 10, 10),
                   child: Text("Description:",
                       style: TextStyle(
-                          color: Color.fromRGBO(239, 132, 125, 1),
-                          fontSize: 20)),
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic)),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),

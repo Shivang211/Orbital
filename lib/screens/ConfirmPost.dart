@@ -10,6 +10,7 @@ import 'package:kiraay/screens/Posted.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:kiraay/screens/mainpage.dart';
+import 'package:kiraay/screens/register.dart';
 
 import 'ImagesRentPost.dart';
 import 'Login.dart';
@@ -26,9 +27,9 @@ class _ConfirmPostState extends State<ConfirmPost> {
 
   Future<void> addPost() {
     //Call the user's CollectionReference to add a new user
-    if (SignUp.userUid != null) {
+    if (Register.userUid != null) {
       return posts.add({
-        'owner id': SignUp.userUid,
+        'owner id': Register.userUid,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,

@@ -37,9 +37,13 @@ class _ConfirmPostState extends State<ConfirmPost> {
 
   Future<void> addPost() {
     //Call the user's CollectionReference to add a new user
-    if (Register.userUid != null) {
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    //Login.useruid = currentUser!.uid;
+    if (Login.useruid != null) {
       return posts.add({
-        'owner id': Register.userUid,
+        'owner id': user!.email,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,
@@ -49,7 +53,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
       });
     } else {
       return posts.add({
-        'owner id': Login.useruid,
+        'owner id': user!.email,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,
@@ -74,7 +78,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0), // here the desired height
         child: AppBar(
@@ -88,13 +92,27 @@ class _ConfirmPostState extends State<ConfirmPost> {
             style: TextStyle(
                 fontSize: 24, foreground: Paint()..shader = linearGradient),
           ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+              child: IconButton(
+                icon: Icon(Icons.home, size: 33),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Mainpage()),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
       body: Stack(children: [
         Positioned.fill(
           child: Image(
             image: AssetImage("assets/icons/white2.png"),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
         Center(
@@ -130,13 +148,31 @@ class _ConfirmPostState extends State<ConfirmPost> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: Text("$description",
-                      style: TextStyle(
-                          color: Color.fromRGBO(239, 132, 125, 1),
-                          fontSize: 20)),
+                      style:
+                          TextStyle(color: Colors.greenAccent, fontSize: 20)),
                 ),
               ]),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: ElevatedButton(
+                      //icon: Icon(Icons.arrow_right_alt),
+                      child: Text("Edit Post"),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LendorRent()),
+                        );
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ))))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: ElevatedButton(
                       //icon: Icon(Icons.arrow_right_alt),
                       child: Text("Create Post"),
@@ -150,7 +186,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
                       },
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                              MaterialStateProperty.all(Colors.black),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -184,8 +220,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                backgroundColor: MaterialStateProperty.all(Colors.black),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

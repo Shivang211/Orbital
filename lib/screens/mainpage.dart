@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/CreatenewPost.dart';
 import 'package:kiraay/screens/LendorRent.dart';
+import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/Meetnewpeople.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/ResultsToLetOut.dart';
@@ -13,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kiraay/screens/searchPage.dart';
 import 'RentingNewPost.dart';
 import 'Results.dart';
+import 'register.dart';
 
 class Mainpage extends StatefulWidget {
   @override
@@ -20,7 +22,16 @@ class Mainpage extends StatefulWidget {
   static var searchString;
 }
 
-late final bool shrinkWrap;
+late String userId;
+String getId() {
+  if (Register.userUid != null) {
+    userId = Register.userUid;
+    return userId;
+  } else {
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    return userId;
+  }
+}
 
 class _MainpageState extends State<Mainpage> {
   final TextEditingController _filter = new TextEditingController();
@@ -37,6 +48,8 @@ class _MainpageState extends State<Mainpage> {
   String name = "";
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     int _index = 0;
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
@@ -132,118 +145,148 @@ class _MainpageState extends State<Mainpage> {
             ],
           ),
         ),
-        body: Form(
-            key: _formKey,
-            child: Column(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
-                child: Text(
-                  "Looking for something to rent?",
-                  style: TextStyle(color: Colors.black),
+        body: Stack(children: [
+          Positioned.fill(
+            child: Image(
+              image: AssetImage("assets/icons/white2.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          Form(
+              key: _formKey,
+              child: Column(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                  child: Text(
+                    "Looking for something to rent?",
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 170,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CloudFirestoreSearch()),
-                      );
+                SizedBox(
+                  width: 170,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ))),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CloudFirestoreSearch()),
+                        );
+                      },
+                      child: Text("Search Now")),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 30, 0, 20),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("What other people are looking for:",
+                          style: (TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic)))),
+                ),
+                Expanded(
+                  // wrap in Expanded
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: (name != "" && name != null)
+                        ? FirebaseFirestore.instance
+                            .collection('posts')
+                            .where("caseSearch", arrayContains: name)
+                            .where("rental status", isEqualTo: false)
+                            .where("LendorRent", isNotEqualTo: "Lend")
+                            // .where("owner id",
+                            //     isNotEqualTo:
+                            //         FirebaseAuth.instance.currentUser!.uid)
+                            .snapshots()
+                        : FirebaseFirestore.instance
+                            .collection("posts")
+                            .where("rental status", isEqualTo: false)
+                            .where("LendOrRent", isEqualTo: "Rent")
+                            //.where("owner id", isEqualTo: getId())
+                            .snapshots(),
+                    builder: (context, snapshot) {
+                      return (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                          ? Center(child: CircularProgressIndicator())
+                          : ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot data =
+                                    snapshot.data!.docs[index];
+                                return Column(children: [
+                                  MaterialButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            _buildPopupDialog(context, data),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: 70,
+                                      // child: Card(
+                                      //   shape: RoundedRectangleBorder(
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(18.0),
+                                      //   ),
+                                      //   color: Colors.white,
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(data['item_name'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 20)),
+                                      ),
+                                    ),
+                                  ),
+                                  //)
+                                  // Card(
+                                  //   child: Row(
+                                  //     children: <Widget>[
+                                  //       MaterialButton(
+                                  //         child: Text(
+                                  //           data['item_name'],
+                                  //           style: TextStyle(
+                                  //             fontWeight: FontWeight.w700,
+                                  //             fontSize: 20,
+                                  //           ),
+                                  //         ),
+                                  //         onPressed: () {
+                                  //     showDialog(
+                                  //       context: context,
+                                  //       builder: (BuildContext context) =>
+                                  //           _buildPopupDialog(context, data),
+                                  //     );
+                                  //   },
+                                  // ),
+                                  //       SizedBox(width: 25, height: 100),
+                                  //       Text(
+                                  //         data['description'],
+                                  //         style: TextStyle(
+                                  //           fontWeight: FontWeight.w700,
+                                  //           fontSize: 20,
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // )
+                                ]);
+                              },
+                            );
                     },
-                    child: Text("Search Now")),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 30, 0, 20),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("What other people are looking for:",
-                        style: (TextStyle(color: Colors.black)))),
-              ),
-              Expanded(
-                // wrap in Expanded
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: (name != "" && name != null)
-                      ? FirebaseFirestore.instance
-                          .collection('posts')
-                          .where("caseSearch", arrayContains: name)
-                          .where("rental status", isEqualTo: false)
-                          .where("LendorRent", isNotEqualTo: "Lend")
-                          //.where("owner id", isNotEqualTo: getId())
-                          .snapshots()
-                      : FirebaseFirestore.instance
-                          .collection("posts")
-                          .where("rental status", isEqualTo: false)
-                          .where("LendOrRent", isEqualTo: "Rent")
-                          .snapshots(),
-                  builder: (context, snapshot) {
-                    return (snapshot.connectionState == ConnectionState.waiting)
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot data =
-                                  snapshot.data!.docs[index];
-                              return Column(children: [
-                                MaterialButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          _buildPopupDialog(context, data),
-                                    );
-                                  },
-                                  child: Text(data['item_name'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 40)),
-                                )
-                                // Card(
-                                //   child: Row(
-                                //     children: <Widget>[
-                                //       MaterialButton(
-                                //         child: Text(
-                                //           data['item_name'],
-                                //           style: TextStyle(
-                                //             fontWeight: FontWeight.w700,
-                                //             fontSize: 20,
-                                //           ),
-                                //         ),
-                                //         onPressed: () {
-                                //     showDialog(
-                                //       context: context,
-                                //       builder: (BuildContext context) =>
-                                //           _buildPopupDialog(context, data),
-                                //     );
-                                //   },
-                                // ),
-                                //       SizedBox(width: 25, height: 100),
-                                //       Text(
-                                //         data['description'],
-                                //         style: TextStyle(
-                                //           fontWeight: FontWeight.w700,
-                                //           fontSize: 20,
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // )
-                              ]);
-                            },
-                          );
-                  },
-                ),
-              )
-            ])));
+                  ),
+                )
+              ])),
+        ]));
   }
 
   Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {

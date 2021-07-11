@@ -99,7 +99,7 @@ class _LendorRentState extends State<LendorRent> {
                       ))),
                   onPressed: () {
                     LendorRent.lentOrRent = "Lend";
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => CreateNewRent()),
                     );
@@ -123,7 +123,7 @@ class _LendorRentState extends State<LendorRent> {
                         ))),
                     onPressed: () {
                       LendorRent.lentOrRent = "Rent";
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateNewRent()),

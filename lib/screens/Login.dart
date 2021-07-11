@@ -18,7 +18,7 @@ import 'Widgets/custom.dart';
 class Login extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
-  static var useruid;
+  static String useruid;
 }
 
 class _LoginViewState extends State<Login> {
@@ -113,7 +113,7 @@ class _LoginViewState extends State<Login> {
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.white,
+            color: Color.fromRGBO(239, 132, 125, 1),
           ),
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -122,10 +122,10 @@ class _LoginViewState extends State<Login> {
         hintText: "Email Id",
         labelText: "Enter Email Id",
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.grey,
         ),
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.grey,
         ),
       ),
     );
@@ -142,16 +142,19 @@ class _LoginViewState extends State<Login> {
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.white,
+                color: Colors.greenAccent,
               ),
               borderRadius: BorderRadius.circular(30.0),
             ),
             fillColor: Colors.white,
             filled: true,
-            hintText: "password",
+            hintText: "Password",
+            hintStyle: TextStyle(
+              color: Colors.grey,
+            ),
             labelText: "Password",
             labelStyle: TextStyle(
-              color: Colors.black,
+              color: Colors.grey,
             ),
           ),
         ),
@@ -192,15 +195,16 @@ class _LoginViewState extends State<Login> {
     );
 
     final loginButton = Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
         child: ElevatedButton(
           style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.black),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ))),
+                borderRadius: BorderRadius.circular(18.0),
+              ))),
           child: SizedBox(
-            width: 70,
+            width: 90,
             child: Text(
               "Login",
               textAlign: TextAlign.center,
@@ -214,17 +218,13 @@ class _LoginViewState extends State<Login> {
           onPressed: () async {
             try {
               await Firebase.initializeApp();
+              // FirebaseAuth.
               UserCredential user =
                   await FirebaseAuth.instance.signInWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text,
               );
-              final FirebaseAuth auth = FirebaseAuth.instance;
-              final User currentUser = auth.currentUser;
-              Login.useruid = currentUser.uid;
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setString('displayName', user.user.displayName);
-              // Navigator.of(context).pushNamed(AppRoutes.home);
+
               Navigator.pushReplacement(context,
                   new MaterialPageRoute(builder: (context) => Mainpage()));
             } on FirebaseAuthException catch (e) {
@@ -245,16 +245,17 @@ class _LoginViewState extends State<Login> {
       children: <Widget>[
         loginButton,
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(30.0),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
               "Not a member?",
-              style: Theme.of(context).textTheme.subtitle1.copyWith(
-                    color: Colors.white,
-                  ),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
             ),
             MaterialButton(
               onPressed: () {
@@ -265,7 +266,8 @@ class _LoginViewState extends State<Login> {
               child: Text(
                 "Sign Up",
                 style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      color: Colors.white,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
                       decoration: TextDecoration.underline,
                     ),
               ),
@@ -277,15 +279,16 @@ class _LoginViewState extends State<Login> {
 
     return Scaffold(
         // backgroundColor: Color(0xff8c52ff),
-        backgroundColor: Colors.black,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
         body: Form(
             key: _formKey,
             child: Center(
               child: Stack(children: [
                 Positioned.fill(
                   child: Image(
-                    image: AssetImage("assets/bg.png"),
-                    fit: BoxFit.cover,
+                    image: AssetImage("assets/icons/white2.png"),
+                    fit: BoxFit.contain,
                   ),
                 ),
                 Column(
@@ -328,10 +331,8 @@ class _LoginViewState extends State<Login> {
                               fontFamily: 'Helvetica')),
                     ),
                     fields,
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: bottom,
-                    ),
+                    Padding(padding: EdgeInsets.only(top: 20)),
+                    bottom,
                   ],
                 ),
               ]),

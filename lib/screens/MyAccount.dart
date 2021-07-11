@@ -59,137 +59,157 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
-        body: Center(
-            child: Column(children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(15, 140, 15, 10),
-            child: SizedBox(
-              width: 200.0,
-              height: 40.0,
-              child: ElevatedButton(
-                child: new Text("My Likes"),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyLikes()),
-                  );
-                },
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Image(
+                image: AssetImage("assets/icons/white2.png"),
+                fit: BoxFit.contain,
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: 200.0,
-                height: 40.0,
-                child: ElevatedButton(
-                  child: new Text("My Items"),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                  onPressed: () {
-                    _myMatches();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyMatches()),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: SizedBox(
-              width: 200.0,
-              height: 40.0,
-              child: ElevatedButton(
-                child: new Text("Items I have rented"),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ItemsRented()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: SizedBox(
-              width: 200.0,
-              height: 40.0,
-              child: ElevatedButton(
-                child: new Text("Items I have lent"),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                onPressed: () {
-                  _lentItems();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ItemsLended()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Row(
-            children: [
+            Center(
+                child: Column(children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
-                child: IconButton(
-                  icon: Icon(Icons.settings, size: 33, color: Colors.grey),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Setting()),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app_sharp,
-                    size: 33,
-                    color: Colors.grey,
+                padding: EdgeInsets.fromLTRB(15, 140, 15, 10),
+                child: SizedBox(
+                  width: 200.0,
+                  height: 40.0,
+                  child: ElevatedButton(
+                    child: new Text("My Likes"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyLikes()),
+                      );
+                    },
                   ),
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(context,
-                        new MaterialPageRoute(builder: (context) => Login()));
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Loginpage()),
-                    // );
-                  },
                 ),
               ),
-            ],
-          )
-        ])));
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: 200.0,
+                    height: 40.0,
+                    child: ElevatedButton(
+                      child: new Text("My Items"),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ))),
+                      onPressed: () {
+                        _myMatches();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyMatches()),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                child: SizedBox(
+                  width: 200.0,
+                  height: 40.0,
+                  child: ElevatedButton(
+                    child: new Text("Items I have rented"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ItemsRented()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                child: SizedBox(
+                  width: 200.0,
+                  height: 40.0,
+                  child: ElevatedButton(
+                    child: new Text("Items I have lent"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ))),
+                    onPressed: () {
+                      _lentItems();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ItemsLended()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
+                    child: IconButton(
+                      icon: Icon(Icons.settings, size: 33, color: Colors.grey),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Setting()),
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.exit_to_app_sharp,
+                        size: 33,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => Login()));
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => Loginpage()),
+                        // );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ]))
+          ],
+        ));
   }
 
   void _pendingPosts() {

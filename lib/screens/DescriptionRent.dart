@@ -6,6 +6,7 @@ import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/RentingNewPost.dart';
 import 'package:kiraay/screens/loginpage.dart';
+import 'package:kiraay/screens/mainpage.dart';
 
 import 'ImagesRentPost.dart';
 
@@ -24,7 +25,8 @@ class _DescriptionRentState extends State<DescriptionRent> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-        backgroundColor: Colors.black,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60.0), // here the desired height
           child: AppBar(
@@ -38,6 +40,20 @@ class _DescriptionRentState extends State<DescriptionRent> {
               style: TextStyle(
                   fontSize: 24, foreground: Paint()..shader = linearGradient),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                child: IconButton(
+                  icon: Icon(Icons.home, size: 33),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Mainpage()),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         body: Form(
@@ -46,7 +62,7 @@ class _DescriptionRentState extends State<DescriptionRent> {
             Positioned.fill(
               child: Image(
                 image: AssetImage("assets/icons/white2.png"),
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
             ),
             Column(
@@ -68,14 +84,14 @@ class _DescriptionRentState extends State<DescriptionRent> {
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextFormField(
-                        maxLines: 5,
+                        maxLines: 3,
                         decoration: InputDecoration(
                             hintText:
                                 'Kindly write a detailed description about the item',
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.black,
+                                color: Colors.greenAccent,
                               ),
                               borderRadius: BorderRadius.circular(30.0),
                             ),
@@ -97,7 +113,7 @@ class _DescriptionRentState extends State<DescriptionRent> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // TODO submit
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ConfirmPost()),

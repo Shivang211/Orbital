@@ -60,22 +60,22 @@ class _RegisterViewState extends State<Register> {
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        cursorColor: Colors.white,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.white,
+              color: Color.fromRGBO(239, 132, 125, 1),
             ),
           ),
           hintText: "Please use legitimate email id for verification email",
           labelText: "Email",
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ),
         onChanged: (value) {
@@ -92,22 +92,22 @@ class _RegisterViewState extends State<Register> {
         obscureText: true,
         controller: _passwordController,
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        cursorColor: Colors.white,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.white,
+              color: Colors.greenAccent,
             ),
           ),
-          hintText: "password",
+          hintText: "Password",
           labelText: "Password",
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ),
         onChanged: (value) {
@@ -124,22 +124,22 @@ class _RegisterViewState extends State<Register> {
         obscureText: true,
         controller: _repasswordController,
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        cursorColor: Colors.white,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.white,
+              color: Color.fromRGBO(239, 132, 125, 1),
             ),
           ),
-          hintText: "password",
+          hintText: "Password",
           labelText: "Confirm Password",
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ),
         onChanged: (value) {
@@ -154,21 +154,22 @@ class _RegisterViewState extends State<Register> {
     final nusnetIdField = TextFormField(
         controller: _nusnetIdController,
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        cursorColor: Colors.white,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.white,
+              color: Colors.greenAccent,
             ),
           ),
           labelText: "Telegram ID",
           labelStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
+          hintText: ("Telegram Id"),
           hintStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ),
         onChanged: (value) {
@@ -182,7 +183,7 @@ class _RegisterViewState extends State<Register> {
         });
 
     final fields = Padding(
-      padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+      padding: EdgeInsets.fromLTRB(10, 40, 0, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -194,90 +195,103 @@ class _RegisterViewState extends State<Register> {
       ),
     );
 
-    final registerButton = SizedBox(
-      width: 120,
-      child: ElevatedButton(
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ))),
-          child: Text(
-            "Sign up",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15.0,
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () async {
-            if (_formKey.currentState.validate()) {
-              // TODO submit
+    final registerButton = Align(
+        //padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        alignment: Alignment.bottomCenter,
+        child: SizedBox(
+          width: 120,
+          child: SizedBox(
+            width: 70,
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ))),
+                child: Text(
+                  "Sign up",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    // TODO submit
 
-              try {
-                await Firebase.initializeApp();
-                UserCredential user =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                );
-                User updateUser = FirebaseAuth.instance.currentUser;
-                Navigator.pushReplacement(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => VerifyScreen()));
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'weak-password') {
-                  print('The password provided is too weak.');
-                } else if (e.code == 'email-already-in-use') {
-                  print('The account already exists for that email.');
-                }
-              } catch (e) {
-                print(e.toString());
-              }
-            }
-          }),
-    );
+                    try {
+                      await Firebase.initializeApp();
+                      UserCredential user = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      );
+                      User updateUser = FirebaseAuth.instance.currentUser;
+                      Navigator.pushReplacement(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => VerifyScreen()));
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        print('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        print('The account already exists for that email.');
+                      }
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  }
+                }),
+          ),
+        ));
 
     final bottom = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      //mainAxisAlignment: MainAxisAlignment.start,
       //crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         registerButton,
         Padding(
-          padding: EdgeInsets.all(8.0),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              "Already have an account?",
-              style: Theme.of(context).textTheme.subtitle1.copyWith(
-                    color: Colors.white,
-                  ),
-            ),
-            MaterialButton(
-              onPressed: () {
-                // Navigator.of(context).pushNamed(AppRoutes.authLogin);
-                Navigator.pushReplacement(context,
-                    new MaterialPageRoute(builder: (context) => Login()));
-              },
-              child: Text(
-                "Login",
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      color: Colors.white,
-                      decoration: TextDecoration.underline,
-                    ),
+          padding: EdgeInsets.fromLTRB(90, 100, 0, 0),
+          child: Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Already have an account?",
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
               ),
-            ),
-          ],
+              MaterialButton(
+                onPressed: () {
+                  // Navigator.of(context).pushNamed(AppRoutes.authLogin);
+                  Navigator.pushReplacement(context,
+                      new MaterialPageRoute(builder: (context) => Login()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Text(
+                    "Login",
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
 
     return Scaffold(
         // backgroundColor: Color(0xff8c52ff),
-        backgroundColor: Colors.white10,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0), // here the desired height
           child: AppBar(
@@ -287,7 +301,7 @@ class _RegisterViewState extends State<Register> {
               "Kiraay",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  //fontWeight: FontWeight.w800,
+                  //r,
                   fontSize: 30,
                   foreground: Paint()..shader = linearGradient,
                   fontFamily: 'Helvetica'),
@@ -299,8 +313,8 @@ class _RegisterViewState extends State<Register> {
           child: Stack(children: [
             Positioned.fill(
               child: Image(
-                image: AssetImage("assets/bg.png"),
-                fit: BoxFit.cover,
+                image: AssetImage("assets/icons/white2.png"),
+                fit: BoxFit.contain,
               ),
             ),
             Column(

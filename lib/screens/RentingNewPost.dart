@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/PendingItems.dart';
 import 'package:kiraay/screens/loginpage.dart';
+import 'package:kiraay/screens/mainpage.dart';
 
 import 'DescriptionRent.dart';
 
@@ -23,7 +24,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60.0), // here the desired height
           child: AppBar(
@@ -37,6 +38,20 @@ class _CreateNewRentState extends State<CreateNewRent> {
               style: TextStyle(
                   fontSize: 24, foreground: Paint()..shader = linearGradient),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                child: IconButton(
+                  icon: Icon(Icons.home, size: 33),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Mainpage()),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         body: Form(
@@ -45,13 +60,13 @@ class _CreateNewRentState extends State<CreateNewRent> {
             Positioned.fill(
               child: Image(
                 image: AssetImage("assets/icons/white2.png"),
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
             ),
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 200, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 200, 0, 10),
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -70,7 +85,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
                           hintStyle: TextStyle(fontSize: 15),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.black,
+                              color: Color.fromRGBO(239, 132, 125, 1),
                             ),
                             borderRadius: BorderRadius.circular(30.0),
                           ),
@@ -91,7 +106,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // TODO submit
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DescriptionRent()),

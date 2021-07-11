@@ -65,7 +65,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
       var collection = FirebaseFirestore.instance.collection('users');
       collection
-          .doc('$userUid') // <-- Document ID
+          .doc('${user.email}') // <-- Document ID
           .set({
             'email Id': user.email,
             'telegram id': telegramId

@@ -40,10 +40,11 @@ class _ConfirmPostState extends State<ConfirmPost> {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
+    String? name = user!.email! + item_name;
     //Login.useruid = currentUser!.uid;
     if (Login.useruid != null) {
-      return posts.add({
-        'owner id': user!.email,
+      return posts.doc("$name}").set({
+        'owner id': user.email,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,
@@ -52,8 +53,8 @@ class _ConfirmPostState extends State<ConfirmPost> {
         "caseSearch": setSearchParam(item_name),
       });
     } else {
-      return posts.add({
-        'owner id': user!.email,
+      return posts.doc("$name").set({
+        'owner id': user.email,
         'item_name': item_name,
         'description': description,
         'rental status': RentalStatus,

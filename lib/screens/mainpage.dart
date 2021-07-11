@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/screens/CreatenewPost.dart';
 import 'package:kiraay/screens/LendorRent.dart';
+import 'package:kiraay/screens/Liked.dart';
 import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/Meetnewpeople.dart';
 import 'package:kiraay/screens/MyAccount.dart';
+import 'package:kiraay/screens/MyMatches.dart';
 import 'package:kiraay/screens/ResultsToLetOut.dart';
 import 'package:kiraay/screens/loginpage.dart';
 import 'package:animated_background/animated_background.dart';
@@ -22,6 +24,9 @@ class Mainpage extends StatefulWidget {
   static var searchString;
 }
 
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+
 late String userId;
 String getId() {
   if (Register.userUid != null) {
@@ -32,6 +37,8 @@ String getId() {
     return userId;
   }
 }
+
+late String id;
 
 class _MainpageState extends State<Mainpage> {
   final TextEditingController _filter = new TextEditingController();
@@ -209,7 +216,7 @@ class _MainpageState extends State<Mainpage> {
                             .collection("posts")
                             .where("rental status", isEqualTo: false)
                             .where("LendOrRent", isEqualTo: "Rent")
-                            //.where("owner id", isEqualTo: getId())
+                            //.where("owner id", isNotEqualTo: user!.email)
                             .snapshots(),
                     builder: (context, snapshot) {
                       return (snapshot.connectionState ==
@@ -218,70 +225,103 @@ class _MainpageState extends State<Mainpage> {
                           : ListView.builder(
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
+                                id = snapshot.data!.docs[index].id;
                                 DocumentSnapshot data =
                                     snapshot.data!.docs[index];
-                                return Column(children: [
-                                  MaterialButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            _buildPopupDialog(context, data),
-                                      );
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: 70,
-                                      // child: Card(
-                                      //   shape: RoundedRectangleBorder(
-                                      //     borderRadius:
-                                      //         BorderRadius.circular(18.0),
-                                      //   ),
-                                      //   color: Colors.white,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(data['item_name'],
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 20)),
+                                item_name = user!.email! + data['item_name'];
+                                if (data['owner id'] != user.email) {
+                                  return Column(children: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopupDialog(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 70,
+                                        // child: Card(
+                                        //   shape: RoundedRectangleBorder(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(18.0),
+                                        //   ),
+                                        //   color: Colors.white,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(data['item_name'],
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 20)),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  //)
-                                  // Card(
-                                  //   child: Row(
-                                  //     children: <Widget>[
-                                  //       MaterialButton(
-                                  //         child: Text(
-                                  //           data['item_name'],
-                                  //           style: TextStyle(
-                                  //             fontWeight: FontWeight.w700,
-                                  //             fontSize: 20,
-                                  //           ),
-                                  //         ),
-                                  //         onPressed: () {
-                                  //     showDialog(
-                                  //       context: context,
-                                  //       builder: (BuildContext context) =>
-                                  //           _buildPopupDialog(context, data),
-                                  //     );
-                                  //   },
-                                  // ),
-                                  //       SizedBox(width: 25, height: 100),
-                                  //       Text(
-                                  //         data['description'],
-                                  //         style: TextStyle(
-                                  //           fontWeight: FontWeight.w700,
-                                  //           fontSize: 20,
-                                  //         ),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // )
-                                ]);
-                              },
-                            );
+                                    //)
+                                    // Card(
+                                    //   child: Row(
+                                    //     children: <Widget>[
+                                    //       MaterialButton(
+                                    //         child: Text(
+                                    //           data['item_name'],
+                                    //           style: TextStyle(
+                                    //             fontWeight: FontWeight.w700,
+                                    //             fontSize: 20,
+                                    //           ),
+                                    //         ),
+                                    //         onPressed: () {
+                                    //     showDialog(
+                                    //       context: context,
+                                    //       builder: (BuildContext context) =>
+                                    //           _buildPopupDialog(context, data),
+                                    //     );
+                                    //   },
+                                    // ),
+                                    //       SizedBox(width: 25, height: 100),
+                                    //       Text(
+                                    //         data['description'],
+                                    //         style: TextStyle(
+                                    //           fontWeight: FontWeight.w700,
+                                    //           fontSize: 20,
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // )
+                                  ]);
+                                } else {
+                                  return Column(children: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopup(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 70,
+                                        // child: Card(
+                                        //   shape: RoundedRectangleBorder(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(18.0),
+                                        //   ),
+                                        //   color: Colors.white,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("${data['item_name']}",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 20)),
+                                        ),
+                                      ),
+                                    ),
+                                  ]);
+                                }
+                              });
                     },
                   ),
                 )
@@ -309,40 +349,105 @@ class _MainpageState extends State<Mainpage> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              var addToArray = getId();
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$item_name') // <-- Doc ID where data should be updated.
+                  .update({
+                "User Id": FieldValue.arrayUnion(["$addToArray"])
+              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Liked()),
+              );
+            },
+            child: Text("Like")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
               Navigator.of(context).pop();
             },
             child: Text("Close"))
       ],
     );
   }
-}
 
-void _onSearch() {
-  FirebaseFirestore.instance
-      .collection("posts")
-      .where(
-        "item_name",
-        isEqualTo: Mainpage.searchString,
-      )
-      .where("rental status", isEqualTo: false)
-      .where("LendOrRent", isEqualTo: "Lend")
-      .get()
-      .then((value) {
-    value.docs.forEach((result) {
-      print(result.data());
-    });
-  });
-}
+  late String? item_name;
 
-void _showAllRent() {
-  FirebaseFirestore.instance
-      .collection("posts")
-      .where("rental status", isEqualTo: false)
-      .where("LendOrRent", isEqualTo: "Rent")
-      .get()
-      .then((value) {
-    value.docs.forEach((result) {
-      print(result.data());
+  Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+              "This post is created by you, please check more info under My Items"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyMatches()),
+              );
+            },
+            child: Text("My Items")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  void _onSearch() {
+    FirebaseFirestore.instance
+        .collection("posts")
+        .where(
+          "item_name",
+          isEqualTo: Mainpage.searchString,
+        )
+        .where("rental status", isEqualTo: false)
+        .where("LendOrRent", isEqualTo: "Lend")
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        print(result.data());
+      });
     });
-  });
+  }
+
+  void _showAllRent() {
+    FirebaseFirestore.instance
+        .collection("posts")
+        .where("rental status", isEqualTo: false)
+        .where("LendOrRent", isEqualTo: "Rent")
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        print(result.data());
+      });
+    });
+  }
 }

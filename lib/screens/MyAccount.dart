@@ -27,6 +27,10 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    var collection = FirebaseFirestore.instance.collection('users');
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
@@ -69,8 +73,42 @@ class _HomepageState extends State<Homepage> {
             ),
             Center(
                 child: Column(children: [
+              Row(children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10, 80, 10, 10),
+                    child: Text(
+                      "Your Email:",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic),
+                    )),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
+                  child: Text("${user!.email}",
+                      style: TextStyle(
+                          color: Color.fromRGBO(239, 132, 125, 1),
+                          fontSize: 20)),
+                ),
+              ]),
+              // Row(children: [
+              //   Padding(
+              //     padding: EdgeInsets.fromLTRB(0, 40, 10, 10),
+              //     child: Text("Description:",
+              //         style: TextStyle(
+              //             color: Colors.black,
+              //             fontSize: 20,
+              //             fontStyle: FontStyle.italic)),
+              //   ),
+              //   Padding(
+              //     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+              //     child: Text("$description",
+              //         style:
+              //             TextStyle(color: Colors.greenAccent, fontSize: 20)),
+              //   ),
+              // ]),
               Padding(
-                padding: EdgeInsets.fromLTRB(15, 140, 15, 10),
+                padding: EdgeInsets.fromLTRB(15, 60, 15, 10),
                 child: SizedBox(
                   width: 200.0,
                   height: 40.0,

@@ -40,7 +40,7 @@ String getId() {
   }
 }
 
-late String id;
+var id;
 
 class _MainpageState extends State<Mainpage> {
   final TextEditingController _filter = new TextEditingController();
@@ -227,13 +227,13 @@ class _MainpageState extends State<Mainpage> {
                           : ListView.builder(
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
-                                id = snapshot.data!.docs[index].id;
                                 DocumentSnapshot data =
                                     snapshot.data!.docs[index];
                                 item_name = user!.email! + data['item_name'];
                                 List<Object> newList =
                                     data['User Id'] as List<Object>;
                                 if (data['owner id'] == user.email) {
+                                  id = snapshot.data!.docs[index].id;
                                   return Column(children: [
                                     MaterialButton(
                                       onPressed: () {
@@ -258,6 +258,7 @@ class _MainpageState extends State<Mainpage> {
                                   ]);
                                 } else if ((newList
                                     .contains(user.email as Object))) {
+                                  id = snapshot.data!.docs[index].id;
                                   return Column(children: [
                                     MaterialButton(
                                       onPressed: () {
@@ -283,13 +284,15 @@ class _MainpageState extends State<Mainpage> {
                                     ),
                                   ]);
                                 } else {
+                                  id = snapshot.data!.docs[index].id;
                                   return Column(children: [
                                     MaterialButton(
                                       onPressed: () {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) =>
-                                              _buildPopupDialog(context, data),
+                                              _buildPopupDialog(context, data,
+                                                  data['item_name']),
                                         );
                                       },
                                       child: SizedBox(
@@ -315,7 +318,10 @@ class _MainpageState extends State<Mainpage> {
         ]));
   }
 
-  Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
+  Widget _buildPopupDialog(
+      BuildContext context, DocumentSnapshot data, String itemName) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -337,10 +343,12 @@ class _MainpageState extends State<Mainpage> {
               var addToArray = getId();
               FirebaseFirestore.instance
                   .collection('posts')
-                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .doc('${data['owner id']}' +
+                      itemName) // <-- Doc ID where data should be updated.
                   .update({
                 "User Id": FieldValue.arrayUnion(["${user!.email}"])
               });
+              Navigator.of(context).pop();
               showDialog(
                 context: context,
                 builder: (BuildContext context) =>
@@ -366,6 +374,8 @@ class _MainpageState extends State<Mainpage> {
   late String? item_name;
 
   Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -407,6 +417,8 @@ class _MainpageState extends State<Mainpage> {
   }
 
   Widget _buildPopupAlreadyLiked(BuildContext context, DocumentSnapshot data) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -430,7 +442,7 @@ class _MainpageState extends State<Mainpage> {
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
             },
-            child: Text("My Liked")),
+            child: Text("My Likes")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
@@ -447,6 +459,8 @@ class _MainpageState extends State<Mainpage> {
   }
 
   Widget _buildPopupLike(BuildContext context, DocumentSnapshot data) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -469,6 +483,7 @@ class _MainpageState extends State<Mainpage> {
                 context,
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
+              Navigator.of(context).pop();
             },
             child: Text("My Likes")),
         ElevatedButton(

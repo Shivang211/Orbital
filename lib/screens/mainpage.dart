@@ -2,12 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kiraay/main.dart';
 import 'package:kiraay/screens/CreatenewPost.dart';
 import 'package:kiraay/screens/LendorRent.dart';
 import 'package:kiraay/screens/Liked.dart';
 import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/Meetnewpeople.dart';
 import 'package:kiraay/screens/MyAccount.dart';
+import 'package:kiraay/screens/MyLikes.dart';
 import 'package:kiraay/screens/MyMatches.dart';
 import 'package:kiraay/screens/ResultsToLetOut.dart';
 import 'package:kiraay/screens/loginpage.dart';
@@ -229,7 +231,58 @@ class _MainpageState extends State<Mainpage> {
                                 DocumentSnapshot data =
                                     snapshot.data!.docs[index];
                                 item_name = user!.email! + data['item_name'];
-                                if (data['owner id'] != user.email) {
+                                List<Object> newList =
+                                    data['User Id'] as List<Object>;
+                                if (data['owner id'] == user.email) {
+                                  return Column(children: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopup(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("${data['item_name']}",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 20)),
+                                        ),
+                                      ),
+                                    ),
+                                  ]);
+                                } else if ((newList
+                                    .contains(user.email as Object))) {
+                                  return Column(children: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopupAlreadyLiked(
+                                                  context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 70,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("${data['item_name']}",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 20)),
+                                        ),
+                                      ),
+                                    ),
+                                  ]);
+                                } else {
                                   return Column(children: [
                                     MaterialButton(
                                       onPressed: () {
@@ -242,76 +295,9 @@ class _MainpageState extends State<Mainpage> {
                                       child: SizedBox(
                                         width: double.infinity,
                                         height: 70,
-                                        // child: Card(
-                                        //   shape: RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(18.0),
-                                        //   ),
-                                        //   color: Colors.white,
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(data['item_name'],
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 20)),
-                                        ),
-                                      ),
-                                    ),
-                                    //)
-                                    // Card(
-                                    //   child: Row(
-                                    //     children: <Widget>[
-                                    //       MaterialButton(
-                                    //         child: Text(
-                                    //           data['item_name'],
-                                    //           style: TextStyle(
-                                    //             fontWeight: FontWeight.w700,
-                                    //             fontSize: 20,
-                                    //           ),
-                                    //         ),
-                                    //         onPressed: () {
-                                    //     showDialog(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) =>
-                                    //           _buildPopupDialog(context, data),
-                                    //     );
-                                    //   },
-                                    // ),
-                                    //       SizedBox(width: 25, height: 100),
-                                    //       Text(
-                                    //         data['description'],
-                                    //         style: TextStyle(
-                                    //           fontWeight: FontWeight.w700,
-                                    //           fontSize: 20,
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // )
-                                  ]);
-                                } else {
-                                  return Column(children: [
-                                    MaterialButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              _buildPopup(context, data),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 70,
-                                        // child: Card(
-                                        //   shape: RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(18.0),
-                                        //   ),
-                                        //   color: Colors.white,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("${data['item_name']}",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w300,
@@ -342,8 +328,7 @@ class _MainpageState extends State<Mainpage> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                backgroundColor: MaterialStateProperty.all(Colors.black),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -352,20 +337,20 @@ class _MainpageState extends State<Mainpage> {
               var addToArray = getId();
               FirebaseFirestore.instance
                   .collection('posts')
-                  .doc('$item_name') // <-- Doc ID where data should be updated.
+                  .doc('$id') // <-- Doc ID where data should be updated.
                   .update({
-                "User Id": FieldValue.arrayUnion(["$addToArray"])
+                "User Id": FieldValue.arrayUnion(["${user!.email}"])
               });
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Liked()),
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupLike(context, data),
               );
             },
             child: Text("Like")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                backgroundColor: MaterialStateProperty.all(Colors.red),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -400,7 +385,7 @@ class _MainpageState extends State<Mainpage> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => MyMatches()),
               );
@@ -415,6 +400,89 @@ class _MainpageState extends State<Mainpage> {
                 ))),
             onPressed: () {
               Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  Widget _buildPopupAlreadyLiked(BuildContext context, DocumentSnapshot data) {
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("You have already liked this post"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyLikes()),
+              );
+            },
+            child: Text("My Liked")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  Widget _buildPopupLike(BuildContext context, DocumentSnapshot data) {
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Item Liked!!"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyLikes()),
+              );
+            },
+            child: Text("My Likes")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Mainpage()),
+              );
             },
             child: Text("Close"))
       ],

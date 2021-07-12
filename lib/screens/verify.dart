@@ -68,7 +68,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
           .doc('${user.email}') // <-- Document ID
           .set({
             'email Id': user.email,
-            'telegram id': telegramId
+            'telegram id': telegramId,
+            "Items Liked": FieldValue.arrayUnion([]),
           }) // <-- Your data
           .then((_) => print('Added: $userUid'))
           .catchError((error) => print('Add failed: $error'));

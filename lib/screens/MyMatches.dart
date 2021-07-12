@@ -19,17 +19,6 @@ class MyMatches extends StatefulWidget {
 class _MyMatchesState extends State<MyMatches> {
   String name = "";
 
-  // var userId;
-  // String getId() {
-  //   if (Register.userUid != null) {
-  //     userId = Register.userUid;
-  //     return userId;
-  //   } else {
-  //     userId = Login.useruid;
-  //     return userId;
-  //   }
-  // }
-
   static late String id;
   @override
   Widget build(BuildContext context) {
@@ -47,6 +36,7 @@ class _MyMatchesState extends State<MyMatches> {
               ),
               cursorColor: Colors.white,
               decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.white,
@@ -56,7 +46,7 @@ class _MyMatchesState extends State<MyMatches> {
                 fillColor: Colors.white,
                 filled: true,
                 hintText: "Search",
-                labelText: "  Search the item you are looking for",
+                labelText: "Search your items",
                 labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
                 hintStyle: TextStyle(
                   color: Colors.grey,
@@ -123,36 +113,6 @@ class _MyMatchesState extends State<MyMatches> {
                             },
                             child: Text(data['item_name']),
                           )
-                          // Card(
-                          //   child: Row(
-                          //     children: <Widget>[
-                          //       MaterialButton(
-                          //         child: Text(
-                          //           data['item_name'],
-                          //           style: TextStyle(
-                          //             fontWeight: FontWeight.w700,
-                          //             fontSize: 20,
-                          //           ),
-                          //         ),
-                          //         onPressed: () {
-                          //     showDialog(
-                          //       context: context,
-                          //       builder: (BuildContext context) =>
-                          //           _buildPopupDialog(context, data),
-                          //     );
-                          //   },
-                          // ),
-                          //       SizedBox(width: 25, height: 100),
-                          //       Text(
-                          //         data['description'],
-                          //         style: TextStyle(
-                          //           fontWeight: FontWeight.w700,
-                          //           fontSize: 20,
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // )
                         ]);
                       },
                     );

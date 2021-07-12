@@ -213,12 +213,12 @@ class _HomepageState extends State<Homepage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
                     child: IconButton(
-                      icon: Icon(Icons.settings, size: 33, color: Colors.grey),
+                      icon: Icon(Icons.delete, size: 33, color: Colors.grey),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Setting()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => Setting()),
+                        // );
                       },
                     ),
                   ),

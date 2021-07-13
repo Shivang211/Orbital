@@ -376,9 +376,11 @@ class _HomepageState extends State<Homepage> {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
-            onPressed: () {
+            onPressed: () async {
               deleteUser();
-              Navigator.of(context).pop();
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(context,
+                  new MaterialPageRoute(builder: (context) => Login()));
             },
             child: Text(" Confirm Delete")),
         ElevatedButton(

@@ -225,7 +225,14 @@ class _MainpageState extends State<Mainpage> {
                       return (snapshot.connectionState ==
                               ConnectionState.waiting)
                           ? Center(child: CircularProgressIndicator())
-                          : ListView.builder(
+                          : GridView.builder(
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 50,
+                              ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
                                 DocumentSnapshot data =
@@ -303,7 +310,7 @@ class _MainpageState extends State<Mainpage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
-                                    color: Colors.transparent,
+                                    color: Colors.white,
                                     child: Column(children: [
                                       MaterialButton(
                                         onPressed: () {

@@ -87,12 +87,14 @@ class _MyMatchesState extends State<MyMatches> {
                     .collection('posts')
                     .where("caseSearch", arrayContains: name)
                     .where("rental status", isEqualTo: false)
-                    .where("owner id", isEqualTo: user!.email)
+                    .where("owner id",
+                        isEqualTo: FirebaseAuth.instance.currentUser!.email)
                     .snapshots()
                 : FirebaseFirestore.instance
                     .collection("posts")
                     .where("rental status", isEqualTo: false)
-                    .where("owner id", isEqualTo: user!.email)
+                    .where("owner id",
+                        isEqualTo: FirebaseAuth.instance.currentUser!.email)
                     .snapshots(),
             builder: (context, snapshot) {
               return (snapshot.connectionState == ConnectionState.waiting)
@@ -122,15 +124,20 @@ class _MyMatchesState extends State<MyMatches> {
   }
 
   Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
+    // List<Object> items = data['User Id'] as List<Object>;
+    // List<String> strlist = data['User Id'].map((s) => s as String).toList();
     return new AlertDialog(
       title: Text(data['item_name']),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(data['description']),
-        ],
-      ),
+      content: Text(data['description']),
+      // new Column(
+      //   mainAxisSize: MainAxisSize.min,
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: <Widget>[
+      //     ListView.builder(itemBuilder: (BuildContext ctxt, int index) {
+      //       return Text(strlist[index]);
+      //     })
+      //   ],
+      // ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(

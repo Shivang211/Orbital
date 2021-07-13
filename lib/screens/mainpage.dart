@@ -168,7 +168,7 @@ class _MainpageState extends State<Mainpage> {
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
                   child: Text(
                     "Looking for something to rent?",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: 15),
                   ),
                 ),
                 SizedBox(
@@ -192,12 +192,13 @@ class _MainpageState extends State<Mainpage> {
                       child: Text("Search Now")),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 30, 0, 20),
+                  padding: const EdgeInsets.fromLTRB(10, 60, 0, 40),
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text("What other people are looking for:",
                           style: (TextStyle(
                               color: Colors.black,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic)))),
                 ),
@@ -234,81 +235,100 @@ class _MainpageState extends State<Mainpage> {
                                     data['User Id'] as List<Object>;
                                 if (data['owner id'] == user.email) {
                                   id = snapshot.data!.docs[index].id;
-                                  return Column(children: [
-                                    MaterialButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              _buildPopup(context, data),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("${data['item_name']}",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 20)),
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    color: Colors.white,
+                                    child: Column(children: [
+                                      MaterialButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                _buildPopup(context, data),
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("${data['item_name']}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 20)),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ]);
+                                    ]),
+                                  );
                                 } else if ((newList
                                     .contains(user.email as Object))) {
                                   id = snapshot.data!.docs[index].id;
-                                  return Column(children: [
-                                    MaterialButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              _buildPopupAlreadyLiked(
-                                                  context, data),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 70,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("${data['item_name']}",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 20)),
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    //elevation: 0,
+                                    color: Colors.white,
+                                    child: Column(children: [
+                                      MaterialButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                _buildPopupAlreadyLiked(
+                                                    context, data),
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          //width: double.infinity,
+                                          //height: 70,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("${data['item_name']}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 20)),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ]);
+                                    ]),
+                                  );
                                 } else {
                                   id = snapshot.data!.docs[index].id;
-                                  return Column(children: [
-                                    MaterialButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              _buildPopupDialog(context, data,
-                                                  data['item_name']),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 70,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(data['item_name'],
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 20)),
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    color: Colors.transparent,
+                                    child: Column(children: [
+                                      MaterialButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                _buildPopupDialog(context, data,
+                                                    data['item_name']),
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          // width: double.infinity,
+                                          // height: 70,
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(data['item_name'],
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 20)),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ]);
+                                    ]),
+                                  );
                                 }
                               });
                     },
@@ -334,7 +354,8 @@ class _MainpageState extends State<Mainpage> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -358,7 +379,7 @@ class _MainpageState extends State<Mainpage> {
             child: Text("Like")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -389,7 +410,8 @@ class _MainpageState extends State<Mainpage> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -403,7 +425,7 @@ class _MainpageState extends State<Mainpage> {
             child: Text("My Items")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -431,7 +453,8 @@ class _MainpageState extends State<Mainpage> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -445,7 +468,7 @@ class _MainpageState extends State<Mainpage> {
             child: Text("My Likes")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

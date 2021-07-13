@@ -40,8 +40,9 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
               style: TextStyle(
                 color: Colors.black,
               ),
-              cursorColor: Colors.white,
+              cursorColor: Colors.grey,
               decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.white,

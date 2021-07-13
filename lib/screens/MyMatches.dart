@@ -34,7 +34,7 @@ class _MyMatchesState extends State<MyMatches> {
               style: TextStyle(
                 color: Colors.black,
               ),
-              cursorColor: Colors.white,
+              cursorColor: Colors.grey,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 enabledBorder: OutlineInputBorder(

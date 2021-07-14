@@ -134,7 +134,7 @@ class _MyMatchesState extends State<MyMatches> {
       //   crossAxisAlignment: CrossAxisAlignment.start,
       //   children: <Widget>[
       //     ListView.builder(itemBuilder: (BuildContext ctxt, int index) {
-      //       return Text(strlist[index]);
+      //       return Trext(strlist[index]);
       //     })
       //   ],
       // ),

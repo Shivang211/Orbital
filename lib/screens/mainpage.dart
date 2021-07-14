@@ -230,8 +230,8 @@ class _MainpageState extends State<Mainpage> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                                crossAxisSpacing: 20.0,
-                                mainAxisSpacing: 50,
+                                crossAxisSpacing: 5.0,
+                                mainAxisSpacing: 40,
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
@@ -258,14 +258,18 @@ class _MainpageState extends State<Mainpage> {
                                         },
                                         child: SizedBox(
                                           width: double.infinity,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text("${data['item_name']}",
+                                          child: Column(children: [
+                                            Text("${data['item_name']}",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w300,
                                                     fontSize: 20)),
-                                          ),
+                                            Row(children: [
+                                              Icon(Icons.thumb_up),
+                                              Text(
+                                                  "${(data["User Id"].length)}")
+                                            ])
+                                          ]),
                                         ),
                                       ),
                                     ]),
@@ -292,14 +296,16 @@ class _MainpageState extends State<Mainpage> {
                                         child: SizedBox(
                                           //width: double.infinity,
                                           //height: 70,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text("${data['item_name']}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 20)),
-                                          ),
+                                          child: Column(
+                                              // alignment: Alignment.center,
+                                              children: [
+                                                Text("${data['item_name']}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 20)),
+                                              ]),
                                         ),
                                       ),
                                     ]),

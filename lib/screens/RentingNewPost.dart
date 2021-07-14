@@ -81,7 +81,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'Max 50 characters',
+                          hintText: 'Max 20 characters',
                           hintStyle: TextStyle(fontSize: 15),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -91,7 +91,7 @@ class _CreateNewRentState extends State<CreateNewRent> {
                           ),
                           fillColor: Colors.white,
                           filled: true),
-                      maxLength: 50,
+                      maxLength: 20,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'Text is empty';

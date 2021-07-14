@@ -258,18 +258,45 @@ class _MainpageState extends State<Mainpage> {
                                         },
                                         child: SizedBox(
                                           width: double.infinity,
-                                          child: Column(children: [
-                                            Text("${data['item_name']}",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 20)),
-                                            Row(children: [
-                                              Icon(Icons.thumb_up),
-                                              Text(
-                                                  "${(data["User Id"].length)}")
-                                            ])
-                                          ]),
+                                          child: Column(
+                                              // crossAxisAlignment:
+                                              //     CrossAxisAlignment.center,
+                                              // mainAxisAlignment:
+                                              //     MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          54, 10, 0, 20),
+                                                  child: Row(children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 2),
+                                                      child: Icon(
+                                                          Icons.thumb_up,
+                                                          color: Color.fromRGBO(
+                                                              239,
+                                                              132,
+                                                              125,
+                                                              1)),
+                                                    ),
+                                                    Text(
+                                                        "${(data["User Id"].length)}")
+                                                  ]),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                      "${data['item_name']}",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 20)),
+                                                ),
+                                              ]),
                                         ),
                                       ),
                                     ]),
@@ -299,12 +326,38 @@ class _MainpageState extends State<Mainpage> {
                                           child: Column(
                                               // alignment: Alignment.center,
                                               children: [
-                                                Text("${data['item_name']}",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 20)),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          54, 10, 0, 20),
+                                                  child: Row(children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 2),
+                                                      child: Icon(
+                                                          Icons.thumb_up,
+                                                          color: Color.fromRGBO(
+                                                              239,
+                                                              132,
+                                                              125,
+                                                              1)),
+                                                    ),
+                                                    Text(
+                                                        "${(data["User Id"].length)}")
+                                                  ]),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                      "${data['item_name']}",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 20)),
+                                                ),
                                               ]),
                                         ),
                                       ),
@@ -316,6 +369,7 @@ class _MainpageState extends State<Mainpage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
+                                    //elevation: 0,
                                     color: Colors.white,
                                     child: Column(children: [
                                       MaterialButton(
@@ -328,16 +382,40 @@ class _MainpageState extends State<Mainpage> {
                                           );
                                         },
                                         child: SizedBox(
-                                          // width: double.infinity,
-                                          // height: 70,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(data['item_name'],
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 20)),
-                                          ),
+                                          //width: double.infinity,
+                                          //height: 70,
+                                          child: Column(
+                                              // alignment: Alignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          54, 10, 0, 20),
+                                                  child: Row(children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 2),
+                                                      child: Icon(
+                                                          Icons.thumb_up,
+                                                          color: Colors.grey),
+                                                    ),
+                                                    Text(
+                                                        "${(data["User Id"].length)}")
+                                                  ]),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                      "${data['item_name']}",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          fontSize: 20)),
+                                                ),
+                                              ]),
                                         ),
                                       ),
                                     ]),

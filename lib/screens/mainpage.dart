@@ -52,7 +52,7 @@ class _MainpageState extends State<Mainpage> {
 
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color.fromRGBO(239, 132, 125, 1), Colors.greenAccent],
-  ).createShader(Rect.fromLTWH(165.0, 200.0, 125.0, 200.0));
+  ).createShader(Rect.fromLTWH(105.0, 100.0, 125.0, 200.0));
 
   String name = "";
   @override
@@ -64,43 +64,43 @@ class _MainpageState extends State<Mainpage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0), // here the desired height
+        preferredSize: Size.fromHeight(100.0), // here the desired height
         child: AppBar(
           //leadingWidth: 15, // <-- Use this
 
           backgroundColor: Colors.black,
-          centerTitle: true,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Container(
-                height: 34,
-                width: 34,
-                child: RawMaterialButton(
-                  elevation: 5.0,
-                  shape: CircleBorder(),
-                  fillColor: Colors.black,
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => Homepage()),
-                    );
-                  },
-                  child: Icon(
-                    Icons.person_pin,
-                    color: Colors.white,
-                    size: 40.0,
-                  ),
-                  constraints: BoxConstraints.tightFor(
-                    width: 56.0,
-                    height: 56.0,
-                  ),
-                )),
-          ),
+          //centerTitle: true,
+          // leading: Padding(
+          //   padding: const EdgeInsets.only(left: 10),
+          //   child: Container(
+          //       height: 34,
+          //       width: 34,
+          //       child: RawMaterialButton(
+          //         elevation: 5.0,
+          //         shape: CircleBorder(),
+          //         fillColor: Colors.black,
+          //         onPressed: () {
+          //           Navigator.pushReplacement(
+          //             context,
+          //             MaterialPageRoute(builder: (context) => Homepage()),
+          //           );
+          //         },
+          //         child: Icon(
+          //           Icons.person_pin,
+          //           color: Colors.white,
+          //           size: 40.0,
+          //         ),
+          //         constraints: BoxConstraints.tightFor(
+          //           width: 56.0,
+          //           height: 56.0,
+          //         ),
+          //       )),
+          // ),
           title: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Text(
-              "Kiraay",
-              textAlign: TextAlign.center,
+              "Home",
+              textAlign: TextAlign.left,
               style: TextStyle(
                   fontSize: 28, foreground: Paint()..shader = linearGradient),
             ),
@@ -142,41 +142,67 @@ class _MainpageState extends State<Mainpage> {
               //   ),
               // )
             ]),
-            Column(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 20, 5),
-                child: Container(
-                    height: 27,
-                    width: 28,
-                    child: RawMaterialButton(
-                      elevation: 0.0,
-                      shape: CircleBorder(),
-                      fillColor: Colors.white,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => LendorRent()),
-                        );
-                      },
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.black,
-                        size: 30.0,
-                      ),
-                      constraints: BoxConstraints.tightFor(
-                        width: 30.0,
-                        height: 30.0,
-                      ),
-                    )),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
-              //   child: Text(
-              //     "Add post",
-              //     style: TextStyle(fontSize: 10),
-              //   ),
-              // )
-            ])
+            // Column(children: [
+            //   Padding(
+            //     padding: EdgeInsets.fromLTRB(0, 10, 20, 5),
+            //     child: Container(
+            //         height: 27,
+            //         width: 28,
+            //         child: RawMaterialButton(
+            //           elevation: 0.0,
+            //           shape: CircleBorder(),
+            //           fillColor: Colors.white,
+            //           onPressed: () {
+            //             Navigator.pushReplacement(
+            //               context,
+            //               MaterialPageRoute(builder: (context) => LendorRent()),
+            //             );
+            //           },
+            //           child: Icon(
+            //             Icons.add,
+            //             color: Colors.black,
+            //             size: 30.0,
+            //           ),
+            //           constraints: BoxConstraints.tightFor(
+            //             width: 30.0,
+            //             height: 30.0,
+            //           ),
+            //         )),
+            //   ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
+            //   child: Text(
+            //     "Add post",
+            //     style: TextStyle(fontSize: 10),
+            //   ),
+            // )
+            //]),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 3),
+              child: Container(
+                  height: 34,
+                  width: 34,
+                  child: RawMaterialButton(
+                    elevation: 5.0,
+                    shape: CircleBorder(),
+                    fillColor: Colors.black,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Homepage()),
+                      );
+                    },
+                    child: Icon(
+                      Icons.person_pin,
+                      color: Colors.white,
+                      size: 40.0,
+                    ),
+                    constraints: BoxConstraints.tightFor(
+                      width: 56.0,
+                      height: 56.0,
+                    ),
+                  )),
+            ),
           ],
         ),
       ),
@@ -191,40 +217,147 @@ class _MainpageState extends State<Mainpage> {
           Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.only(top: 150),
+                padding: const EdgeInsets.only(top: 5),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Padding(
-                      //   padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
-                      //   child: Text(
-                      //     "Looking for something to rent?",
-                      //     style: TextStyle(color: Colors.black, fontSize: 15),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: 170,
-                      //   child: ElevatedButton(
-                      //       style: ButtonStyle(
-                      //           backgroundColor:
-                      //               MaterialStateProperty.all(Colors.black),
-                      //           shape:
-                      //               MaterialStateProperty.all<RoundedRectangleBorder>(
-                      //                   RoundedRectangleBorder(
-                      //             borderRadius: BorderRadius.circular(18.0),
-                      //           ))),
-                      //       onPressed: () {
-                      //         Navigator.pushReplacement(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => CloudFirestoreSearch()),
-                      //         );
-                      //       },
-                      //       child: Text("Search Now")),
-                      // ),
+                      Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        color: Colors.white,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/icons/white3.png"),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topRight,
+                            ),
+                          ),
+                          child: MaterialButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LendorRent()),
+                              );
+                            },
+                            child: SizedBox(
+                              height: 100,
+                              width: double.infinity,
+                              child: Column(
+                                  // crossAxisAlignment:
+                                  //     CrossAxisAlignment.center,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.center,
+                                  children: [
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(top: 10),
+                                    //   child: Align(
+                                    //     alignment: Alignment.centerLeft,
+                                    //     child: Text(
+                                    //       "Kiraay",
+                                    //       style: TextStyle(
+                                    //           fontSize: 28,
+                                    //           foreground: Paint()
+                                    //             ..shader = linearGradient),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    Column(children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "Create New Post",
+                                            style: TextStyle(
+                                                fontSize: 28,
+                                                // foreground: Paint()
+                                                //   ..shader = linearGradient
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(top: 0),
+                                      //   child: Align(
+                                      //     alignment: Alignment.bottomRight,
+                                      //     child: Text(
+                                      //       "Connecting People",
+                                      //       style: TextStyle(
+                                      //           fontSize: 18,
+                                      //           foreground: Paint()
+                                      //             ..shader = linearGradient),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(top: 0),
+                                      //   child: Align(
+                                      //     alignment: Alignment.bottomRight,
+                                      //     child: Text(
+                                      //       "Creating Communities",
+                                      //       style: TextStyle(
+                                      //           fontSize: 24,
+                                      //           foreground: Paint()
+                                      //             ..shader = linearGradient),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ]),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          "(Click here for more)",
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 18,
+                                              foreground: Paint()
+                                                ..shader = linearGradient),
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 60, 0, 40),
+                        padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                        child: Text(
+                          "Looking for something to rent?",
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 170,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ))),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CloudFirestoreSearch()),
+                              );
+                            },
+                            child: Text("Search Now")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 300, 0, 30),
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text("What other people are looking for:",
@@ -237,22 +370,12 @@ class _MainpageState extends State<Mainpage> {
                       Expanded(
                         // wrap in Expanded
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: (name != "" && name != null)
-                              ? FirebaseFirestore.instance
-                                  .collection('posts')
-                                  .where("caseSearch", arrayContains: name)
-                                  .where("rental status", isEqualTo: false)
-                                  .where("LendorRent", isNotEqualTo: "Lend")
-                                  // .where("owner id",
-                                  //     isNotEqualTo:
-                                  //         FirebaseAuth.instance.currentUser!.uid)
-                                  .snapshots()
-                              : FirebaseFirestore.instance
-                                  .collection("posts")
-                                  .where("rental status", isEqualTo: false)
-                                  .where("LendOrRent", isEqualTo: "Rent")
-                                  //.where("owner id", isNotEqualTo: user!.email)
-                                  .snapshots(),
+                          stream: FirebaseFirestore.instance
+                              .collection("posts")
+                              .where("rental status", isEqualTo: false)
+                              .where("LendOrRent", isEqualTo: "Rent")
+                              //.where("owner id", isNotEqualTo: user!.email)
+                              .snapshots(),
                           builder: (context, snapshot) {
                             return (snapshot.connectionState ==
                                     ConnectionState.waiting)
@@ -285,66 +408,58 @@ class _MainpageState extends State<Mainpage> {
                                                 BorderRadius.circular(30),
                                           ),
                                           color: Colors.white,
-                                          child: Column(children: [
-                                            MaterialButton(
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          _buildPopup(
-                                                              context, data),
-                                                );
-                                              },
-                                              child: SizedBox(
-                                                width: double.infinity,
-                                                child: Column(
-                                                    // crossAxisAlignment:
-                                                    //     CrossAxisAlignment.center,
-                                                    // mainAxisAlignment:
-                                                    //     MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                54, 10, 0, 20),
-                                                        child: Row(children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 2),
-                                                            child: Icon(
-                                                                Icons.thumb_up,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        239,
-                                                                        132,
-                                                                        125,
-                                                                        1)),
-                                                          ),
-                                                          Text(
-                                                              "${(data["User Id"].length)}")
-                                                        ]),
-                                                      ),
-                                                      Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                            "${data['item_name']}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                                fontSize: 20)),
-                                                      ),
-                                                    ]),
-                                              ),
+                                          child: MaterialButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    _buildPopup(context, data),
+                                              );
+                                            },
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: Column(
+                                                  // crossAxisAlignment:
+                                                  //     CrossAxisAlignment.center,
+                                                  // mainAxisAlignment:
+                                                  //     MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          54, 10, 0, 20),
+                                                      child: Row(children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 2),
+                                                          child: Icon(
+                                                              Icons.thumb_up,
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                        Text(
+                                                            "${(data["User Id"].length)}")
+                                                      ]),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                          "${data['item_name']}",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              fontSize: 20)),
+                                                    ),
+                                                  ]),
                                             ),
-                                          ]),
+                                          ),
                                         );
                                       } else if ((newList
                                           .contains(user.email as Object))) {
@@ -372,49 +487,41 @@ class _MainpageState extends State<Mainpage> {
                                                 );
                                               },
                                               child: SizedBox(
-                                                //width: double.infinity,
-                                                //height: 70,
-                                                child: Column(
-                                                    // alignment: Alignment.center,
-                                                    children: [
+                                                child: Column(children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        54, 10, 0, 20),
+                                                    child: Row(children: [
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .fromLTRB(
-                                                                54, 10, 0, 20),
-                                                        child: Row(children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 2),
-                                                            child: Icon(
-                                                                Icons.thumb_up,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        239,
-                                                                        132,
-                                                                        125,
-                                                                        1)),
-                                                          ),
-                                                          Text(
-                                                              "${(data["User Id"].length)}")
-                                                        ]),
+                                                                .only(right: 2),
+                                                        child: Icon(
+                                                            Icons.thumb_up,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    239,
+                                                                    132,
+                                                                    125,
+                                                                    1)),
                                                       ),
-                                                      Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                            "${data['item_name']}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                                fontSize: 20)),
-                                                      ),
+                                                      Text(
+                                                          "${(data["User Id"].length)}")
                                                     ]),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                        "${data['item_name']}",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 20)),
+                                                  ),
+                                                ]),
                                               ),
                                             ),
                                           ]),

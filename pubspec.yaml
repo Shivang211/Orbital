@@ -89,6 +89,9 @@ flutter:
     - assets/icons/white3.png
     - assets/icons/white4.png
     - assets/icons/white5.png
+    - assets/icons/nus.png
+    - assets/icons/nus2.png
+    - assets/icons/new2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

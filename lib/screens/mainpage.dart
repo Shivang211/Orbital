@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kiraay/main.dart';
 import 'package:kiraay/screens/CreatenewPost.dart';
 import 'package:kiraay/screens/LendorRent.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:kiraay/screens/Liked.dart';
 import 'package:kiraay/screens/Login.dart';
 import 'package:kiraay/screens/Meetnewpeople.dart';
@@ -28,6 +29,13 @@ class Mainpage extends StatefulWidget {
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
+
+final imageList = [
+  'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246__480.jpg',
+  'https://cdn.pixabay.com/photo/2016/11/20/09/06/bowl-1842294__480.jpg',
+  'https://cdn.pixabay.com/photo/2017/01/03/11/33/pizza-1949183__480.jpg',
+  'https://cdn.pixabay.com/photo/2017/02/03/03/54/burger-2034433__480.jpg',
+];
 
 late String userId;
 String getId() {
@@ -142,41 +150,6 @@ class _MainpageState extends State<Mainpage> {
               //   ),
               // )
             ]),
-            // Column(children: [
-            //   Padding(
-            //     padding: EdgeInsets.fromLTRB(0, 10, 20, 5),
-            //     child: Container(
-            //         height: 27,
-            //         width: 28,
-            //         child: RawMaterialButton(
-            //           elevation: 0.0,
-            //           shape: CircleBorder(),
-            //           fillColor: Colors.white,
-            //           onPressed: () {
-            //             Navigator.pushReplacement(
-            //               context,
-            //               MaterialPageRoute(builder: (context) => LendorRent()),
-            //             );
-            //           },
-            //           child: Icon(
-            //             Icons.add,
-            //             color: Colors.black,
-            //             size: 30.0,
-            //           ),
-            //           constraints: BoxConstraints.tightFor(
-            //             width: 30.0,
-            //             height: 30.0,
-            //           ),
-            //         )),
-            //   ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
-            //   child: Text(
-            //     "Add post",
-            //     style: TextStyle(fontSize: 10),
-            //   ),
-            // )
-            //]),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 20, 3),
               child: Container(
@@ -228,15 +201,15 @@ class _MainpageState extends State<Mainpage> {
                           side: BorderSide(color: Colors.white, width: 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        color: Colors.white,
+                        color: Colors.green[100],
                         child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/icons/white3.png"),
-                              fit: BoxFit.cover,
-                              alignment: Alignment.topRight,
-                            ),
-                          ),
+                          // decoration: BoxDecoration(
+                          //   image: DecorationImage(
+                          //     image: AssetImage("assets/icons/white3.png"),
+                          //     fit: BoxFit.cover,
+                          //     alignment: Alignment.topRight,
+                          //   ),
+                          // ),
                           child: MaterialButton(
                             onPressed: () {
                               Navigator.pushReplacement(
@@ -249,118 +222,51 @@ class _MainpageState extends State<Mainpage> {
                               height: 100,
                               width: double.infinity,
                               child: Column(
-                                  // crossAxisAlignment:
-                                  //     CrossAxisAlignment.center,
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.center,
+                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                  // mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(top: 10),
-                                    //   child: Align(
-                                    //     alignment: Alignment.centerLeft,
-                                    //     child: Text(
-                                    //       "Kiraay",
-                                    //       style: TextStyle(
-                                    //           fontSize: 28,
-                                    //           foreground: Paint()
-                                    //             ..shader = linearGradient),
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     Column(children: [
                                       Padding(
                                         padding: const EdgeInsets.only(top: 5),
                                         child: Align(
-                                          alignment: Alignment.bottomLeft,
+                                          alignment: Alignment.topCenter,
                                           child: Text(
-                                            "Create New Post",
+                                            "Can't Find Your Item?",
                                             style: TextStyle(
-                                                fontSize: 28,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w400,
                                                 // foreground: Paint()
                                                 //   ..shader = linearGradient
                                                 color: Colors.black),
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(top: 0),
-                                      //   child: Align(
-                                      //     alignment: Alignment.bottomRight,
-                                      //     child: Text(
-                                      //       "Connecting People",
-                                      //       style: TextStyle(
-                                      //           fontSize: 18,
-                                      //           foreground: Paint()
-                                      //             ..shader = linearGradient),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(top: 0),
-                                      //   child: Align(
-                                      //     alignment: Alignment.bottomRight,
-                                      //     child: Text(
-                                      //       "Creating Communities",
-                                      //       style: TextStyle(
-                                      //           fontSize: 24,
-                                      //           foreground: Paint()
-                                      //             ..shader = linearGradient),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                    ]),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          "(Click here for more)",
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 18,
-                                              foreground: Paint()
-                                                ..shader = linearGradient),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Create New Post",
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w200,
+                                                color: Colors.black),
+                                          ),
                                         ),
                                       ),
-                                    )
+                                    ]),
                                   ]),
                             ),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
-                        child: Text(
-                          "Looking for something to rent?",
-                          style: TextStyle(color: Colors.black, fontSize: 15),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 170,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.black),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ))),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CloudFirestoreSearch()),
-                              );
-                            },
-                            child: Text("Search Now")),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 300, 0, 30),
+                        padding: const EdgeInsets.fromLTRB(10, 40, 0, 20),
                         child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text("What other people are looking for:",
+                            child: Text(
+                                "Looking to lend? See what others are looking for",
                                 style: (TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
@@ -370,12 +276,20 @@ class _MainpageState extends State<Mainpage> {
                       Expanded(
                         // wrap in Expanded
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection("posts")
-                              .where("rental status", isEqualTo: false)
-                              .where("LendOrRent", isEqualTo: "Rent")
-                              //.where("owner id", isNotEqualTo: user!.email)
-                              .snapshots(),
+                          stream: (name != "" && name != null)
+                              ? FirebaseFirestore.instance
+                                  .collection('posts')
+                                  .where("caseSearch", arrayContains: name)
+                                  .where("rental status", isEqualTo: false)
+                                  .where("LendOrRent", isEqualTo: "Rent")
+                                  //         //.where("owner id", isNotEqualTo: getId())
+                                  .snapshots()
+                              : FirebaseFirestore.instance
+                                  .collection("posts")
+                                  .where("rental status", isEqualTo: false)
+                                  .where("LendOrRent", isEqualTo: "Rent")
+                                  //.where("owner id", isNotEqualTo: user!.email)
+                                  .snapshots(),
                           builder: (context, snapshot) {
                             return (snapshot.connectionState ==
                                     ConnectionState.waiting)

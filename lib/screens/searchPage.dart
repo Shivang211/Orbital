@@ -92,162 +92,117 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
               fit: BoxFit.fitWidth,
             ),
           ),
-          StreamBuilder<QuerySnapshot>(
-            stream: (name != "" && name != null)
-                ? FirebaseFirestore.instance
-                    .collection('posts')
-                    .where("caseSearch", arrayContains: name)
-                    .where("rental status", isEqualTo: false)
-                    .where("LendOrRent", isEqualTo: "Lend")
-                    //.where("owner id", isNotEqualTo: getId())
-                    .snapshots()
-                : FirebaseFirestore.instance
-                    .collection("posts")
-                    .where("rental status", isEqualTo: false)
-                    .where("LendOrRent", isEqualTo: "Lend")
-                    .snapshots(),
-            builder: (context, snapshot) {
-              return (snapshot.connectionState == ConnectionState.waiting)
-                  ? Center(child: CircularProgressIndicator())
-                  : GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 5.0,
-                        mainAxisSpacing: 25,
-                      ),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        id = snapshot.data!.docs[index].id;
-                        DocumentSnapshot data = snapshot.data!.docs[index];
-                        item_name = user!.email! + data['item_name'];
-                        List<Object> newList = data['User Id'] as List<Object>;
-                        if (data['owner id'] == user!.email) {
-                          id = snapshot.data!.docs[index].id;
-                          return Card(
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.greenAccent, width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            color: Colors.white,
-                            child: MaterialButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      _buildPopup(context, data),
-                                );
-                              },
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Column(
-                                    // crossAxisAlignment:
-                                    //     CrossAxisAlignment.center,
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            54, 10, 0, 20),
-                                        child: Row(children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 2),
-                                            child: Icon(Icons.thumb_up,
-                                                color: Colors.grey),
-                                          ),
-                                          Text("${(data["User Id"].length)}")
-                                        ]),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text("${data['item_name']}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 20)),
-                                      ),
-                                    ]),
-                              ),
-                            ),
-                          );
-                        } else if ((newList.contains(user!.email as Object))) {
-                          id = snapshot.data!.docs[index].id;
-                          return Card(
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.greenAccent, width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            //elevation: 0,
-                            color: Colors.white,
-                            child: Column(children: [
-                              MaterialButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _buildPopupAlreadyLiked(context, data),
-                                  );
-                                },
-                                child: SizedBox(
-                                  child: Column(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          54, 10, 0, 20),
-                                      child: Row(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 2),
-                                          child: Icon(Icons.thumb_up,
-                                              color: Color.fromRGBO(
-                                                  239, 132, 125, 1)),
-                                        ),
-                                        Text("${(data["User Id"].length)}")
-                                      ]),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("${data['item_name']}",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 20)),
-                                    ),
-                                  ]),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: (name != "" && name != null)
+                    ? FirebaseFirestore.instance
+                        .collection('posts')
+                        .where("caseSearch", arrayContains: name)
+                        .where("rental status", isEqualTo: false)
+                        .where("LendOrRent", isEqualTo: "Lend")
+                        //.where("owner id", isNotEqualTo: getId())
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection("posts")
+                        .where("rental status", isEqualTo: false)
+                        .where("LendOrRent", isEqualTo: "Lend")
+                        .snapshots(),
+                builder: (context, snapshot) {
+                  return (snapshot.connectionState == ConnectionState.waiting)
+                      ? Center(child: CircularProgressIndicator())
+                      : GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 25,
+                          ),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            id = snapshot.data!.docs[index].id;
+                            DocumentSnapshot data = snapshot.data!.docs[index];
+                            item_name = user!.email! + data['item_name'];
+                            List<Object> newList =
+                                data['User Id'] as List<Object>;
+                            if (data['owner id'] == user!.email) {
+                              id = snapshot.data!.docs[index].id;
+                              return Card(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.greenAccent, width: 1),
+                                  borderRadius: BorderRadius.circular(30),
                                 ),
-                              ),
-                            ]),
-                          );
-                        } else {
-                          id = snapshot.data!.docs[index].id;
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: Colors.greenAccent, width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 10,
-                            color: Colors.white,
-                            child: Column(children: [
-                              MaterialButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _buildPopupDialog(
-                                            context, data, data['item_name']),
-                                  );
-                                },
-                                child: SizedBox(
-                                  //width: double.infinity,
-                                  //height: 70,
-                                  child: Column(
-                                      // alignment: Alignment.center,
-                                      children: [
+                                color: Colors.white,
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _buildPopup(context, data),
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Column(
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.center,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                54, 10, 0, 20),
+                                            child: Row(children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 2),
+                                                child: Icon(Icons.thumb_up,
+                                                    color: Colors.grey),
+                                              ),
+                                              Text(
+                                                  "${(data["User Id"].length)}")
+                                            ]),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("${data['item_name']}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 20)),
+                                          ),
+                                        ]),
+                                  ),
+                                ),
+                              );
+                            } else if ((newList
+                                .contains(user!.email as Object))) {
+                              id = snapshot.data!.docs[index].id;
+                              return Card(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.greenAccent, width: 1),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                //elevation: 0,
+                                color: Colors.white,
+                                child: Column(children: [
+                                  MaterialButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            _buildPopupAlreadyLiked(
+                                                context, data),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      child: Column(children: [
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               54, 10, 0, 20),
@@ -256,7 +211,8 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                                               padding: const EdgeInsets.only(
                                                   right: 2),
                                               child: Icon(Icons.thumb_up,
-                                                  color: Colors.grey),
+                                                  color: Color.fromRGBO(
+                                                      239, 132, 125, 1)),
                                             ),
                                             Text("${(data["User Id"].length)}")
                                           ]),
@@ -270,13 +226,72 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                                                   fontSize: 20)),
                                         ),
                                       ]),
+                                    ),
+                                  ),
+                                ]),
+                              );
+                            } else {
+                              id = snapshot.data!.docs[index].id;
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.greenAccent, width: 1),
+                                  borderRadius: BorderRadius.circular(30),
                                 ),
-                              ),
-                            ]),
-                          );
-                        }
-                      });
-            },
+                                elevation: 10,
+                                color: Colors.white,
+                                child: Column(children: [
+                                  MaterialButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            _buildPopupDialog(context, data,
+                                                data['item_name']),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      //width: double.infinity,
+                                      //height: 70,
+                                      child: Column(
+                                          // alignment: Alignment.center,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      54, 10, 0, 20),
+                                              child: Row(children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 2),
+                                                  child: Icon(Icons.thumb_up,
+                                                      color: Colors.grey),
+                                                ),
+                                                Text(
+                                                    "${(data["User Id"].length)}")
+                                              ]),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                  "${data['item_name']}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 20)),
+                                            ),
+                                          ]),
+                                    ),
+                                  ),
+                                ]),
+                              );
+                            }
+                          });
+                },
+              ),
+            ),
           ),
         ]));
   }

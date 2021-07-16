@@ -29,27 +29,57 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
-    var collection = FirebaseFirestore.instance.collection('users');
+    var collection = FirebaseFirestore.instance
+        .collection('users')
+        .where('email Id', isEqualTo: user!.email)
+        .get();
 
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(65.0), // here the desired height
+          preferredSize: Size.fromHeight(75.0), // here the desired height
           child: AppBar(
             //leadingWidth: 15, // <-- Use this
 
             backgroundColor: Colors.black,
-            centerTitle: true,
+            //centerTitle: true,
 
             title: Text(
               "My Account",
-              textAlign: TextAlign.center,
+              //textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 25, foreground: Paint()..shader = linearGradient),
+                  fontSize: 25, color: Color.fromRGBO(239, 132, 125, 1)),
             ),
             actions: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                child: Container(
+                    height: 34,
+                    width: 30,
+                    child: RawMaterialButton(
+                      elevation: 5.0,
+                      shape: CircleBorder(),
+                      fillColor: Colors.black,
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CloudFirestoreSearch()),
+                        );
+                      },
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 34.0,
+                      ),
+                      constraints: BoxConstraints.tightFor(
+                        width: 50.0,
+                        height: 56.0,
+                      ),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                 child: IconButton(
                   icon: Icon(Icons.home, size: 33),
                   onPressed: () {
@@ -67,193 +97,368 @@ class _HomepageState extends State<Homepage> {
           children: [
             Positioned.fill(
               child: Image(
-                image: AssetImage("assets/icons/white2.png"),
-                fit: BoxFit.contain,
+                image: AssetImage("assets/icons/white5.png"),
+                fit: BoxFit.fitHeight,
               ),
             ),
-            Center(
-                child: Column(children: [
-              Row(children: [
-                Padding(
-                    padding: EdgeInsets.fromLTRB(10, 80, 10, 10),
-                    child: Text(
-                      "Your Email:",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic),
-                    )),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
-                  child: Text("${user!.email}",
-                      style: TextStyle(
+            SingleChildScrollView(
+              child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Icon(
+                          Icons.person_pin,
                           color: Color.fromRGBO(239, 132, 125, 1),
-                          fontSize: 20)),
-                ),
-              ]),
-              // Row(children: [
-              //   Padding(
-              //     padding: EdgeInsets.fromLTRB(0, 40, 10, 10),
-              //     child: Text("Description:",
-              //         style: TextStyle(
-              //             color: Colors.black,
-              //             fontSize: 20,
-              //             fontStyle: FontStyle.italic)),
-              //   ),
-              //   Padding(
-              //     padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              //     child: Text("$description",
-              //         style:
-              //             TextStyle(color: Colors.greenAccent, fontSize: 20)),
-              //   ),
-              // ]),
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 60, 15, 10),
-                child: SizedBox(
-                  width: 200.0,
-                  height: 40.0,
-                  child: ElevatedButton(
-                    child: new Text("My Likes"),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyLikes()),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: 200.0,
-                    height: 40.0,
-                    child: ElevatedButton(
-                      child: new Text("My Items"),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
-                      onPressed: () {
-                        _myMatches();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyMatches()),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                child: SizedBox(
-                  width: 200.0,
-                  height: 40.0,
-                  child: ElevatedButton(
-                    child: new Text("Items I have rented"),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ItemsRented()),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                child: SizedBox(
-                  width: 200.0,
-                  height: 40.0,
-                  child: ElevatedButton(
-                    child: new Text("Items I have lent"),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ))),
-                    onPressed: () {
-                      _lentItems();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ItemsLended()),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
-                    child: IconButton(
-                      icon: Icon(Icons.delete, size: 33, color: Colors.grey),
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => Setting()),
-                        // );
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              _buildPopupDialog(context),
-                        );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.exit_to_app_sharp,
-                        size: 33,
-                        color: Colors.grey,
+                          size: 150,
+                        ),
                       ),
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => Login()));
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => Loginpage()),
-                        // );
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ]))
+                      Text("${user.email}"),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 100.0),
+                        child: Container(
+                          height: 40,
+                          width: 170,
+                          child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(10),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ))),
+                              onPressed: () {},
+                              label: Text(
+                                "My Likes",
+                                style: TextStyle(color: Colors.greenAccent),
+                              ),
+                              icon: Icon(
+                                Icons.thumb_up,
+                                color: Colors.grey,
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Container(
+                          height: 40,
+                          width: 170,
+                          child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(10),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ))),
+                              onPressed: () {},
+                              label: Text(
+                                "My Matches",
+                                style: TextStyle(color: Colors.greenAccent),
+                              ),
+                              icon: Icon(
+                                Icons.thumb_up,
+                                color: Colors.grey,
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Container(
+                          height: 40,
+                          width: 170,
+                          child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.greenAccent),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ))),
+                              onPressed: () {},
+                              label: Text(
+                                "Lent Items",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              icon: Icon(
+                                Icons.thumb_up,
+                                color: Colors.grey,
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Container(
+                          height: 40,
+                          width: 170,
+                          child: ElevatedButton.icon(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.greenAccent),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ))),
+                              onPressed: () {},
+                              label: Text(
+                                "Borrowed Items",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              icon: Icon(
+                                Icons.thumb_up,
+                                color: Colors.grey,
+                              )),
+                        ),
+                      ),
+                      Row(children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
+                          child: IconButton(
+                            icon: Icon(Icons.delete,
+                                size: 33, color: Colors.grey),
+                            onPressed: () {
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => Setting()),
+                              // );
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    _buildPopupDialog(context),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.exit_to_app_sharp,
+                              size: 33,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.pushReplacement(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => Login()));
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => Loginpage()),
+                              // );
+                            },
+                          ),
+                        ),
+                      ])
+                    ]),
+              ),
+            )
           ],
         ));
   }
+  // Padding(
+  //   padding: const EdgeInsets.fromLTRB(80, 60, 0, 30),
+  //   child:
+  //   Row(children: [
+  //     Card(
+  //       elevation: 10,
+  //       shape: RoundedRectangleBorder(
+  //         side: BorderSide(color: Colors.greenAccent, width: 1),
+  //         borderRadius: BorderRadius.circular(30),
+  //       ),
+  //       color: Colors.white,
+  //       child: MaterialButton(
+  //         onPressed: () {},
+  //         child: SizedBox(
+  //           width: 80,
+  //           height: 100,
+  //           child: Column(children: [
+  //             Padding(
+  //               padding: const EdgeInsets.fromLTRB(54, 10, 0, 10),
+  //               child: Row(children: [
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 2),
+  //                   child:
+  //                       Icon(Icons.thumb_up, color: Colors.grey),
+  //                 ),
+  //               ]),
+  //             ),
+  //             Align(
+  //               alignment: Alignment.centerLeft,
+  //               child: Text("My    Likes",
+  //                   style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontWeight: FontWeight.w300,
+  //                       fontSize: 18)),
+  //             ),
+  //           ]),
+  //         ),
+  //       ),
+  //     ),
+  //     Card(
+  //       elevation: 10,
+  //       shape: RoundedRectangleBorder(
+  //         side: BorderSide(color: Colors.greenAccent, width: 1),
+  //         borderRadius: BorderRadius.circular(30),
+  //       ),
+  //       color: Colors.white,
+  //       child: MaterialButton(
+  //         onPressed: () {},
+  //         child: SizedBox(
+  //           width: 80,
+  //           height: 100,
+  //           child: Column(children: [
+  //             Padding(
+  //               padding: const EdgeInsets.fromLTRB(54, 10, 0, 10),
+  //               child: Row(children: [
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 2),
+  //                   child: Icon(Icons.person_add_alt_sharp,
+  //                       color: Colors.grey),
+  //                 ),
+  //               ]),
+  //             ),
+  //             Align(
+  //               alignment: Alignment.centerLeft,
+  //               child: Text("My Matches",
+  //                   style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontWeight: FontWeight.w300,
+  //                       fontSize: 18)),
+  //             ),
+  //           ]),
+  //         ),
+  //       ),
+  //     ),
+  //   ]),
+  // ),
+  // Padding(
+  //     padding: EdgeInsets.fromLTRB(80, 0, 0, 30),
+  //     child: Row(children: [
+  //       Card(
+  //         elevation: 10,
+  //         shape: RoundedRectangleBorder(
+  //           side: BorderSide(color: Colors.greenAccent, width: 1),
+  //           borderRadius: BorderRadius.circular(30),
+  //         ),
+  //         color: Colors.white,
+  //         child: MaterialButton(
+  //           onPressed: () {},
+  //           child: SizedBox(
+  //             width: 80,
+  //             height: 100,
+  //             child: Column(children: [
+  //               Padding(
+  //                 padding:
+  //                     const EdgeInsets.fromLTRB(54, 10, 0, 10),
+  //                 child: Row(children: [
+  //                   Padding(
+  //                     padding: const EdgeInsets.only(right: 2),
+  //                     child:
+  //                         Icon(Icons.shop_2, color: Colors.grey),
+  //                   ),
+  //                 ]),
+  //               ),
+  //               Align(
+  //                 alignment: Alignment.centerLeft,
+  //                 child: Text("Borrowed Items",
+  //                     style: TextStyle(
+  //                         color: Colors.black,
+  //                         fontWeight: FontWeight.w300,
+  //                         fontSize: 18)),
+  //               ),
+  //             ]),
+  //           ),
+  //         ),
+  //       ),
+  //       Card(
+  //         elevation: 10,
+  //         shape: RoundedRectangleBorder(
+  //           side: BorderSide(color: Colors.greenAccent, width: 1),
+  //           borderRadius: BorderRadius.circular(30),
+  //         ),
+  //         color: Colors.white,
+  //         child: MaterialButton(
+  //           onPressed: () {},
+  //           child: SizedBox(
+  //             width: 80,
+  //             height: 100,
+  //             child: Column(children: [
+  //               Padding(
+  //                 padding:
+  //                     const EdgeInsets.fromLTRB(54, 10, 0, 10),
+  //                 child: Row(children: [
+  //                   Padding(
+  //                     padding: const EdgeInsets.only(right: 2),
+  //                     child: Icon(Icons.clean_hands,
+  //                         color: Colors.grey),
+  //                   ),
+  //                 ]),
+  //               ),
+  //               Align(
+  //                 alignment: Alignment.centerLeft,
+  //                 child: Text("Lent   Items",
+  //                     style: TextStyle(
+  //                         color: Colors.black,
+  //                         fontWeight: FontWeight.w300,
+  //                         fontSize: 18)),
+  //               ),
+  //             ]),
+  //           ),
+  //         ),
+  //       ),
+  //     ])),
+  // Row(
+  //   children: [
+  //     Padding(
+  //       padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
+  //       child: IconButton(
+  //         icon: Icon(Icons.delete, size: 33, color: Colors.grey),
+  //         onPressed: () {
+  //           // Navigator.push(
+  //           //   context,
+  //           //   MaterialPageRoute(builder: (context) => Setting()),
+  //           // );
+  //           showDialog(
+  //             context: context,
+  //             builder: (BuildContext context) =>
+  //                 _buildPopupDialog(context),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //     Padding(
+  //       padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
+  //       child: IconButton(
+  //         icon: Icon(
+  //           Icons.exit_to_app_sharp,
+  //           size: 33,
+  //           color: Colors.grey,
+  //         ),
+  //         onPressed: () async {
+  //           await FirebaseAuth.instance.signOut();
+  //           Navigator.pushReplacement(
+  //               context,
+  //               new MaterialPageRoute(
+  //                   builder: (context) => Login()));
+  //           // Navigator.pushReplacement(
+  //           //   context,
+  //           //   MaterialPageRoute(builder: (context) => Loginpage()),
+  //           // );
+  //         },
+  //       ),
+  //     ),
+  //   ],
+  // )
 
   void _pendingPosts() {
     if (SignUp.userUid != null) {

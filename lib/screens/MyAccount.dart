@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,19 +26,21 @@ class _HomepageState extends State<Homepage> {
     colors: <Color>[Color.fromRGBO(239, 132, 125, 1), Colors.greenAccent],
   ).createShader(Rect.fromLTWH(165.0, 200.0, 125.0, 200.0));
 
+  var telegramId;
+
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     var collection = FirebaseFirestore.instance
         .collection('users')
-        .where('email Id', isEqualTo: user!.email)
+        .where('email Id', isEqualTo: FirebaseAuth.instance.currentUser.email)
         .get();
 
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(75.0), // here the desired height
+          preferredSize: Size.fromHeight(70.0), // here the desired height
           child: AppBar(
             //leadingWidth: 15, // <-- Use this
 
@@ -48,7 +51,7 @@ class _HomepageState extends State<Homepage> {
               "My Account",
               //textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 25, color: Color.fromRGBO(239, 132, 125, 1)),
+                  fontSize: 28, color: Color.fromRGBO(239, 132, 125, 1)),
             ),
             actions: <Widget>[
               Padding(
@@ -108,16 +111,50 @@ class _HomepageState extends State<Homepage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
+                        padding: const EdgeInsets.only(bottom: 8, top: 20.0),
                         child: Icon(
                           Icons.person_pin,
                           color: Color.fromRGBO(239, 132, 125, 1),
                           size: 150,
                         ),
                       ),
-                      Text("${user.email}"),
+                      // Text("${FirebaseAuth.instance.currentUser.email}"),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 35.0),
+                            child: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(
+                                        '${FirebaseAuth.instance.currentUser.email}')
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return new Text("Loading");
+                                  }
+                                  var userD = snapshot.data;
+                                  return Text(
+                                    "@${userD['telegram id']}",
+                                    style: TextStyle(fontSize: 23),
+                                  );
+                                }),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      _buildPopupDialogEditTelegramId(context),
+                                );
+                              },
+                              icon: Icon(Icons.edit))
+                        ],
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 100.0),
+                        padding: const EdgeInsets.only(top: 60.0),
                         child: Container(
                           height: 40,
                           width: 170,
@@ -163,7 +200,7 @@ class _HomepageState extends State<Homepage> {
                                 style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(
-                                Icons.thumb_up,
+                                Icons.aod,
                                 color: Colors.grey,
                               )),
                         ),
@@ -175,8 +212,9 @@ class _HomepageState extends State<Homepage> {
                           width: 170,
                           child: ElevatedButton.icon(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.greenAccent),
+                                  elevation: MaterialStateProperty.all(10),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
                                   shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -185,10 +223,10 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () {},
                               label: Text(
                                 "Lent Items",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(
-                                Icons.thumb_up,
+                                Icons.shopping_cart,
                                 color: Colors.grey,
                               )),
                         ),
@@ -200,8 +238,9 @@ class _HomepageState extends State<Homepage> {
                           width: 170,
                           child: ElevatedButton.icon(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.greenAccent),
+                                  elevation: MaterialStateProperty.all(10),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
                                   shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -210,388 +249,123 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () {},
                               label: Text(
                                 "Borrowed Items",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(
-                                Icons.thumb_up,
+                                Icons.add_shopping_cart,
                                 color: Colors.grey,
                               )),
                         ),
                       ),
-                      Row(children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
-                          child: IconButton(
-                            icon: Icon(Icons.delete,
-                                size: 33, color: Colors.grey),
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => Setting()),
-                              // );
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    _buildPopupDialog(context),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.exit_to_app_sharp,
-                              size: 33,
-                              color: Colors.grey,
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Padding(
+                            //   padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
+                            //   child: IconButton(
+                            //     icon: Icon(Icons.delete,
+                            //         size: 33, color: Colors.grey),
+                            //     onPressed: () {
+                            //       // Navigator.push(
+                            //       //   context,
+                            //       //   MaterialPageRoute(builder: (context) => Setting()),
+                            //       // );
+                            //       showDialog(
+                            //         context: context,
+                            //         builder: (BuildContext context) =>
+                            //             _buildPopupDialog(context),
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 50, 0, 0),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.exit_to_app_sharp,
+                                  size: 33,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () async {
+                                  await FirebaseAuth.instance.signOut();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => Login()));
+                                  // Navigator.pushReplacement(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) => Loginpage()),
+                                  // );
+                                },
+                              ),
                             ),
-                            onPressed: () async {
-                              await FirebaseAuth.instance.signOut();
-                              Navigator.pushReplacement(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) => Login()));
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => Loginpage()),
-                              // );
-                            },
-                          ),
-                        ),
-                      ])
+                          ])
                     ]),
               ),
             )
           ],
         ));
   }
-  // Padding(
-  //   padding: const EdgeInsets.fromLTRB(80, 60, 0, 30),
-  //   child:
-  //   Row(children: [
-  //     Card(
-  //       elevation: 10,
-  //       shape: RoundedRectangleBorder(
-  //         side: BorderSide(color: Colors.greenAccent, width: 1),
-  //         borderRadius: BorderRadius.circular(30),
-  //       ),
-  //       color: Colors.white,
-  //       child: MaterialButton(
-  //         onPressed: () {},
-  //         child: SizedBox(
-  //           width: 80,
-  //           height: 100,
-  //           child: Column(children: [
-  //             Padding(
-  //               padding: const EdgeInsets.fromLTRB(54, 10, 0, 10),
-  //               child: Row(children: [
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 2),
-  //                   child:
-  //                       Icon(Icons.thumb_up, color: Colors.grey),
-  //                 ),
-  //               ]),
-  //             ),
-  //             Align(
-  //               alignment: Alignment.centerLeft,
-  //               child: Text("My    Likes",
-  //                   style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontWeight: FontWeight.w300,
-  //                       fontSize: 18)),
-  //             ),
-  //           ]),
-  //         ),
-  //       ),
-  //     ),
-  //     Card(
-  //       elevation: 10,
-  //       shape: RoundedRectangleBorder(
-  //         side: BorderSide(color: Colors.greenAccent, width: 1),
-  //         borderRadius: BorderRadius.circular(30),
-  //       ),
-  //       color: Colors.white,
-  //       child: MaterialButton(
-  //         onPressed: () {},
-  //         child: SizedBox(
-  //           width: 80,
-  //           height: 100,
-  //           child: Column(children: [
-  //             Padding(
-  //               padding: const EdgeInsets.fromLTRB(54, 10, 0, 10),
-  //               child: Row(children: [
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 2),
-  //                   child: Icon(Icons.person_add_alt_sharp,
-  //                       color: Colors.grey),
-  //                 ),
-  //               ]),
-  //             ),
-  //             Align(
-  //               alignment: Alignment.centerLeft,
-  //               child: Text("My Matches",
-  //                   style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontWeight: FontWeight.w300,
-  //                       fontSize: 18)),
-  //             ),
-  //           ]),
-  //         ),
-  //       ),
-  //     ),
-  //   ]),
-  // ),
-  // Padding(
-  //     padding: EdgeInsets.fromLTRB(80, 0, 0, 30),
-  //     child: Row(children: [
-  //       Card(
-  //         elevation: 10,
-  //         shape: RoundedRectangleBorder(
-  //           side: BorderSide(color: Colors.greenAccent, width: 1),
-  //           borderRadius: BorderRadius.circular(30),
-  //         ),
-  //         color: Colors.white,
-  //         child: MaterialButton(
-  //           onPressed: () {},
-  //           child: SizedBox(
-  //             width: 80,
-  //             height: 100,
-  //             child: Column(children: [
-  //               Padding(
-  //                 padding:
-  //                     const EdgeInsets.fromLTRB(54, 10, 0, 10),
-  //                 child: Row(children: [
-  //                   Padding(
-  //                     padding: const EdgeInsets.only(right: 2),
-  //                     child:
-  //                         Icon(Icons.shop_2, color: Colors.grey),
-  //                   ),
-  //                 ]),
-  //               ),
-  //               Align(
-  //                 alignment: Alignment.centerLeft,
-  //                 child: Text("Borrowed Items",
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontWeight: FontWeight.w300,
-  //                         fontSize: 18)),
-  //               ),
-  //             ]),
-  //           ),
-  //         ),
-  //       ),
-  //       Card(
-  //         elevation: 10,
-  //         shape: RoundedRectangleBorder(
-  //           side: BorderSide(color: Colors.greenAccent, width: 1),
-  //           borderRadius: BorderRadius.circular(30),
-  //         ),
-  //         color: Colors.white,
-  //         child: MaterialButton(
-  //           onPressed: () {},
-  //           child: SizedBox(
-  //             width: 80,
-  //             height: 100,
-  //             child: Column(children: [
-  //               Padding(
-  //                 padding:
-  //                     const EdgeInsets.fromLTRB(54, 10, 0, 10),
-  //                 child: Row(children: [
-  //                   Padding(
-  //                     padding: const EdgeInsets.only(right: 2),
-  //                     child: Icon(Icons.clean_hands,
-  //                         color: Colors.grey),
-  //                   ),
-  //                 ]),
-  //               ),
-  //               Align(
-  //                 alignment: Alignment.centerLeft,
-  //                 child: Text("Lent   Items",
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontWeight: FontWeight.w300,
-  //                         fontSize: 18)),
-  //               ),
-  //             ]),
-  //           ),
-  //         ),
-  //       ),
-  //     ])),
-  // Row(
-  //   children: [
-  //     Padding(
-  //       padding: EdgeInsets.fromLTRB(135, 68, 15, 20),
-  //       child: IconButton(
-  //         icon: Icon(Icons.delete, size: 33, color: Colors.grey),
-  //         onPressed: () {
-  //           // Navigator.push(
-  //           //   context,
-  //           //   MaterialPageRoute(builder: (context) => Setting()),
-  //           // );
-  //           showDialog(
-  //             context: context,
-  //             builder: (BuildContext context) =>
-  //                 _buildPopupDialog(context),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //     Padding(
-  //       padding: EdgeInsets.fromLTRB(5, 50, 30, 0),
-  //       child: IconButton(
-  //         icon: Icon(
-  //           Icons.exit_to_app_sharp,
-  //           size: 33,
-  //           color: Colors.grey,
-  //         ),
-  //         onPressed: () async {
-  //           await FirebaseAuth.instance.signOut();
-  //           Navigator.pushReplacement(
-  //               context,
-  //               new MaterialPageRoute(
-  //                   builder: (context) => Login()));
-  //           // Navigator.pushReplacement(
-  //           //   context,
-  //           //   MaterialPageRoute(builder: (context) => Loginpage()),
-  //           // );
-  //         },
-  //       ),
-  //     ),
-  //   ],
-  // )
 
-  void _pendingPosts() {
-    if (SignUp.userUid != null) {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: SignUp.userUid,
-          )
-          .where("rental status", isEqualTo: false)
-          .where("User Id", isEqualTo: [])
-          .get()
-          .then((value) {
-            value.docs.forEach((result) {
-              print(result.data());
-            });
-          });
-    } else {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: Loginpage.userUid,
-          )
-          .where("rental status", isEqualTo: false)
-          .where("User Id", isEqualTo: [])
-          .get()
-          .then((value) {
-            value.docs.forEach((result) {
-              print(result.data());
-            });
-          });
-    }
-  }
-
-  void _lentItems() {
-    if (SignUp.userUid != null) {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: SignUp.userUid,
-          )
-          .where("rental status", isEqualTo: true)
-          .where("LendOrRent", isEqualTo: "Lend")
-          .get()
-          .then((value) {
-        value.docs.forEach((result) {
-          print(result.data());
-        });
-      });
-    } else {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: Loginpage.userUid,
-          )
-          .where("rental status", isEqualTo: true)
-          .where("LendOrRent", isEqualTo: "Lend")
-          .get()
-          .then((value) {
-        value.docs.forEach((result) {
-          print(result.data());
-        });
-      });
-    }
-  }
-
-  void _myMatches() {
-    if (SignUp.userUid != null) {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: SignUp.userUid,
-          )
-          .where("User Id", isNotEqualTo: [])
-          .where("rental status", isEqualTo: false)
-          .get()
-          .then((value) {
-            value.docs.forEach((result) {
-              print(result.data());
-            });
-          });
-    } else {
-      FirebaseFirestore.instance
-          .collection("posts")
-          .where(
-            'owner id',
-            isEqualTo: Loginpage.userUid,
-          )
-          .where("User Id", isNotEqualTo: [])
-          .where("rental status", isEqualTo: false)
-          .get()
-          .then((value) {
-            value.docs.forEach((result) {
-              print(result.data());
-            });
-          });
-    }
-  }
-
-  Widget _buildPopupDialog(BuildContext context) {
+  Widget _buildPopupDialogEditTelegramId(BuildContext context) {
     return new AlertDialog(
-      title: Text("Delete Account"),
+      title: Text("Edit Telegram Id"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Are you sure you want to delete your account"),
+          TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            cursorColor: Colors.grey,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.edit),
+              // enabledBorder: OutlineInputBorder(
+              //   borderSide: BorderSide(
+              //     color: Colors.black,
+              //   ),
+              //   borderRadius: BorderRadius.circular(30.0),
+              // ),
+              fillColor: Colors.white,
+              // filled: true,
+              hintText: "Telegram Id",
+              labelText: "Enter your telegram id",
+              labelStyle: TextStyle(
+                color: Colors.grey,
+              ),
+              hintStyle: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                telegramId = val;
+              });
+            },
+          ),
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () async {
-              deleteUser();
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(context,
-                  new MaterialPageRoute(builder: (context) => Login()));
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser.email)
+                  .update({'telegram id': telegramId});
+              Navigator.of(context).pop();
             },
-            child: Text(" Confirm Delete")),
+            child: Text("Save")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -604,12 +378,54 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Future<void> deleteUser() {
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: Text("We are sad to see you go :'("),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Are you sure you want to delete your account?"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () async {
+              deleteUser();
+              FirebaseAuth.instance.currentUser.delete();
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(context,
+                  new MaterialPageRoute(builder: (context) => Login()));
+            },
+            child: Text("Confirm Delete")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  void deleteUser() {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    return FirebaseFirestore.instance
+    final User user = auth.currentUser;
+    FirebaseFirestore.instance
         .collection('users')
-        .doc('${user!.email}')
+        .doc('${FirebaseAuth.instance.currentUser.email}')
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));

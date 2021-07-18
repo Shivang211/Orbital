@@ -19,6 +19,7 @@ import 'itemsRented.dart';
 class Homepage extends StatefulWidget {
   @override
   _HomepageState createState() => _HomepageState();
+  static var telegramId;
 }
 
 class _HomepageState extends State<Homepage> {
@@ -115,7 +116,7 @@ class _HomepageState extends State<Homepage> {
                         child: Icon(
                           Icons.person_pin,
                           color: Color.fromRGBO(239, 132, 125, 1),
-                          size: 150,
+                          size: 180,
                         ),
                       ),
                       // Text("${FirebaseAuth.instance.currentUser.email}"),
@@ -136,8 +137,9 @@ class _HomepageState extends State<Homepage> {
                                     return new Text("Loading");
                                   }
                                   var userD = snapshot.data;
+                                  Homepage.telegramId = userD['telegram id'];
                                   return Text(
-                                    "@${userD['telegram id']}",
+                                    "@${Homepage.telegramId}",
                                     style: TextStyle(fontSize: 23),
                                   );
                                 }),
@@ -152,6 +154,10 @@ class _HomepageState extends State<Homepage> {
                               },
                               icon: Icon(Icons.edit))
                         ],
+                      ),
+                      Text(
+                        "${FirebaseAuth.instance.currentUser.email}",
+                        style: TextStyle(fontStyle: FontStyle.italic),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 60.0),
@@ -168,7 +174,12 @@ class _HomepageState extends State<Homepage> {
                                       RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => MyLikes()));
+                              },
                               label: Text(
                                 "My Likes",
                                 style: TextStyle(color: Colors.greenAccent),
@@ -194,13 +205,18 @@ class _HomepageState extends State<Homepage> {
                                       RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => MyMatches()));
+                              },
                               label: Text(
-                                "My Matches",
+                                "My Posts",
                                 style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(
-                                Icons.aod,
+                                Icons.post_add,
                                 color: Colors.grey,
                               )),
                         ),
@@ -220,7 +236,12 @@ class _HomepageState extends State<Homepage> {
                                       RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => ItemsLended()));
+                              },
                               label: Text(
                                 "Lent Items",
                                 style: TextStyle(color: Colors.greenAccent),
@@ -246,7 +267,12 @@ class _HomepageState extends State<Homepage> {
                                       RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => ItemsRented()));
+                              },
                               label: Text(
                                 "Borrowed Items",
                                 style: TextStyle(color: Colors.greenAccent),
@@ -270,28 +296,41 @@ class _HomepageState extends State<Homepage> {
                             //       //   context,
                             //       //   MaterialPageRoute(builder: (context) => Setting()),
                             //       // );
-                            //       showDialog(
-                            //         context: context,
-                            //         builder: (BuildContext context) =>
-                            //             _buildPopupDialog(context),
-                            //       );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) =>
+                            //       _buildPopupDialog(context),
+                            // );
                             //     },
                             //   ),
                             // ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(5, 50, 0, 0),
-                              child: IconButton(
+                              padding: EdgeInsets.fromLTRB(5, 70, 0, 0),
+                              child: ElevatedButton.icon(
+                                style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(10),
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ))),
+                                label: Text(
+                                  "Sign Out",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
                                 icon: Icon(
                                   Icons.exit_to_app_sharp,
-                                  size: 33,
+                                  //size: 33,
                                   color: Colors.grey,
                                 ),
                                 onPressed: () async {
-                                  await FirebaseAuth.instance.signOut();
-                                  Navigator.pushReplacement(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => Login()));
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        _buildPopupDialog(context),
+                                  );
                                   // Navigator.pushReplacement(
                                   //   context,
                                   //   MaterialPageRoute(builder: (context) => Loginpage()),
@@ -385,7 +424,7 @@ class _HomepageState extends State<Homepage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Are you sure you want to delete your account?"),
+          Text("Are you sure you want to Log Out?"),
         ],
       ),
       actions: <Widget>[
@@ -398,13 +437,12 @@ class _HomepageState extends State<Homepage> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () async {
-              deleteUser();
-              FirebaseAuth.instance.currentUser.delete();
               await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pop();
               Navigator.pushReplacement(context,
                   new MaterialPageRoute(builder: (context) => Login()));
             },
-            child: Text("Confirm Delete")),
+            child: Text("Log Out")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),

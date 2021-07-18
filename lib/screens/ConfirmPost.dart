@@ -51,6 +51,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
         "User Id": FieldValue.arrayUnion([]),
         "LendOrRent": LendorRent.lentOrRent,
         "caseSearch": setSearchParam(item_name),
+        "rentee id": "none"
       });
     } else {
       return posts.doc("$name").set({
@@ -61,6 +62,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
         "User Id": FieldValue.arrayUnion([]),
         "LendOrRent": LendorRent.lentOrRent,
         "caseSearch": setSearchParam(item_name),
+        "rentee id": "none"
       });
     }
   }

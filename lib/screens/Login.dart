@@ -226,7 +226,7 @@ class _LoginViewState extends State<Login> {
               );
 
               Navigator.pushReplacement(context,
-                  new MaterialPageRoute(builder: (context) => Mainpage()));
+                  new MaterialPageRoute(builder: (context) => Homepage()));
             } on FirebaseAuthException catch (e) {
               if (e.code == 'weak-password') {
                 print('The password provided is too weak.');

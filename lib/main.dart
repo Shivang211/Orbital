@@ -46,7 +46,7 @@ class LandingPage extends StatelessWidget {
                   if (user == null) {
                     return Login();
                   } else {
-                    return Mainpage();
+                    return Homepage();
                   }
                 }
                 return Scaffold(

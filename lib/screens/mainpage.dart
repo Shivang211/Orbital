@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,11 @@ import 'register.dart';
 class Mainpage extends StatefulWidget {
   @override
   _MainpageState createState() => _MainpageState();
-  static var searchString;
+  static String searchString;
 }
 
 final FirebaseAuth auth = FirebaseAuth.instance;
-final User? user = auth.currentUser;
+final User user = auth.currentUser;
 
 final imageList = [
   'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246__480.jpg',
@@ -37,13 +38,13 @@ final imageList = [
   'https://cdn.pixabay.com/photo/2017/02/03/03/54/burger-2034433__480.jpg',
 ];
 
-late String userId;
+String userId;
 String getId() {
   if (Register.userUid != null) {
     userId = Register.userUid;
     return userId;
   } else {
-    userId = FirebaseAuth.instance.currentUser!.uid;
+    userId = FirebaseAuth.instance.currentUser.uid;
     return userId;
   }
 }
@@ -66,7 +67,7 @@ class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     int _index = 0;
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
@@ -302,16 +303,16 @@ class _MainpageState extends State<Mainpage> {
                                       crossAxisSpacing: 5.0,
                                       mainAxisSpacing: 25,
                                     ),
-                                    itemCount: snapshot.data!.docs.length,
+                                    itemCount: snapshot.data.docs.length,
                                     itemBuilder: (context, index) {
                                       DocumentSnapshot data =
-                                          snapshot.data!.docs[index];
+                                          snapshot.data.docs[index];
                                       item_name =
-                                          user!.email! + data['item_name'];
+                                          user.email + data['item_name'];
                                       List<Object> newList =
                                           data['User Id'] as List<Object>;
                                       if (data['owner id'] == user.email) {
-                                        id = snapshot.data!.docs[index].id;
+                                        id = snapshot.data.docs[index].id;
                                         return Card(
                                           elevation: 10,
                                           shape: RoundedRectangleBorder(
@@ -376,8 +377,8 @@ class _MainpageState extends State<Mainpage> {
                                           ),
                                         );
                                       } else if ((newList
-                                          .contains(user.email as Object))) {
-                                        id = snapshot.data!.docs[index].id;
+                                          .contains(Homepage.telegramId))) {
+                                        id = snapshot.data.docs[index].id;
                                         return Card(
                                           elevation: 10,
                                           shape: RoundedRectangleBorder(
@@ -441,7 +442,7 @@ class _MainpageState extends State<Mainpage> {
                                           ]),
                                         );
                                       } else {
-                                        id = snapshot.data!.docs[index].id;
+                                        id = snapshot.data.docs[index].id;
                                         return Card(
                                           shape: RoundedRectangleBorder(
                                             side: BorderSide(
@@ -523,7 +524,7 @@ class _MainpageState extends State<Mainpage> {
   Widget _buildPopupDialog(
       BuildContext context, DocumentSnapshot data, String itemName) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -543,13 +544,18 @@ class _MainpageState extends State<Mainpage> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              var snapshots = FirebaseFirestore.instance
+                  .collection('users')
+                  .doc('${FirebaseAuth.instance.currentUser.email}')
+                  .snapshots();
               var addToArray = getId();
+              //var userD = snapshots.data;
               FirebaseFirestore.instance
                   .collection('posts')
                   .doc('${data['owner id']}' +
                       itemName) // <-- Doc ID where data should be updated.
                   .update({
-                "User Id": FieldValue.arrayUnion(["${user!.email}"])
+                "User Id": FieldValue.arrayUnion(["${Homepage.telegramId}"])
               });
               Navigator.of(context).pop();
               showDialog(
@@ -574,11 +580,11 @@ class _MainpageState extends State<Mainpage> {
     );
   }
 
-  late String? item_name;
+  String item_name;
 
   Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -622,7 +628,7 @@ class _MainpageState extends State<Mainpage> {
 
   Widget _buildPopupAlreadyLiked(BuildContext context, DocumentSnapshot data) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
@@ -665,7 +671,7 @@ class _MainpageState extends State<Mainpage> {
 
   Widget _buildPopupLike(BuildContext context, DocumentSnapshot data) {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
+    final User user = auth.currentUser;
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(

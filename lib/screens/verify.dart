@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kiraay/screens/MyAccount.dart';
 import 'package:kiraay/screens/mainpage.dart';
 import 'package:kiraay/screens/register.dart';
 
@@ -75,7 +76,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
           .catchError((error) => print('Add failed: $error'));
       timer.cancel();
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Mainpage()));
+          .pushReplacement(MaterialPageRoute(builder: (context) => Homepage()));
     }
   }
 }

@@ -53,7 +53,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-        backgroundColor: Colors.white54,
+        backgroundColor: Colors.white10,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(70.0), // here the desired height
           child: AppBar(
@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUp> {
             backgroundColor: Colors.black,
             centerTitle: true,
             title: Text(
-              "Kiraay",
+              "KIRAAY",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 28, foreground: Paint()..shader = linearGradient),

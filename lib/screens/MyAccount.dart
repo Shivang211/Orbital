@@ -181,7 +181,7 @@ class _HomepageState extends State<Homepage> {
                                         builder: (context) => MyLikes()));
                               },
                               label: Text(
-                                "My Likes",
+                                "Liked Items",
                                 style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(
@@ -212,7 +212,7 @@ class _HomepageState extends State<Homepage> {
                                         builder: (context) => MyMatches()));
                               },
                               label: Text(
-                                "My Posts",
+                                "Posts Created",
                                 style: TextStyle(color: Colors.greenAccent),
                               ),
                               icon: Icon(

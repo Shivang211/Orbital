@@ -123,7 +123,7 @@ class _ConfirmPostState extends State<ConfirmPost> {
             children: <Widget>[
               Row(children: [
                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 100, 10, 10),
+                    padding: EdgeInsets.fromLTRB(20, 100, 10, 10),
                     child: Text(
                       "Item name:",
                       style: TextStyle(
@@ -141,60 +141,79 @@ class _ConfirmPostState extends State<ConfirmPost> {
               ]),
               Row(children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 40, 10, 10),
+                  padding: EdgeInsets.fromLTRB(20, 40, 10, 10),
                   child: Text("Description:",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
                           fontStyle: FontStyle.italic)),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  child: Text("$description",
-                      style:
-                          TextStyle(color: Colors.greenAccent, fontSize: 20)),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                    child: Text("$description",
+                        style: TextStyle(
+                            color: Color.fromRGBO(239, 132, 125, 1),
+                            fontSize: 20)),
+                  ),
                 ),
               ]),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  child: ElevatedButton(
-                      //icon: Icon(Icons.arrow_right_alt),
-                      child: Text("Edit Post"),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => LendorRent()),
-                        );
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))))),
+                  child: ElevatedButton.icon(
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.grey,
+                    ),
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(10),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ))),
+                    label: Text(
+                      "Edit Post",
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LendorRent()),
+                      );
+                    },
+                  )),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: ElevatedButton(
-                      //icon: Icon(Icons.arrow_right_alt),
-                      child: Text("Create Post"),
-                      onPressed: () {
-                        addPost();
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              _buildPopupDialog(context),
-                        );
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          )))))
+                  child: ElevatedButton.icon(
+                    icon: Icon(
+                      Icons.confirmation_num,
+                      color: Colors.grey,
+                    ),
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(10),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ))),
+                    label: Text(
+                      "Create Post",
+                      style: TextStyle(color: Colors.greenAccent),
+                    ),
+                    onPressed: () {
+                      addPost();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            _buildPopupDialog(context),
+                      );
+                    },
+                  ))
             ],
           ),
         )
@@ -223,12 +242,13 @@ class _ConfirmPostState extends State<ConfirmPost> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Mainpage()),

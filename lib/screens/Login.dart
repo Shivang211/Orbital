@@ -21,6 +21,8 @@ class Login extends StatefulWidget {
   static String useruid;
 }
 
+String errorMessage;
+
 class _LoginViewState extends State<Login> {
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color.fromRGBO(239, 132, 125, 1), Colors.greenAccent],
@@ -104,12 +106,18 @@ class _LoginViewState extends State<Login> {
     }
 
     final emailField = TextFormField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter an email id';
+        }
+        return null;
+      },
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(
         color: Colors.black,
       ),
-      cursorColor: Colors.white,
+      cursorColor: Colors.black,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -133,12 +141,18 @@ class _LoginViewState extends State<Login> {
     final passwordField = Column(
       children: <Widget>[
         TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a password';
+            }
+            return null;
+          },
           obscureText: true,
           controller: _passwordController,
           style: TextStyle(
             color: Colors.black,
           ),
-          cursorColor: Colors.white,
+          cursorColor: Colors.black,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -216,25 +230,35 @@ class _LoginViewState extends State<Login> {
             ),
           ),
           onPressed: () async {
-            try {
-              await Firebase.initializeApp();
-              // FirebaseAuth.
-              UserCredential user =
-                  await FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text,
-              );
+            if (_formKey.currentState.validate()) {
+              try {
+                //await Firebase.initializeApp();
+                // FirebaseAuth.
+                UserCredential user =
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                );
+                setState(() {
+                  errorMessage = null;
+                });
 
-              Navigator.pushReplacement(context,
-                  new MaterialPageRoute(builder: (context) => Homepage()));
-            } on FirebaseAuthException catch (e) {
-              if (e.code == 'weak-password') {
-                print('The password provided is too weak.');
-              } else if (e.code == 'email-already-in-use') {
-                print('The account already exists for that email.');
+                Navigator.pushReplacement(context,
+                    new MaterialPageRoute(builder: (context) => Homepage()));
               }
-            } catch (e) {
-              print(e.toString());
+              // on FirebaseAuthException catch (e) {
+              //   if (e.code == 'weak-password') {
+              //     print('The password provided is too weak.');
+              //   } else if (e.code == 'email-already-in-use') {
+              //     print('The account already exists for that email.');
+              //   }
+              // }
+              catch (e) {
+                print(e);
+                setState(() {
+                  errorMessage = e.message;
+                });
+              }
             }
           },
         ));
@@ -248,7 +272,7 @@ class _LoginViewState extends State<Login> {
           padding: EdgeInsets.all(30.0),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               "Not a member?",
@@ -278,7 +302,6 @@ class _LoginViewState extends State<Login> {
     );
 
     return Scaffold(
-        // backgroundColor: Color(0xff8c52ff),
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Form(
@@ -294,35 +317,9 @@ class _LoginViewState extends State<Login> {
                 Column(
                   //mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    // Padding(
-                    //   padding: EdgeInsets.fromLTRB(0, 100, 150, 2),
-                    //   child: Text("Renting Items",
-                    //       style: TextStyle(
-                    //         fontSize: 15,
-                    //         //fontWeight: FontWeight.bold,
-                    //         foreground: Paint()..shader = linearGradient,
-                    //       )),
-                    // ),
-                    // Padding(
-                    //   padding: EdgeInsets.fromLTRB(0, 0, 80, 2),
-                    //   child: Text("Connecting People",
-                    //       style: TextStyle(
-                    //         fontSize: 20,
-                    //         //fontWeight: FontWeight.bold,
-                    //         foreground: Paint()..shader = linearGradient,
-                    //       )),
-                    // ),
-                    // Padding(
-                    //   padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-                    //   child: Text("Creating Communities",
-                    //       style: TextStyle(
-                    //         fontSize: 25,
-                    //         //fontWeight: FontWeight.bold,
-                    //         foreground: Paint()..shader = linearGradient,
-                    //       )),
-                    // ),
+                    showAlert(),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 100, 0, 150),
+                      padding: EdgeInsets.fromLTRB(0, 70, 0, 150),
                       child: Text("Kiraay",
                           style: TextStyle(
                               fontSize: 38,
@@ -337,5 +334,39 @@ class _LoginViewState extends State<Login> {
                 ),
               ]),
             )));
+  }
+
+  Widget showAlert() {
+    if (errorMessage != null) {
+      return Container(
+          color: Colors.greenAccent,
+          width: double.infinity,
+          height: 100,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 28.0),
+            child: Row(children: [
+              Icon(Icons.error_outline_outlined),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Text(
+                    "$errorMessage",
+                  ),
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      errorMessage = null;
+                    });
+                  },
+                  icon: Icon(Icons.close))
+            ]),
+          ));
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
   }
 }

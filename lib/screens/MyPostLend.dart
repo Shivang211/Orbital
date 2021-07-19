@@ -11,12 +11,12 @@ import 'Deleted.dart';
 import 'SignUpPage.dart';
 import 'mainpage.dart';
 
-class MyRentposts extends StatefulWidget {
+class MyLendposts extends StatefulWidget {
   @override
-  _MyRentpostsState createState() => _MyRentpostsState();
+  _MyLendpostsState createState() => _MyLendpostsState();
 }
 
-class _MyRentpostsState extends State<MyRentposts> {
+class _MyLendpostsState extends State<MyLendposts> {
   String name = "";
 
   static late String id;
@@ -146,14 +146,14 @@ class _MyRentpostsState extends State<MyRentposts> {
                       ? FirebaseFirestore.instance
                           .collection('posts')
                           .where("caseSearch", arrayContains: name)
-                          .where('LendOrRent', isEqualTo: "Borrow")
                           .where('rental status', isEqualTo: false)
+                          .where('LendOrRent', isEqualTo: "Lend")
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots()
                       : FirebaseFirestore.instance
                           .collection("posts")
                           .where('rental status', isEqualTo: false)
-                          .where('LendOrRent', isEqualTo: "Borrow")
+                          .where('LendOrRent', isEqualTo: "Lend")
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots(),
                   builder: (context, snapshot) {
@@ -172,66 +172,126 @@ class _MyRentpostsState extends State<MyRentposts> {
                               id = snapshot.data!.docs[index].id;
                               DocumentSnapshot data =
                                   snapshot.data!.docs[index];
-
-                              return Column(children: [
-                                Card(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.greenAccent, width: 1),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  color: Colors.white,
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            _buildPopupDialog(context, data),
-                                      );
-                                    },
-                                    child: SizedBox(
-                                      //width: double.infinity,
-                                      height: 120,
-
-                                      child: Column(
-                                          // crossAxisAlignment:
-                                          //     CrossAxisAlignment.center,
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      54, 10, 0, 20),
-                                              child: Row(children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 2),
-                                                  child: Icon(Icons.thumb_up,
-                                                      color: Colors.grey),
-                                                ),
-                                                Text(
-                                                    "${(data["User Id"].length)}")
-                                              ]),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                  "${data['item_name']}",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize: 20)),
-                                            ),
-                                          ]),
+                              if (data['rental status'] == true) {
+                                return Column(children: [
+                                  Card(
+                                    elevation: 1,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.white60, width: 1),
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  ),
-                                )
-                              ]);
-                            });
+                                    color: Colors.white,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopup(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        //width: double.infinity,
+                                        height: 120,
+                                        child: Column(
+                                            // crossAxisAlignment:
+                                            //     CrossAxisAlignment.center,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        54, 10, 0, 20),
+                                                child: Row(children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 2),
+                                                    child: Icon(Icons.thumb_up,
+                                                        color: Colors.grey),
+                                                  ),
+                                                  Text(
+                                                      "${(data["User Id"].length)}")
+                                                ]),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                    "${data['item_name']}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 20)),
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                ]);
+                              } else {
+                                return Column(children: [
+                                  Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.greenAccent, width: 1),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    color: Colors.white,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopupDialog(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        //width: double.infinity,
+                                        height: 120,
+
+                                        child: Column(
+                                            // crossAxisAlignment:
+                                            //     CrossAxisAlignment.center,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        54, 10, 0, 20),
+                                                child: Row(children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 2),
+                                                    child: Icon(Icons.thumb_up,
+                                                        color: Colors.grey),
+                                                  ),
+                                                  Text(
+                                                      "${(data["User Id"].length)}")
+                                                ]),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                    "${data['item_name']}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 20)),
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                ]);
+                              }
+                            },
+                          );
                   },
                 ),
               ),
@@ -250,7 +310,7 @@ class _MyRentpostsState extends State<MyRentposts> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(data['User Id'].toString()),
-          Text("Number of likes : ${(data["User Id"].length)}"),
+          Text("Number of likes : ${(data["User Id"].length)}")
         ],
       ),
       actions: <Widget>[
@@ -286,7 +346,7 @@ class _MyRentpostsState extends State<MyRentposts> {
                     _buildPopupLendInfo(context, data),
               );
             },
-            child: Text("Borrow")),
+            child: Text("Lend")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -306,7 +366,7 @@ class _MyRentpostsState extends State<MyRentposts> {
     var teleId;
 
     return new AlertDialog(
-      title: Text("Borrow Item"),
+      title: Text("Lend Post"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +387,7 @@ class _MyRentpostsState extends State<MyRentposts> {
               fillColor: Colors.white,
               // filled: true,
               hintText: "Telegram Id",
-              labelText: "Borrowing from?",
+              labelText: "Enter your telegram id",
               labelStyle: TextStyle(
                 color: Colors.grey,
               ),
@@ -375,7 +435,7 @@ class _MyRentpostsState extends State<MyRentposts> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Borrow")),
+            child: Text("Lend")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),

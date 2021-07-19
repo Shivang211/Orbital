@@ -172,7 +172,6 @@ class _ItemsLendedState extends State<ItemsLended> {
                             ),
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
-                              id = snapshot.data!.docs[index].id;
                               DocumentSnapshot data =
                                   snapshot.data!.docs[index];
                               return Column(children: [

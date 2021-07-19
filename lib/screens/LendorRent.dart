@@ -12,6 +12,7 @@ import 'package:kiraay/screens/loginpage.dart';
 import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kiraay/screens/mainpage.dart';
+import 'package:kiraay/screens/searchPage.dart';
 import 'RentingNewPost.dart';
 import 'Results.dart';
 import 'package:animated_background/animated_background.dart';
@@ -53,7 +54,34 @@ class _LendorRentState extends State<LendorRent> {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+              child: Container(
+                  height: 34,
+                  width: 30,
+                  child: RawMaterialButton(
+                    elevation: 5.0,
+                    shape: CircleBorder(),
+                    fillColor: Colors.black,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CloudFirestoreSearch()),
+                      );
+                    },
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 34.0,
+                    ),
+                    constraints: BoxConstraints.tightFor(
+                      width: 50.0,
+                      height: 56.0,
+                    ),
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: IconButton(
                 icon: Icon(Icons.home, size: 33),
                 onPressed: () {
@@ -78,7 +106,7 @@ class _LendorRentState extends State<LendorRent> {
           Padding(
             padding: EdgeInsets.fromLTRB(50, 130, 0, 20),
             child: Text(
-              "Are you looking to Lend or Rent In?",
+              "Are you looking to Lend or Borrow?",
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
@@ -122,14 +150,14 @@ class _LendorRentState extends State<LendorRent> {
                           borderRadius: BorderRadius.circular(18.0),
                         ))),
                     onPressed: () {
-                      LendorRent.lentOrRent = "Rent";
+                      LendorRent.lentOrRent = "Borrow";
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateNewRent()),
                       );
                     },
-                    child: Text("Rent In")),
+                    child: Text("Borrow")),
               ))
         ])
       ]),

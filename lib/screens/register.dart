@@ -40,6 +40,7 @@ class _RegisterViewState extends State<Register> {
 
   static String _email;
   static String _password;
+  String errorMessage;
 
   var _passwordRepeat;
 
@@ -233,13 +234,13 @@ class _RegisterViewState extends State<Register> {
                           context,
                           new MaterialPageRoute(
                               builder: (context) => VerifyScreen()));
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        print('The password provided is too weak.');
-                      } else if (e.code == 'email-already-in-use') {
-                        print('The account already exists for that email.');
-                      }
+                      setState(() {
+                        errorMessage = null;
+                      });
                     } catch (e) {
+                      setState(() {
+                        errorMessage = e.message;
+                      });
                       print(e.toString());
                     }
                   }
@@ -320,6 +321,7 @@ class _RegisterViewState extends State<Register> {
             Column(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
+                showAlert(),
                 fields,
                 const SizedBox(height: 8.0),
                 Padding(
@@ -330,5 +332,42 @@ class _RegisterViewState extends State<Register> {
             ),
           ]),
         ));
+  }
+
+  Widget showAlert() {
+    if (errorMessage != null) {
+      return Container(
+          color: Colors.greenAccent,
+          width: double.infinity,
+          height: 70,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Row(children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Icon(Icons.error_outline_outlined),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Text(
+                    "$errorMessage",
+                  ),
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      errorMessage = null;
+                    });
+                  },
+                  icon: Icon(Icons.close))
+            ]),
+          ));
+    } else {
+      return SizedBox(
+        height: 2,
+      );
+    }
   }
 }

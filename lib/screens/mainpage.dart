@@ -49,7 +49,7 @@ String getId() {
   }
 }
 
-var id;
+final String id = FirebaseAuth.instance.currentUser.uid;
 
 class _MainpageState extends State<Mainpage> {
   final TextEditingController _filter = new TextEditingController();
@@ -282,14 +282,14 @@ class _MainpageState extends State<Mainpage> {
                                   .collection('posts')
                                   .where("caseSearch", arrayContains: name)
                                   .where("rental status", isEqualTo: false)
-                                  .where("LendOrRent", isEqualTo: "Rent")
-                                  //         //.where("owner id", isNotEqualTo: getId())
+                                  .where("LendOrRent", isEqualTo: "Borrow")
+                                  //.where("owner id", isNotEqualTo: id)
                                   .snapshots()
                               : FirebaseFirestore.instance
                                   .collection("posts")
                                   .where("rental status", isEqualTo: false)
-                                  .where("LendOrRent", isEqualTo: "Rent")
-                                  //.where("owner id", isNotEqualTo: user!.email)
+                                  .where("LendOrRent", isEqualTo: "Borrow")
+                                  //.where("owner id", isNotEqualTo: id)
                                   .snapshots(),
                           builder: (context, snapshot) {
                             return (snapshot.connectionState ==
@@ -312,7 +312,6 @@ class _MainpageState extends State<Mainpage> {
                                       List<Object> newList =
                                           data['User Id'] as List<Object>;
                                       if (data['owner id'] == user.email) {
-                                        id = snapshot.data.docs[index].id;
                                         return Card(
                                           elevation: 10,
                                           shape: RoundedRectangleBorder(
@@ -378,7 +377,8 @@ class _MainpageState extends State<Mainpage> {
                                         );
                                       } else if ((newList
                                           .contains(Homepage.telegramId))) {
-                                        id = snapshot.data.docs[index].id;
+                                        ;
+                                        //id = snapshot.data.docs[index].id;
                                         return Card(
                                           elevation: 10,
                                           shape: RoundedRectangleBorder(
@@ -442,7 +442,6 @@ class _MainpageState extends State<Mainpage> {
                                           ]),
                                         );
                                       } else {
-                                        id = snapshot.data.docs[index].id;
                                         return Card(
                                           shape: RoundedRectangleBorder(
                                             side: BorderSide(

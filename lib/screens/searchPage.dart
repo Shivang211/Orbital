@@ -121,7 +121,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
       body: SingleChildScrollView(
           child: Column(children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 18.0),
           child: StreamBuilder<QuerySnapshot>(
             stream: (name != "" && name != null)
                 ? FirebaseFirestore.instance

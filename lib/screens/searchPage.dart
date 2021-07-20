@@ -152,7 +152,8 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                         DocumentSnapshot data = snapshot.data!.docs[index];
                         item_name = user!.email! + data['item_name'];
                         List<Object> newList = data['User Id'] as List<Object>;
-                        if (data['owner id'] == user!.email) {
+                        if (data['owner id'] ==
+                            FirebaseAuth.instance.currentUser!.email) {
                           id = snapshot.data!.docs[index].id;
                           return Card(
                             elevation: 10,
@@ -515,27 +516,30 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
-              Navigator.of(context).pop();
             },
             child: Text("Liked items")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             child: Text("Close"))
       ],
     );

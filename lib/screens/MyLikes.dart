@@ -313,12 +313,20 @@ class _MyLikesState extends State<MyLikes> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(data['description']),
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: Text(
+              "(The owner of this post is looking to ${data['LendOrRent']} this item)",
+              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.red),
+            ),
+          )
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -336,7 +344,7 @@ class _MyLikesState extends State<MyLikes> {
             child: Text("Unlike")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

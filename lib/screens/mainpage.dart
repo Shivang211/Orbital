@@ -73,38 +73,12 @@ class _MainpageState extends State<Mainpage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0), // here the desired height
+        preferredSize: Size.fromHeight(70.0), // here the desired height
         child: AppBar(
           //leadingWidth: 15, // <-- Use this
 
           backgroundColor: Colors.black,
-          //centerTitle: true,
-          // leading: Padding(
-          //   padding: const EdgeInsets.only(left: 10),
-          //   child: Container(
-          //       height: 34,
-          //       width: 34,
-          //       child: RawMaterialButton(
-          //         elevation: 5.0,
-          //         shape: CircleBorder(),
-          //         fillColor: Colors.black,
-          //         onPressed: () {
-          //           Navigator.pushReplacement(
-          //             context,
-          //             MaterialPageRoute(builder: (context) => Homepage()),
-          //           );
-          //         },
-          //         child: Icon(
-          //           Icons.person_pin,
-          //           color: Colors.white,
-          //           size: 40.0,
-          //         ),
-          //         constraints: BoxConstraints.tightFor(
-          //           width: 56.0,
-          //           height: 56.0,
-          //         ),
-          //       )),
-          // ),
+
           title: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Text(
@@ -647,6 +621,7 @@ class _MainpageState extends State<Mainpage> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => MyLikes()),
@@ -683,31 +658,29 @@ class _MainpageState extends State<Mainpage> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
-              Navigator.of(context).pop();
             },
             child: Text("My Likes")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Mainpage()),
-              );
+              Navigator.of(context).pop();
             },
             child: Text("Close"))
       ],

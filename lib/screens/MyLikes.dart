@@ -44,7 +44,7 @@ class _MyLikesState extends State<MyLikes> {
             //centerTitle: true,
 
             title: Text(
-              "My Likes",
+              "Liked Items",
               //textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 28, color: Color.fromRGBO(239, 132, 125, 1)),

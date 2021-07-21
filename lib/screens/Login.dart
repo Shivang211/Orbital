@@ -175,22 +175,6 @@ class _LoginViewState extends State<Login> {
         Padding(
           padding: EdgeInsets.all(2.0),
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: <Widget>[
-        //     MaterialButton(
-        //         child: Text(
-        //           "Forgot Password",
-        //           style: Theme.of(context).textTheme.subtitle1.copyWith(
-        //                 color: Colors.white,
-        //                 decoration: TextDecoration.underline,
-        //               ),
-        //         ),
-        //         onPressed: () {
-        //           showAlertDialog(context);
-        //         }),
-        //   ],
-        // ),
       ],
     );
 
@@ -209,24 +193,23 @@ class _LoginViewState extends State<Login> {
     );
 
     final loginButton = Padding(
-        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
         child: ElevatedButton(
           style: ButtonStyle(
+              elevation: MaterialStateProperty.all(10),
               backgroundColor: MaterialStateProperty.all(Colors.black),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+                borderRadius: BorderRadius.circular(10.0),
               ))),
           child: SizedBox(
             width: 90,
             child: Text(
               "Login",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.white,
-                //fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 14.0, color: Colors.white
+                  //fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
           onPressed: () async {
@@ -245,15 +228,7 @@ class _LoginViewState extends State<Login> {
 
                 Navigator.pushReplacement(context,
                     new MaterialPageRoute(builder: (context) => Homepage()));
-              }
-              // on FirebaseAuthException catch (e) {
-              //   if (e.code == 'weak-password') {
-              //     print('The password provided is too weak.');
-              //   } else if (e.code == 'email-already-in-use') {
-              //     print('The account already exists for that email.');
-              //   }
-              // }
-              catch (e) {
+              } catch (e) {
                 print(e);
                 setState(() {
                   errorMessage = e.message;

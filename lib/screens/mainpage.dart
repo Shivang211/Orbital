@@ -178,13 +178,6 @@ class _MainpageState extends State<Mainpage> {
                         ),
                         color: Colors.green[100],
                         child: Container(
-                          // decoration: BoxDecoration(
-                          //   image: DecorationImage(
-                          //     image: AssetImage("assets/icons/white3.png"),
-                          //     fit: BoxFit.cover,
-                          //     alignment: Alignment.topRight,
-                          //   ),
-                          // ),
                           child: MaterialButton(
                             onPressed: () {
                               Navigator.pushReplacement(

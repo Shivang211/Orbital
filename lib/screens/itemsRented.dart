@@ -140,6 +140,7 @@ class _ItemsRentedState extends State<ItemsRented> {
                   stream: FirebaseFirestore.instance
                       .collection("posts")
                       .where("rental status", isEqualTo: true)
+                      .where('LendOrRent', isEqualTo: "Lend")
                       .where("rentee id", isEqualTo: Homepage.telegramId)
                       .snapshots(),
                   builder: (context, snapshot) {

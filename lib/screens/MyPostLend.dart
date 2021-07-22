@@ -140,19 +140,50 @@ class _MyLendpostsState extends State<MyLendposts> {
                     style:
                         TextStyle(fontStyle: FontStyle.italic, fontSize: 20)),
               ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                child: TextFormField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Search",
+                    labelText: "  Search the liked item",
+                    labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
+                ),
+              ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: (name != "" && name != null)
                       ? FirebaseFirestore.instance
                           .collection('posts')
                           .where("caseSearch", arrayContains: name)
-                          .where('rental status', isEqualTo: false)
+                          // .where('rental status', isEqualTo: false)
                           .where('LendOrRent', isEqualTo: "Lend")
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots()
                       : FirebaseFirestore.instance
                           .collection("posts")
-                          .where('rental status', isEqualTo: false)
+                          // .where('rental status', isEqualTo: false)
                           .where('LendOrRent', isEqualTo: "Lend")
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots(),

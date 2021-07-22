@@ -82,40 +82,6 @@ class _MyRentpostsState extends State<MyRentposts> {
             ],
           ),
         ),
-
-        // title:
-        // Padding(
-        //   padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        //   child: TextFormField(
-        //     style: TextStyle(
-        //       color: Colors.black,
-        //     ),
-        //     cursorColor: Colors.white,
-        //     decoration: InputDecoration(
-        //       prefixIcon: Icon(Icons.search),
-        //       enabledBorder: OutlineInputBorder(
-        //         borderSide: BorderSide(
-        //           color: Colors.white,
-        //         ),
-        //         borderRadius: BorderRadius.circular(30.0),
-        //       ),
-        //       fillColor: Colors.white,
-        //       filled: true,
-        //       hintText: "Search",
-        //       labelText: "  Search the liked item",
-        //       labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
-        //       hintStyle: TextStyle(
-        //         color: Colors.grey,
-        //       ),
-        //     ),
-        //     onChanged: (val) {
-        //       setState(() {
-        //         name = val;
-        //       });
-        //     },
-        //   ),
-        // ),
-
         body: Stack(children: [
           Positioned.fill(
             child: Image(
@@ -134,11 +100,42 @@ class _MyRentpostsState extends State<MyRentposts> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 13, bottom: 50.0),
+                padding: const EdgeInsets.only(left: 13, bottom: 30.0),
                 child: Text("Posts created by you:",
                     textAlign: TextAlign.left,
                     style:
                         TextStyle(fontStyle: FontStyle.italic, fontSize: 20)),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                child: TextFormField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Search",
+                    labelText: "  Search your posts",
+                    labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
+                ),
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
@@ -147,12 +144,12 @@ class _MyRentpostsState extends State<MyRentposts> {
                           .collection('posts')
                           .where("caseSearch", arrayContains: name)
                           .where('LendOrRent', isEqualTo: "Borrow")
-                          .where('rental status', isEqualTo: false)
+                          // .where('rental status', isEqualTo: false)
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots()
                       : FirebaseFirestore.instance
                           .collection("posts")
-                          .where('rental status', isEqualTo: false)
+                          // .where('rental status', isEqualTo: false)
                           .where('LendOrRent', isEqualTo: "Borrow")
                           .where("owner id", isEqualTo: user!.email)
                           .snapshots(),
@@ -170,67 +167,137 @@ class _MyRentpostsState extends State<MyRentposts> {
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
                               id = snapshot.data!.docs[index].id;
+                              bool rentalStatus = true;
                               DocumentSnapshot data =
                                   snapshot.data!.docs[index];
-
-                              return Column(children: [
-                                Card(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.greenAccent, width: 1),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  color: Colors.white,
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            _buildPopupDialog(context, data),
-                                      );
-                                    },
-                                    child: SizedBox(
-                                      //width: double.infinity,
-                                      height: 120,
-
-                                      child: Column(
-                                          // crossAxisAlignment:
-                                          //     CrossAxisAlignment.center,
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      54, 10, 0, 20),
-                                              child: Row(children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 2),
-                                                  child: Icon(Icons.thumb_up,
-                                                      color: Colors.grey),
-                                                ),
-                                                Text(
-                                                    "${(data["User Id"].length)}")
-                                              ]),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                  "${data['item_name']}",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize: 20)),
-                                            ),
-                                          ]),
+                              if (data['rental status'] == rentalStatus) {
+                                return Column(children: [
+                                  Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.greenAccent, width: 1),
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  ),
-                                )
-                              ]);
+                                    color: Colors.white,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopupAlreadyBorrowed(
+                                                  context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        //width: double.infinity,
+                                        height: 120,
+
+                                        child: Column(
+                                            // crossAxisAlignment:
+                                            //     CrossAxisAlignment.center,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        34, 10, 0, 23),
+                                                child: Row(children: [
+                                                  Text(
+                                                    "Borrowed",
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontStyle:
+                                                            FontStyle.italic),
+                                                  ),
+                                                  // Padding(
+                                                  //   padding:
+                                                  //       const EdgeInsets.only(
+                                                  //           right: 2),
+                                                  //   child: Icon(Icons.thumb_up,
+                                                  //       color:
+                                                  //           Colors.greenAccent),
+                                                  // ),
+                                                  // Text(
+                                                  //     "${(data["User Id"].length)}")
+                                                ]),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                    "${data['item_name']}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 20)),
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                ]);
+                              } else {
+                                return Column(children: [
+                                  Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.greenAccent, width: 1),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    color: Colors.white,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              _buildPopupDialog(context, data),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        //width: double.infinity,
+                                        height: 120,
+
+                                        child: Column(
+                                            // crossAxisAlignment:
+                                            //     CrossAxisAlignment.center,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        54, 10, 0, 20),
+                                                child: Row(children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 2),
+                                                    child: Icon(Icons.thumb_up,
+                                                        color: Colors.grey),
+                                                  ),
+                                                  Text(
+                                                      "${(data["User Id"].length)}")
+                                                ]),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                    "${data['item_name']}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        fontSize: 20)),
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                ]);
+                              }
                             });
                   },
                 ),
@@ -238,6 +305,68 @@ class _MyRentpostsState extends State<MyRentposts> {
             ],
           ),
         ]));
+  }
+
+  Widget _buildPopupEditPost(BuildContext context, DocumentSnapshot data) {
+    var teleId = data['User Id'].toString();
+
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Description :"),
+          Text(data['description']),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupPostInfo(context, data),
+              );
+            },
+            child: Text("Post Info")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupLendInfo(context, data),
+              );
+            },
+            child: Text("Borrow")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
   }
 
   Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
@@ -249,7 +378,7 @@ class _MyRentpostsState extends State<MyRentposts> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(data['User Id'].toString()),
+          Text("Telegram IDs : ${data['User Id'].toString()}"),
           Text("Number of likes : ${(data["User Id"].length)}"),
         ],
       ),
@@ -373,9 +502,19 @@ class _MyRentpostsState extends State<MyRentposts> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              var rentalStatus = true;
               Navigator.of(context).pop();
+              var id = data['owner id'] + data['item_name'];
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rentee id": "$teleId"});
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rental status": rentalStatus});
             },
-            child: Text("Borrow")),
+            child: Text(" Confirm Borrow")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -429,6 +568,11 @@ class _MyRentpostsState extends State<MyRentposts> {
                 ))),
             onPressed: () {
               Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupEditPost(context, data),
+              );
             },
             child: Text("Edit Post")),
         ElevatedButton(
@@ -447,21 +591,74 @@ class _MyRentpostsState extends State<MyRentposts> {
     );
   }
 
-  Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
+  Widget _buildPopupAlreadyBorrowed(
+      BuildContext context, DocumentSnapshot data) {
+    List list = data['User Id'];
     return new AlertDialog(
       title: Text(data['item_name']),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-              "Sorry, this item is unavailable right now. Check later for updates"),
+          Text("${data['description']}"),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              "(Item Borrowed from @${data['rentee id']})",
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          )
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupReturnitem(context, data),
+              );
+            },
+            child: Text("Item Returned")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  Widget _buildPopupReturnitem(BuildContext context, DocumentSnapshot data) {
+    List list = data['User Id'];
+    return new AlertDialog(
+      title: Text("Are you sure you have returned ${data['item_name']}"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Kindly only cofirm once you return the item"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -471,15 +668,17 @@ class _MyRentpostsState extends State<MyRentposts> {
               FirebaseFirestore.instance
                   .collection('posts')
                   .doc('$id') // <-- Doc ID where data should be updated.
-                  .update({
-                "User Id": FieldValue.arrayRemove(["${user!.email}"])
-              });
+                  .update({"rentee id": "none"});
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rental status": false});
               Navigator.of(context).pop();
             },
-            child: Text("Unlike")),
+            child: Text("Confirm Return")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

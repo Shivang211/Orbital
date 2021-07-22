@@ -206,10 +206,10 @@ class _MyLendpostsState extends State<MyLendposts> {
                               if (data['rental status'] == true) {
                                 return Column(children: [
                                   Card(
-                                    elevation: 1,
+                                    elevation: 10,
                                     shape: RoundedRectangleBorder(
                                       side: BorderSide(
-                                          color: Colors.white60, width: 1),
+                                          color: Colors.greenAccent, width: 1),
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                     color: Colors.white,
@@ -218,12 +218,14 @@ class _MyLendpostsState extends State<MyLendposts> {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) =>
-                                              _buildPopup(context, data),
+                                              _buildPopupAlreadyBorrowed(
+                                                  context, data),
                                         );
                                       },
                                       child: SizedBox(
                                         //width: double.infinity,
                                         height: 120,
+
                                         child: Column(
                                             // crossAxisAlignment:
                                             //     CrossAxisAlignment.center,
@@ -233,17 +235,25 @@ class _MyLendpostsState extends State<MyLendposts> {
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
-                                                        54, 10, 0, 20),
+                                                        54, 10, 0, 23),
                                                 child: Row(children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 2),
-                                                    child: Icon(Icons.thumb_up,
-                                                        color: Colors.grey),
-                                                  ),
                                                   Text(
-                                                      "${(data["User Id"].length)}")
+                                                    "Lent",
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontStyle:
+                                                            FontStyle.italic),
+                                                  ),
+                                                  // Padding(
+                                                  //   padding:
+                                                  //       const EdgeInsets.only(
+                                                  //           right: 2),
+                                                  //   child: Icon(Icons.thumb_up,
+                                                  //       color:
+                                                  //           Colors.greenAccent),
+                                                  // ),
+                                                  // Text(
+                                                  //     "${(data["User Id"].length)}")
                                                 ]),
                                               ),
                                               Align(
@@ -321,8 +331,7 @@ class _MyLendpostsState extends State<MyLendposts> {
                                   )
                                 ]);
                               }
-                            },
-                          );
+                            });
                   },
                 ),
               ),
@@ -331,17 +340,91 @@ class _MyLendpostsState extends State<MyLendposts> {
         ]));
   }
 
-  Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
-    var teleId = data['User Id'].toString();
-
+  Widget _buildPopupDialogEditDescription(
+      BuildContext context, DocumentSnapshot data) {
+    var item_name;
     return new AlertDialog(
-      title: Text("People who have liked your post"),
+      title: Text("Edit Description"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(data['User Id'].toString()),
-          Text("Number of likes : ${(data["User Id"].length)}")
+          TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            cursorColor: Colors.grey,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.edit),
+              // enabledBorder: OutlineInputBorder(
+              //   borderSide: BorderSide(
+              //     color: Colors.black,
+              //   ),
+              //   borderRadius: BorderRadius.circular(30.0),
+              // ),
+              fillColor: Colors.white,
+              // filled: true,
+              hintText: "Description",
+              labelText: "Enter Description",
+              labelStyle: TextStyle(
+                color: Colors.grey,
+              ),
+              hintStyle: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                item_name = val;
+              });
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () async {
+              var id = data['owner id'] + data['item_name'];
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id')
+                  .update({'description': item_name});
+              Navigator.of(context).pop();
+            },
+            child: Text("Save")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  Widget _buildPopupEditPost(BuildContext context, DocumentSnapshot data) {
+    var teleId = data['User Id'].toString();
+
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Description :"),
+          Text(data['description']),
         ],
       ),
       actions: <Widget>[
@@ -360,7 +443,69 @@ class _MyLendpostsState extends State<MyLendposts> {
                     _buildPopupPostInfo(context, data),
               );
             },
-            child: Text("Post Info")),
+            child: Text("Edit Post")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupLendInfo(context, data),
+              );
+            },
+            child: Text("Delete Post")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context, DocumentSnapshot data) {
+    var teleId = data['User Id'].toString();
+
+    return new AlertDialog(
+      title: Text("People who have liked your post"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Telegram IDs : ${data['User Id'].toString()}"),
+          Text("Number of likes : ${(data["User Id"].length)}"),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupPostInfo(context, data),
+              );
+            },
+            child: Text("Edit Post")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -397,7 +542,7 @@ class _MyLendpostsState extends State<MyLendposts> {
     var teleId;
 
     return new AlertDialog(
-      title: Text("Lend Post"),
+      title: Text("Lend Item"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -418,7 +563,7 @@ class _MyLendpostsState extends State<MyLendposts> {
               fillColor: Colors.white,
               // filled: true,
               hintText: "Telegram Id",
-              labelText: "Enter your telegram id",
+              labelText: "Lending To?",
               labelStyle: TextStyle(
                 color: Colors.grey,
               ),
@@ -454,7 +599,7 @@ class _MyLendpostsState extends State<MyLendposts> {
                     _buildPopupPostInfo(context, data),
               );
             },
-            child: Text("Post Info")),
+            child: Text("Edit Post")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -464,9 +609,19 @@ class _MyLendpostsState extends State<MyLendposts> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () {
+              var rentalStatus = true;
               Navigator.of(context).pop();
+              var id = data['owner id'] + data['item_name'];
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rentee id": "$teleId"});
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rental status": rentalStatus});
             },
-            child: Text("Lend")),
+            child: Text(" Confirm Lend")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -485,12 +640,25 @@ class _MyLendpostsState extends State<MyLendposts> {
   Widget _buildPopupPostInfo(BuildContext context, DocumentSnapshot data) {
     List list = data['User Id'];
     return new AlertDialog(
-      title: Text(data['item_name']),
+      title: Row(children: [
+        Text(data['item_name']),
+      ]),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("${data['description']}"),
+          Row(children: [
+            Expanded(child: Text("${data['description']}")),
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _buildPopupDialogEditDescription(context, data),
+                  );
+                },
+                icon: Icon(Icons.edit))
+          ]),
         ],
       ),
       actions: <Widget>[
@@ -513,6 +681,22 @@ class _MyLendpostsState extends State<MyLendposts> {
             child: Text("Likes Info")),
         ElevatedButton(
             style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              var id = data['owner id'] + data['item_name'];
+              Navigator.of(context).pop();
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id')
+                  .delete();
+            },
+            child: Text("Delete Post")),
+        ElevatedButton(
+            style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -521,11 +705,51 @@ class _MyLendpostsState extends State<MyLendposts> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Edit Post")),
+            child: Text("Save"))
+      ],
+    );
+  }
+
+  Widget _buildPopupAlreadyBorrowed(
+      BuildContext context, DocumentSnapshot data) {
+    List list = data['User Id'];
+    return new AlertDialog(
+      title: Text(data['item_name']),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("${data['description']}"),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              "(Item Lent to @${data['rentee id']})",
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          )
+        ],
+      ),
+      actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupReturnitem(context, data),
+              );
+            },
+            child: Text("Item Returned")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -538,21 +762,22 @@ class _MyLendpostsState extends State<MyLendposts> {
     );
   }
 
-  Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
+  Widget _buildPopupReturnitem(BuildContext context, DocumentSnapshot data) {
+    List list = data['User Id'];
     return new AlertDialog(
-      title: Text(data['item_name']),
+      title: Text("Are you sure the item has been returned?"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-              "Sorry, this item is unavailable right now. Check later for updates"),
+          Text("Kindly only confirm once have been returned the item"),
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -562,15 +787,17 @@ class _MyLendpostsState extends State<MyLendposts> {
               FirebaseFirestore.instance
                   .collection('posts')
                   .doc('$id') // <-- Doc ID where data should be updated.
-                  .update({
-                "User Id": FieldValue.arrayRemove(["${user!.email}"])
-              });
+                  .update({"rentee id": "none"});
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id') // <-- Doc ID where data should be updated.
+                  .update({"rental status": false});
               Navigator.of(context).pop();
             },
-            child: Text("Unlike")),
+            child: Text("Confirm Return")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

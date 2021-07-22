@@ -308,9 +308,10 @@ class _MyRentpostsState extends State<MyRentposts> {
   }
 
   var item_name;
-  Widget _buildPopupDialogEditItemName(BuildContext context) {
+  Widget _buildPopupDialogEditDescription(
+      BuildContext context, DocumentSnapshot data) {
     return new AlertDialog(
-      title: Text("Edit Telegram Id"),
+      title: Text("Edit Description"),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,8 +331,8 @@ class _MyRentpostsState extends State<MyRentposts> {
               // ),
               fillColor: Colors.white,
               // filled: true,
-              hintText: "Telegram Id",
-              labelText: "Enter your telegram id",
+              hintText: "Description",
+              labelText: "Enter Description",
               labelStyle: TextStyle(
                 color: Colors.grey,
               ),
@@ -357,10 +358,11 @@ class _MyRentpostsState extends State<MyRentposts> {
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
             onPressed: () async {
+              var id = data['owner id'] + data['item_name'];
               FirebaseFirestore.instance
                   .collection('posts')
-                  .doc(FirebaseAuth.instance.currentUser!.email)
-                  .update({'item_name': item_name});
+                  .doc('$id')
+                  .update({'description': item_name});
               Navigator.of(context).pop();
             },
             child: Text("Save")),
@@ -470,7 +472,7 @@ class _MyRentpostsState extends State<MyRentposts> {
                     _buildPopupPostInfo(context, data),
               );
             },
-            child: Text("Post Info")),
+            child: Text("Edit Post")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -564,7 +566,7 @@ class _MyRentpostsState extends State<MyRentposts> {
                     _buildPopupPostInfo(context, data),
               );
             },
-            child: Text("Post Info")),
+            child: Text("Edit Post")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -605,12 +607,25 @@ class _MyRentpostsState extends State<MyRentposts> {
   Widget _buildPopupPostInfo(BuildContext context, DocumentSnapshot data) {
     List list = data['User Id'];
     return new AlertDialog(
-      title: Text(data['item_name']),
+      title: Row(children: [
+        Text(data['item_name']),
+      ]),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("${data['description']}"),
+          Row(children: [
+            Text("${data['description']}"),
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _buildPopupDialogEditDescription(context, data),
+                  );
+                },
+                icon: Icon(Icons.edit))
+          ]),
         ],
       ),
       actions: <Widget>[
@@ -633,6 +648,22 @@ class _MyRentpostsState extends State<MyRentposts> {
             child: Text("Likes Info")),
         ElevatedButton(
             style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              var id = data['owner id'] + data['item_name'];
+              Navigator.of(context).pop();
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc('$id')
+                  .delete();
+            },
+            child: Text("Delete Post")),
+        ElevatedButton(
+            style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -641,7 +672,7 @@ class _MyRentpostsState extends State<MyRentposts> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Close"))
+            child: Text("Save"))
       ],
     );
   }
@@ -706,7 +737,7 @@ class _MyRentpostsState extends State<MyRentposts> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Kindly only cofirm once you return the item"),
+          Text("Kindly only confirm once you return the item"),
         ],
       ),
       actions: <Widget>[

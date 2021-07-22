@@ -307,6 +307,78 @@ class _MyRentpostsState extends State<MyRentposts> {
         ]));
   }
 
+  var item_name;
+  Widget _buildPopupDialogEditItemName(BuildContext context) {
+    return new AlertDialog(
+      title: Text("Edit Telegram Id"),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            cursorColor: Colors.grey,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.edit),
+              // enabledBorder: OutlineInputBorder(
+              //   borderSide: BorderSide(
+              //     color: Colors.black,
+              //   ),
+              //   borderRadius: BorderRadius.circular(30.0),
+              // ),
+              fillColor: Colors.white,
+              // filled: true,
+              hintText: "Telegram Id",
+              labelText: "Enter your telegram id",
+              labelStyle: TextStyle(
+                color: Colors.grey,
+              ),
+              hintStyle: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            onChanged: (val) {
+              setState(() {
+                item_name = val;
+              });
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () async {
+              FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc(FirebaseAuth.instance.currentUser!.email)
+                  .update({'item_name': item_name});
+              Navigator.of(context).pop();
+            },
+            child: Text("Save")),
+        ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+  }
+
   Widget _buildPopupEditPost(BuildContext context, DocumentSnapshot data) {
     var teleId = data['User Id'].toString();
 
@@ -353,7 +425,7 @@ class _MyRentpostsState extends State<MyRentposts> {
                     _buildPopupLendInfo(context, data),
               );
             },
-            child: Text("Borrow")),
+            child: Text("Delete Post")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -562,23 +634,6 @@ class _MyRentpostsState extends State<MyRentposts> {
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              Navigator.of(context).pop();
-              showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    _buildPopupEditPost(context, data),
-              );
-            },
-            child: Text("Edit Post")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

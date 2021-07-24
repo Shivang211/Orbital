@@ -182,15 +182,15 @@ class _ItemsRentedState extends State<ItemsRented> {
                                       child: Column(children: [
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
-                                              54, 10, 0, 20),
+                                              64, 10, 0, 20),
                                           child: Row(children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   right: 2),
-                                              child: Icon(Icons.thumb_up,
-                                                  color: Colors.grey),
+                                              child: Icon(
+                                                  Icons.add_shopping_cart,
+                                                  color: Colors.red),
                                             ),
-                                            Text("${(data["User Id"].length)}")
                                           ]),
                                         ),
                                         Align(
@@ -222,150 +222,20 @@ class _ItemsRentedState extends State<ItemsRented> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Rented to : ${data['rentee id']}"),
+          SingleChildScrollView(child: Text("${data['description']}")),
+          Padding(
+            padding: const EdgeInsets.only(top: 28.0),
+            child: Text(
+              "(You have borrowed this item)",
+              style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+            ),
+          )
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              Navigator.of(context).pop();
-              showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    _buildPopupPostInfo(context, data),
-              );
-            },
-            child: Text("Post Info")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc('${data['owner id']}' + '${data['item_name']}')
-                  .update({'rental status': false});
-              Navigator.of(context).pop();
-            },
-            child: Text("Un-lend")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Close"))
-      ],
-    );
-  }
-
-  Widget _buildPopupPostInfo(BuildContext context, DocumentSnapshot data) {
-    List list = data['User Id'];
-    return new AlertDialog(
-      title: Text(data['item_name']),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("${data['description']}"),
-        ],
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              Navigator.of(context).pop();
-              showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    _buildPopupDialog(context, data),
-              );
-            },
-            child: Text("Likes Info")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc('${data['owner id']}' + '${data['item_name']}')
-                  .update({'rental status': false});
-              Navigator.of(context).pop();
-            },
-            child: Text("Un-lend")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Close"))
-      ],
-    );
-  }
-
-  Widget _buildPopup(BuildContext context, DocumentSnapshot data) {
-    return new AlertDialog(
-      title: Text(data['item_name']),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-              "Sorry, this item is unavailable right now. Check later for updates"),
-        ],
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ))),
-            onPressed: () {
-              var id = data['owner id'] + data['item_name'];
-              FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc('$id') // <-- Doc ID where data should be updated.
-                  .update({
-                "User Id": FieldValue.arrayRemove(["${user!.email}"])
-              });
-              Navigator.of(context).pop();
-            },
-            child: Text("Unlike")),
-        ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

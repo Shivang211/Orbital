@@ -207,17 +207,16 @@ class _MyLikesState extends State<MyLikes> {
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
-                                                        54, 10, 0, 20),
+                                                        64, 10, 0, 20),
                                                 child: Row(children: [
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
                                                             right: 2),
-                                                    child: Icon(Icons.thumb_up,
-                                                        color: Colors.grey),
+                                                    child: Icon(
+                                                        Icons.not_interested,
+                                                        color: Colors.red),
                                                   ),
-                                                  Text(
-                                                      "${(data["User Id"].length)}")
                                                 ]),
                                               ),
                                               Align(
@@ -371,7 +370,8 @@ class _MyLikesState extends State<MyLikes> {
       actions: <Widget>[
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(239, 132, 125, 1)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
@@ -389,7 +389,7 @@ class _MyLikesState extends State<MyLikes> {
             child: Text("Unlike")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
+                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

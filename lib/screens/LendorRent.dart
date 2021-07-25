@@ -120,10 +120,11 @@ class _LendorRentState extends State<LendorRent> {
               width: 100,
               child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      elevation: MaterialStateProperty.all(10),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ))),
                   onPressed: () {
                     LendorRent.lentOrRent = "Lend";
@@ -132,7 +133,10 @@ class _LendorRentState extends State<LendorRent> {
                       MaterialPageRoute(builder: (context) => CreateNewRent()),
                     );
                   },
-                  child: Text("Lend")),
+                  child: Text(
+                    "Lend",
+                    style: TextStyle(color: Colors.black),
+                  )),
             ),
           ),
           Padding(
@@ -142,12 +146,13 @@ class _LendorRentState extends State<LendorRent> {
                 width: 100,
                 child: ElevatedButton(
                     style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(10),
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                            MaterialStateProperty.all(Colors.white),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ))),
                     onPressed: () {
                       LendorRent.lentOrRent = "Borrow";
@@ -157,7 +162,8 @@ class _LendorRentState extends State<LendorRent> {
                             builder: (context) => CreateNewRent()),
                       );
                     },
-                    child: Text("Borrow")),
+                    child:
+                        Text("Borrow", style: TextStyle(color: Colors.black))),
               ))
         ])
       ]),

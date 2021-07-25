@@ -122,6 +122,45 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
           child: Column(children: [
         Padding(
           padding: const EdgeInsets.only(top: 18.0),
+          child: Text(
+            "Can't find what you need?",
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            height: 60,
+            width: 220,
+            child: ElevatedButton.icon(
+                style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(10),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ))),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => LendorRent()));
+                },
+                label: Text(
+                  "Create New Post",
+                  style: TextStyle(
+                      color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20),
+                ),
+                icon: Icon(
+                  Icons.post_add_rounded,
+                  color: Color.fromRGBO(239, 132, 125, 1),
+                )),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 18.0),
           child: StreamBuilder<QuerySnapshot>(
             stream: (name != "" && name != null)
                 ? FirebaseFirestore.instance
@@ -311,45 +350,6 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
             },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 28.0),
-          child: Text(
-            "Can't find what you need?",
-            style: TextStyle(
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-            height: 60,
-            width: 220,
-            child: ElevatedButton.icon(
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(10),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ))),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => LendorRent()));
-                },
-                label: Text(
-                  "Create New Post",
-                  style: TextStyle(
-                      color: Color.fromRGBO(239, 132, 125, 1), fontSize: 20),
-                ),
-                icon: Icon(
-                  Icons.post_add_rounded,
-                  color: Color.fromRGBO(239, 132, 125, 1),
-                )),
-          ),
-        )
       ])),
     );
   }

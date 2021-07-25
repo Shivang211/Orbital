@@ -71,30 +71,65 @@ class _MainpageState extends State<Mainpage> {
     int _index = 0;
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0), // here the desired height
-        child: AppBar(
-          //leadingWidth: 15, // <-- Use this
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0), // here the desired height
+          child: AppBar(
+            //leadingWidth: 15, // <-- Use this
 
-          backgroundColor: Colors.black,
+            backgroundColor: Colors.black,
 
-          title: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Text(
-              "Home",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: 28, foreground: Paint()..shader = linearGradient),
+            title: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Text(
+                "Home",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 28, foreground: Paint()..shader = linearGradient),
+              ),
             ),
-          ),
-          actions: [
-            Column(children: [
+            actions: [
+              Column(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 20, 0),
+                  child: Container(
+                      height: 34,
+                      width: 30,
+                      child: RawMaterialButton(
+                        elevation: 5.0,
+                        shape: CircleBorder(),
+                        fillColor: Colors.black,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CloudFirestoreSearch()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 34.0,
+                        ),
+                        constraints: BoxConstraints.tightFor(
+                          width: 50.0,
+                          height: 56.0,
+                        ),
+                      )),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
+                //   child: Text(
+                //     "Search",
+                //     style: TextStyle(fontSize: 10),
+                //   ),
+                // )
+              ]),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 8, 20, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 20, 3),
                 child: Container(
                     height: 34,
-                    width: 30,
+                    width: 34,
                     child: RawMaterialButton(
                       elevation: 5.0,
                       shape: CircleBorder(),
@@ -102,132 +137,156 @@ class _MainpageState extends State<Mainpage> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => CloudFirestoreSearch()),
+                          MaterialPageRoute(builder: (context) => Homepage()),
                         );
                       },
                       child: Icon(
-                        Icons.search,
+                        Icons.person_pin,
                         color: Colors.white,
-                        size: 34.0,
+                        size: 40.0,
                       ),
                       constraints: BoxConstraints.tightFor(
-                        width: 50.0,
+                        width: 56.0,
                         height: 56.0,
                       ),
                     )),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 6, 20, 0),
-              //   child: Text(
-              //     "Search",
-              //     style: TextStyle(fontSize: 10),
-              //   ),
-              // )
-            ]),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 20, 3),
-              child: Container(
-                  height: 34,
-                  width: 34,
-                  child: RawMaterialButton(
-                    elevation: 5.0,
-                    shape: CircleBorder(),
-                    fillColor: Colors.black,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
-                      );
-                    },
-                    child: Icon(
-                      Icons.person_pin,
-                      color: Colors.white,
-                      size: 40.0,
-                    ),
-                    constraints: BoxConstraints.tightFor(
-                      width: 56.0,
-                      height: 56.0,
-                    ),
-                  )),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body:
-          // Stack(children: [
-          //   Positioned.fill(
-          //     child: Image(
-          //       image: AssetImage("assets/icons/white2.png"),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
+        body: Stack(children: [
+          Positioned.fill(
+            child: Image(
+              image: AssetImage("assets/icons/white5.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(top: 20),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Card(
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        color: Colors.green[100],
-                        child: Container(
-                          child: MaterialButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LendorRent()),
-                              );
-                            },
-                            child: SizedBox(
-                              height: 100,
-                              width: double.infinity,
-                              child: Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.center,
-                                  // mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Text(
-                                            "Can't Find Your Item?",
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w400,
-                                                // foreground: Paint()
-                                                //   ..shader = linearGradient
-                                                color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0.0),
+                        child: Card(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: Colors.green[100],
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                // colorFilter: new ColorFilter.mode(
+                                //     Colors.red.withOpacity(0.4),
+                                //     BlendMode.dstATop),
+                                image: AssetImage("assets/icons/newimage.jpeg"),
+                                fit: BoxFit.fitWidth,
+                                alignment: Alignment.topCenter,
+                              ),
+                            ),
+                            child: MaterialButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LendorRent()),
+                                );
+                              },
+                              child: SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.center,
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(children: [
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(top: 125),
+                                        //   child: Align(
+                                        //     alignment: Alignment.bottomLeft,
+                                        //     child: Text(
+                                        //       "Can't Find Your Item?",
+                                        //       style: TextStyle(
+                                        //           fontSize: 20,
+                                        //           fontWeight: FontWeight.w400,
+                                        //           // foreground: Paint()
+                                        //           //   ..shader = linearGradient
+                                        //           color: Colors.black),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 95.0, right: 40),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: ElevatedButton.icon(
+                                                  style: ButtonStyle(
+                                                      elevation:
+                                                          MaterialStateProperty
+                                                              .all(10),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(
+                                                                  Colors.white),
+                                                      shape: MaterialStateProperty.all<
+                                                              RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ))),
+                                                  onPressed: () {
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        new MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                LendorRent()));
+                                                  },
+                                                  label: Text(
+                                                    "Create New Post",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            239, 132, 125, 1),
+                                                        fontSize: 20),
+                                                  ),
+                                                  icon: Icon(
+                                                    Icons.post_add_rounded,
+                                                    color: Color.fromRGBO(
+                                                        239, 132, 125, 1),
+                                                  )),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "Create New Post",
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w200,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                      ),
+                                      ]),
                                     ]),
-                                  ]),
+                              ),
                             ),
                           ),
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 38.0),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Rent Great Things, Create Wonderful Memories',
+                              style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.w800,
+                                foreground: Paint()..shader = linearGradient,
+                              ),
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 40, 0, 20),
@@ -483,8 +542,7 @@ class _MainpageState extends State<Mainpage> {
                       )
                     ]),
               )),
-      //])
-    );
+        ]));
   }
 
   Widget _buildPopupDialog(
@@ -576,7 +634,7 @@ class _MainpageState extends State<Mainpage> {
                 MaterialPageRoute(builder: (context) => MyMatches()),
               );
             },
-            child: Text("My Items")),
+            child: Text("Posts Created")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -620,7 +678,7 @@ class _MainpageState extends State<Mainpage> {
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
             },
-            child: Text("My Likes")),
+            child: Text("Liked Items")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
@@ -664,7 +722,7 @@ class _MainpageState extends State<Mainpage> {
                 MaterialPageRoute(builder: (context) => MyLikes()),
               );
             },
-            child: Text("My Likes")),
+            child: Text("Liked Items")),
         ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.greenAccent),

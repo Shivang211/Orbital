@@ -616,7 +616,7 @@ class _MainpageState extends State<Mainpage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-              "This post is created by you, please check more info under My Items"),
+              "This post is created by you, please check more info under Posts Created"),
         ],
       ),
       actions: <Widget>[
